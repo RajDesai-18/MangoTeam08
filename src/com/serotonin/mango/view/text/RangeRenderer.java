@@ -146,7 +146,8 @@ public class RangeRenderer extends BaseTextRenderer {
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         int ver = in.readInt();
 
-        // Switch on the version of the class so that version changes can be elegantly handled.
+        // Switch on the version of the class so that version changes can be elegantly
+        // handled.
         if (ver == 1) {
             setFormat(SerializationHelper.readSafeUTF(in));
             rangeValues = (List<RangeValue>) in.readObject();

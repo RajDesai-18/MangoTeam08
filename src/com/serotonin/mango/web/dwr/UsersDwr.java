@@ -79,8 +79,7 @@ public class UsersDwr extends BaseDwr {
                 dataSources.add(ds);
             }
             initData.put("dataSources", dataSources);
-        }
-        else
+        } else
             initData.put("user", user);
 
         return initData;
@@ -102,7 +101,8 @@ public class UsersDwr extends BaseDwr {
             List<Integer> dataSourcePermissions, List<DataPointAccess> dataPointPermissions) {
         Permissions.ensureAdmin();
 
-        // Validate the given information. If there is a problem, return an appropriate error message.
+        // Validate the given information. If there is a problem, return an appropriate
+        // error message.
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         User currentUser = Common.getUser(request);
         UserDao userDao = new UserDao();
@@ -195,8 +195,7 @@ public class UsersDwr extends BaseDwr {
                     "ftl.testEmail"), Common.UTF8);
             EmailWorkItem.queueEmail(email, cnt);
             result.put("message", new LocalizableMessage("common.testEmailSent", email));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             result.put("exception", e.getMessage());
         }
         return result;

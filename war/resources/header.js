@@ -20,17 +20,17 @@ dojo.require("dojo.widget.FloatingPane");
 
 //
 // Error handling
-window.onerror = function mangoHandler(desc, page, line)  {
+window.onerror = function mangoHandler(desc, page, line) {
     BrowserDetect.init();
     if (checkCombo(BrowserDetect.browser, BrowserDetect.version, BrowserDetect.OS)) {
         MiscDwr.jsError(desc, page, line, BrowserDetect.browser, BrowserDetect.version, BrowserDetect.OS,
-                window.location.href);
+            window.location.href);
     }
     return false;
 };
 
 mango.header = {};
-mango.header.onLoad = function() {
+mango.header.onLoad = function () {
     if (dojo.render.html.ie)
         mango.header.evtVisualizer = new IEBlinker($("__header__alarmLevelDiv"), 500, 200);
     else
@@ -43,8 +43,8 @@ function hMD(desc, source) {
     if (desc) {
         var bounds = getAbsoluteNodeBounds(source);
         c.innerHTML = desc;
-        c.style.left = (bounds.x + 16) +"px";
-        c.style.top = (bounds.y - 10) +"px";
+        c.style.left = (bounds.x + 16) + "px";
+        c.style.top = (bounds.y - 10) + "px";
         show(c);
     }
     else
@@ -65,30 +65,31 @@ function help(documentId, source) {
     div.style.height = "300px";
     if (source) {
         var bounds = getAbsoluteNodeBounds(source);
-        div.style.left = (bounds.x + bounds.w) +"px";
-        div.style.top = (bounds.y + bounds.h) +"px";
+        div.style.left = (bounds.x + bounds.w) + "px";
+        div.style.top = (bounds.y + bounds.h) + "px";
     }
     else {
         div.style.left = "10px";
         div.style.top = "10px";
     }
-    
+
     document.body.appendChild(div);
-    
+
     var params = {
-            widgetId: widgetId, title: mango.i18n["js.help.loading"], constrainToContainer: false,
-            displayCloseAction: true, displayMinimizeAction: false, displayMaximizeAction: false, resizable: true,
-            hasShadow: true, iconSrc: "images/help_doc.png"};
-    
+        widgetId: widgetId, title: mango.i18n["js.help.loading"], constrainToContainer: false,
+        displayCloseAction: true, displayMinimizeAction: false, displayMaximizeAction: false, resizable: true,
+        hasShadow: true, iconSrc: "images/help_doc.png"
+    };
+
     dojo.widget.createWidget("FloatingPane", params, div);
     helpImpl(documentId);
 };
 
 function helpImpl(documentId) {
-    MiscDwr.getDocumentationItem(documentId, function(result) {
+    MiscDwr.getDocumentationItem(documentId, function (result) {
         var widgetId = "documentationPane";
         var widget = dojo.widget.manager.getWidgetById(widgetId);
-        
+
         if (result.error) {
             widget.titleBarText.innerHTML = mango.i18n["js.help.error"];
             $("documentationPane_container").innerHTML = result.error;
@@ -97,14 +98,14 @@ function helpImpl(documentId) {
             widget.titleBarText.innerHTML = result.title;
             var content = result.content;
             if (result.relatedList && result.relatedList.length > 0) {
-                content += "<p><b>"+ mango.i18n["js.help.related"] +"</b><br/>";
-                for (var i=0; i<result.relatedList.length; i++)
-                    content += "<a class='ptr' onclick='helpImpl(\""+ result.relatedList[i].id +"\");'>"+
-                            result.relatedList[i].title +"</a><br/>";
+                content += "<p><b>" + mango.i18n["js.help.related"] + "</b><br/>";
+                for (var i = 0; i < result.relatedList.length; i++)
+                    content += "<a class='ptr' onclick='helpImpl(\"" + result.relatedList[i].id + "\");'>" +
+                        result.relatedList[i].title + "</a><br/>";
                 content += "</p>";
             }
             if (result.lastUpdated)
-                content += "<p>"+ mango.i18n["js.help.lastUpdated"] +": "+ result.lastUpdated +"</p>";
+                content += "<p>" + mango.i18n["js.help.lastUpdated"] + ": " + result.lastUpdated + "</p>";
             $("documentationPane_container").innerHTML = content;
         }
     });
@@ -112,61 +113,61 @@ function helpImpl(documentId) {
 
 //
 // Sound related stuff
-if (typeof(soundManager) != "undefined") {
+if (typeof (soundManager) != "undefined") {
     soundManager.debugMode = false;
     soundManager.onloadFinished = false;
-    soundManager.onload = function() {
-        soundManager.createSound({ id:'level1', url:'audio/information.mp3' });
-        soundManager.createSound({ id:'level2', url:'audio/urgent.mp3' });
-        soundManager.createSound({ id:'level3', url:'audio/critical.mp3' });
-        soundManager.createSound({ id:'level4', url:'audio/lifesafety.mp3' });
+    soundManager.onload = function () {
+        soundManager.createSound({ id: 'level1', url: 'audio/information.mp3' });
+        soundManager.createSound({ id: 'level2', url: 'audio/urgent.mp3' });
+        soundManager.createSound({ id: 'level3', url: 'audio/critical.mp3' });
+        soundManager.createSound({ id: 'level4', url: 'audio/lifesafety.mp3' });
         soundManager.onloadFinished = true;
     };
 }
 
 function SoundPlayer() {
     this.soundId;
-    this.mute = false;
+    this.mute = true; // Change Request #2 Implmeneted
     this.timeoutId;
     var self = this;
-    
-    this.play = function(soundId) {
+
+    this.play = function (soundId) {
         this.stop();
         this.soundId = soundId;
         if (!this.mute)
-        	this._repeat();
+            this._repeat();
     };
-    
-    this.stop = function() {
+
+    this.stop = function () {
         if (this.soundId) {
             var sid = this.soundId;
             this.soundId = null;
             this._stopRepeat(sid);
         }
     };
-    
-    this.isMute = function() {
+
+    this.isMute = function () {
         return this.mute;
     };
-    
-    this.setMute = function(muted) {
-    	if (muted != this.mute) {
-	        this.mute = muted;
-	        if (this.soundId) {
-		        if (muted)
-		            this._stopRepeat(this.soundId);
-		        else
-		            this._repeat();
-	        }
-    	}
+
+    this.setMute = function (muted) {
+        if (muted == this.mute) {
+            this.mute = muted;
+            if (this.soundId) {
+                if (muted)
+                    this._stopRepeat(this.soundId);
+                else
+                    this._repeat();
+            }
+        }
     };
-    
-    this._stopRepeat = function(sId) {
+
+    this._stopRepeat = function (sId) {
         soundManager.stop(sId);
         clearTimeout(this.timeoutId);
     };
-    
-    this._repeat = function() {
+
+    this._repeat = function () {
         if (soundManager.onloadFinished) {
             if (self.soundId && !self.mute) {
                 var snd = soundManager.getSoundById(self.soundId);
@@ -180,7 +181,7 @@ function SoundPlayer() {
                     }
                     else if (snd.readyState == 3)
                         // The sound exists, so play it.
-                        soundManager.play(self.soundId, { onfinish: self._repeatDelay } );
+                        soundManager.play(self.soundId, { onfinish: self._repeatDelay });
                 }
             }
         }
@@ -188,8 +189,8 @@ function SoundPlayer() {
             // Wait for the sound manager to load.
             setTimeout(self._repeat, 500);
     };
-    
-    this._repeatDelay = function() {
+
+    this._repeatDelay = function () {
         if (self.soundId && !self.mute)
             self.timeoutId = setTimeout(self._repeat, 10000);
     };
@@ -204,10 +205,10 @@ var BrowserDetect = {
         this.version = this.searchVersion(navigator.userAgent)
             || this.searchVersion(navigator.appVersion)
             || "an unknown version";
-        this.OS = this.searchString(this.dataOS) || "an unknown OS ("+ navigator.userAgent +")";
+        this.OS = this.searchString(this.dataOS) || "an unknown OS (" + navigator.userAgent + ")";
     },
     searchString: function (data) {
-        for (var i=0;i<data.length;i++) {
+        for (var i = 0; i < data.length; i++) {
             var dataString = data[i].string;
             var dataProp = data[i].prop;
             this.versionSearchString = data[i].versionSearch || data[i].identity;
@@ -222,7 +223,7 @@ var BrowserDetect = {
     searchVersion: function (dataString) {
         var index = dataString.indexOf(this.versionSearchString);
         if (index == -1) return;
-        return parseFloat(dataString.substring(index+this.versionSearchString.length+1));
+        return parseFloat(dataString.substring(index + this.versionSearchString.length + 1));
     },
     dataBrowser: [
         {
@@ -290,7 +291,7 @@ var BrowserDetect = {
             versionSearch: "Mozilla"
         }
     ],
-    dataOS : [
+    dataOS: [
         {
             string: navigator.platform,
             subString: "Win",

@@ -66,6 +66,8 @@ public class SystemSettingsDao extends BaseDao {
     public static final String NOTIFICATION_LEVEL_STABLE = "S";
     public static final String NOTIFICATION_LEVEL_RC = "C";
     public static final String NOTIFICATION_LEVEL_BETA = "B";
+    // Change Request #2 Implmeneted
+    public static final String NOTIFICATION_LEVEL_MUTED = "M"; 
 
     // i18n
     public static final String LANGUAGE = "language";
