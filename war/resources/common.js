@@ -22,18 +22,18 @@ var mango = {};
 //
 // String prototypes
 //
-String.prototype.startsWith = function(str) {
+String.prototype.startsWith = function (str) {
     if (str.length > this.length)
         return false;
-    for (var i=0; i<str.length; i++) {
+    for (var i = 0; i < str.length; i++) {
         if (str.charAt(i) != this.charAt(i))
             return false;
     }
     return true;
 }
 
-String.prototype.trim = function() {
-    return this.replace(/^\s+|\s+$/g,"");
+String.prototype.trim = function () {
+    return this.replace(/^\s+|\s+$/g, "");
 }
 
 //
@@ -41,10 +41,10 @@ String.prototype.trim = function() {
 //
 function errorToString(e) {
     try {
-        return e.name +": "+ e.message +" ("+ e.fileName +":"+ e.lineNumber +")";
+        return e.name + ": " + e.message + " (" + e.fileName + ":" + e.lineNumber + ")";
     }
     catch (e2) {
-        return e.name +": "+ e.message +" ("+ e.fileName +")";
+        return e.name + ": " + e.message + " (" + e.fileName + ")";
     }
 }
 
@@ -55,28 +55,28 @@ mango.longPoll = {};
 mango.longPoll.pollRequest = {};
 mango.longPoll.pollSessionId = Math.round(Math.random() * 1000000000);
 
-mango.longPoll.start = function() {
+mango.longPoll.start = function () {
     MiscDwr.initializeLongPoll(mango.longPoll.pollSessionId, mango.longPoll.pollRequest, mango.longPoll.pollCB);
-    dojo.addOnUnload(function() { MiscDwr.terminateLongPoll(mango.longPoll.pollSessionId); });
+    dojo.addOnUnload(function () { MiscDwr.terminateLongPoll(mango.longPoll.pollSessionId); });
 };
 
-mango.longPoll.poll = function() {
+mango.longPoll.poll = function () {
     mango.longPoll.lastPoll = new Date().getTime();
     MiscDwr.doLongPoll(mango.longPoll.pollSessionId, mango.longPoll.pollCB);
 }
 
-mango.longPoll.pollCB = function(response) {
+mango.longPoll.pollCB = function (response) {
     if (response.terminated)
         return;
-    
-    if (typeof(response.highestUnsilencedAlarmLevel) != "undefined") {
+
+    if (typeof (response.highestUnsilencedAlarmLevel) != "undefined") {
         if (response.highestUnsilencedAlarmLevel > 0) {
             setAlarmLevelImg(response.highestUnsilencedAlarmLevel, $("__header__alarmLevelImg"));
             setAlarmLevelText(response.highestUnsilencedAlarmLevel, $("__header__alarmLevelText"));
             if (!mango.header.evtVisualizer.started)
                 mango.header.evtVisualizer.start();
             show("__header__alarmLevelDiv");
-            mango.soundPlayer.play("level"+ response.highestUnsilencedAlarmLevel);
+            mango.soundPlayer.play("level" + response.highestUnsilencedAlarmLevel);
         }
         else {
             hide("__header__alarmLevelDiv");
@@ -84,22 +84,22 @@ mango.longPoll.pollCB = function(response) {
             mango.soundPlayer.stop();
         }
     }
-    
+
     if (response.watchListStates)
         mango.view.watchList.setData(response.watchListStates);
-    
+
     if (response.pointDetailsState)
         mango.view.pointDetails.setData(response.pointDetailsState);
-    
+
     if (response.viewStates)
         mango.view.setData(response.viewStates);
-    
-    if (typeof(response.pendingAlarmsContent) != "undefined")
+
+    if (typeof (response.pendingAlarmsContent) != "undefined")
         updatePendingAlarmsContent(response.pendingAlarmsContent);
-    
+
     if (response.customViewStates)
         mango.view.setData(response.customViewStates);
-    
+
     if (mango.longPoll.lastPoll) {
         var duration = new Date().getTime() - mango.longPoll.lastPoll;
         if (duration < 300) {
@@ -131,11 +131,11 @@ function setDisabled(node, disabled) {
 
 function dump(o) {
     for (var p in o)
-        dojo.debug(p +"="+ o[p]);
+        dojo.debug(p + "=" + o[p]);
 }
 
 function contains(arr, e) {
-    for (var i=0; i<arr.length; i++) {
+    for (var i = 0; i < arr.length; i++) {
         if (arr[i] == e)
             return true;
     }
@@ -144,13 +144,13 @@ function contains(arr, e) {
 
 // onmouseover and onmouseout betterment.
 function isMouseLeaveOrEnter(e, handler) {
-	  if (e.type != 'mouseout' && e.type != 'mouseover')
-		  return false;
-	  var reltg = e.relatedTarget ? e.relatedTarget : e.type == 'mouseout' ? e.toElement : e.fromElement;
-	  while (reltg && reltg != handler)
-		  reltg = reltg.parentNode;
-	  return (reltg != handler);
-}      
+    if (e.type != 'mouseout' && e.type != 'mouseover')
+        return false;
+    var reltg = e.relatedTarget ? e.relatedTarget : e.type == 'mouseout' ? e.toElement : e.fromElement;
+    while (reltg && reltg != handler)
+        reltg = reltg.parentNode;
+    return (reltg != handler);
+}
 
 //
 // Common functions (delegates to Dojo functions)
@@ -166,7 +166,7 @@ function hide(node) {
         getNodeIfString(node).style.display = 'none';
     }
     catch (err) {
-        throw "hide failed for node "+ node +", "+ err.message;
+        throw "hide failed for node " + node + ", " + err.message;
     }
 }
 
@@ -186,8 +186,8 @@ function showMenu(node, xoffset, yoffset) {
         bounds.x -= rbounds.x;
         bounds.y -= rbounds.y;
     }
-    node.style.left = (bounds.x + xoffset) +"px";
-    node.style.top = (bounds.y + yoffset) +"px";
+    node.style.left = (bounds.x + xoffset) + "px";
+    node.style.top = (bounds.y + yoffset) + "px";
     showLayer(node);
 }
 
@@ -225,10 +225,10 @@ function getNodeBounds(node) {
     node = getNodeIfString(node);
     var box = dojo.html.getContentBox(node);
     return {
-        x : dojo.html.getPixelValue(node, "left", dojo.html.isPositionAbsolute(node)),
-        y : dojo.html.getPixelValue(node, "top", dojo.html.isPositionAbsolute(node)),
-        w : box.width,
-        h : box.height
+        x: dojo.html.getPixelValue(node, "left", dojo.html.isPositionAbsolute(node)),
+        y: dojo.html.getPixelValue(node, "top", dojo.html.isPositionAbsolute(node)),
+        w: box.width,
+        h: box.height
     };
 }
 
@@ -242,10 +242,10 @@ function getAbsoluteNodeBounds(node) {
         tempNode = tempNode.offsetParent;
     }
     return {
-        x : x,
-        y : y,
-        w : box.width,
-        h : box.height
+        x: x,
+        y: y,
+        w: box.width,
+        h: box.height
     };
 }
 
@@ -261,12 +261,12 @@ function IEBlinker(/*element*/node, /*milliseconds*/onTime, /*milliseconds*/offT
     this.off = offTime;
     if (!this.off)
         this.off = 300;
-    
+
     this.state = true;
     this.timeoutId;
     this.started = false;
-    
-    this.start = function() {
+
+    this.start = function () {
         this.started = true;
         this.timeoutId = null;
         this.state = !this.state;
@@ -276,8 +276,8 @@ function IEBlinker(/*element*/node, /*milliseconds*/onTime, /*milliseconds*/offT
             hideLayer(this.target);
         this.timeoutId = setTimeout(dojo.lang.hitch(this, "start"), this.state ? this.on : this.off);
     };
-    
-    this.stop = function() {
+
+    this.stop = function () {
         if (this.started) {
             this.started = false;
             clearTimeout(this.timeoutId);
@@ -320,32 +320,32 @@ function ImageFader(/*element*/imgNode, /*milliseconds*/cycleRate, /*0<float<1*/
     this.step = cycleStep;
     if (!this.step)
         this.step = 0.1;
-    
+
     this.increasing = false;
     this.timeoutId;
     this.started = false;
-    
-    this.start = function() {
+
+    this.start = function () {
         this.started = true;
         this.timeoutId = null;
-        
+
         var op = dojo.html.getOpacity(this.im, "opacity");
         if (op >= 1)
             this.increasing = false;
         else if (op <= 0)
             this.increasing = true;
-    
+
         if (this.increasing)
             op += this.step;
         else
             op -= this.step;
-        
+
         dojo.html.setOpacity(this.im, op);
-    
+
         this.timeoutId = setTimeout(dojo.lang.hitch(this, "start"), this.rate);
     };
-    
-    this.stop = function() {
+
+    this.stop = function () {
         if (this.started) {
             this.started = false;
             clearTimeout(this.timeoutId);
@@ -358,7 +358,7 @@ function ImageFader(/*element*/imgNode, /*milliseconds*/cycleRate, /*0<float<1*/
 function startImageFader(node, disableOnclick) {
     if (disableOnclick)
         this.disableOnclick(node);
-    
+
     node = getNodeIfString(node);
     var fader = new ImageFader(node);
     if (node.fader)
@@ -398,11 +398,11 @@ function enableOnclick(node) {
 
 function updateTemplateNode(elem, replaceText) {
     var i;
-    for (i=0; i<elem.attributes.length; i++) {
+    for (i = 0; i < elem.attributes.length; i++) {
         if (elem.attributes[i].value && elem.attributes[i].value.indexOf('_TEMPLATE_') != -1)
             elem.attributes[i].value = elem.attributes[i].value.replace(/_TEMPLATE_/, replaceText);
     }
-    for (var i=0; i<elem.childNodes.length; i++) {
+    for (var i = 0; i < elem.childNodes.length; i++) {
         if (elem.childNodes[i].attributes)
             updateTemplateNode(elem.childNodes[i], replaceText);
     }
@@ -413,7 +413,7 @@ function getElementsByMangoName(node, mangoName, result) {
         result = new Array();
     if (node.mangoName == mangoName)
         result[result.length] = node;
-    for (var i=0; i<node.childNodes.length; i++)
+    for (var i = 0; i < node.childNodes.length; i++)
         getElementsByMangoName(node.childNodes[i], mangoName, result);
     return result;
 }
@@ -460,7 +460,7 @@ function setAlarmLevelText(alarmLevel, textNode) {
     else if (alarmLevel == 4)
         textNode.innerHTML = mango.i18n["common.alarmLevel.lifeSafety"];
     else
-        textNode.innerHTML = "Unknown alarm level: "+ alarmLevel;
+        textNode.innerHTML = "Unknown alarm level: " + alarmLevel;
 }
 
 function setUserImg(admin, disabled, imgNode) {
@@ -577,7 +577,7 @@ function getSelectionRange(node) {
         return { start: node.selectionStart, end: node.selectionEnd };
     if (!document.selection)
         return { start: 0, end: 0 };
-    
+
     // IE
     var range = document.selection.createRange();
     var rangeCopy = range.duplicate();
@@ -622,7 +622,7 @@ function getElement(arr, id, idName) {
     if (!idName)
         idName = "id";
 
-    for (var i=0; i<arr.length; i++) {
+    for (var i = 0; i < arr.length; i++) {
         if (arr[i][idName] == id)
             return arr[i];
     }
@@ -630,7 +630,7 @@ function getElement(arr, id, idName) {
 }
 
 function updateElement(arr, id, key, value, dobreak) {
-    for (var i=0; i<arr.length; i++) {
+    for (var i = 0; i < arr.length; i++) {
         if (arr[i].id == id) {
             arr[i][key] = value;
             if (dobreak)
@@ -640,7 +640,7 @@ function updateElement(arr, id, key, value, dobreak) {
 }
 
 function removeElement(arr, id) {
-    for (var i=arr.length-1; i>=0; i--) {
+    for (var i = arr.length - 1; i >= 0; i--) {
         if (arr[i].id == id)
             arr.splice(i, 1);
     }
@@ -655,9 +655,9 @@ function showMessage(node, msg) {
     else
         hide(node);
 }
-  
+
 function getNodeIfString(node) {
-    if (typeof(node) == "string")
+    if (typeof (node) == "string")
         return $(node);
     return node;
 }
@@ -665,26 +665,26 @@ function getNodeIfString(node) {
 function escapeQuotes(str) {
     if (!str)
         return "";
-    return str.replace(/\'/g,"\\'");
+    return str.replace(/\'/g, "\\'");
 }
 
 function escapeDQuotes(str) {
     if (!str)
         return "";
-    return str.replace(/\"/g,"\\\"");
+    return str.replace(/\"/g, "\\\"");
 }
 
 function encodeQuotes(str) {
     if (!str)
         return "";
-    return str.replace(/\'/g,"%27").replace(/\"/g,"%22");
+    return str.replace(/\'/g, "%27").replace(/\"/g, "%22");
 }
 
 function encodeHtml(str) {
     if (!str)
         return "";
-    str = str.replace(/&/g,"&amp;");
-    return str.replace(/</g,"&lt;");
+    str = str.replace(/&/g, "&amp;");
+    return str.replace(/</g, "&lt;");
 }
 
 function appendNewElement(/*string*/type, /*node*/parent) {
@@ -696,35 +696,35 @@ function appendNewElement(/*string*/type, /*node*/parent) {
 function writeImage(id, src, png, title, onclick) {
     var result = '<img class="ptr"';
     if (id)
-        result += ' id="'+ id +'"';
+        result += ' id="' + id + '"';
     if (src)
-        result += ' src="'+ src +'"';
+        result += ' src="' + src + '"';
     if (png && !src)
-        result += ' src="images/'+ png +'.png"';
+        result += ' src="images/' + png + '.png"';
     if (title)
-        result += ' alt="'+ title +'" title="'+ title +'"';
-    result += ' onclick="'+ onclick +'"/>';
+        result += ' alt="' + title + '" title="' + title + '"';
+    result += ' onclick="' + onclick + '"/>';
     return result;
 }
 
 function writeImageSQuote(id, src, png, title, onclick) {
     var result = "<img class='ptr'";
     if (id)
-        result += " id='"+ id +"'";
+        result += " id='" + id + "'";
     if (src)
-        result += " src='"+ src +"'";
+        result += " src='" + src + "'";
     if (png && !src)
-        result += " src='images/"+ png +".png'";
+        result += " src='images/" + png + ".png'";
     if (title)
-        result += " alt='"+ title +"' title='"+ title +"'";
-    result += " onclick='"+ onclick +"'/>";
+        result += " alt='" + title + "' title='" + title + "'";
+    result += " onclick='" + onclick + "'/>";
     return result;
 }
 
 function hideContextualMessages(parent) {
     parent = getNodeIfString(parent);
     var nodes = dojo.html.getElementsByClass("ctxmsg", parent);
-    for (var i=0; i<nodes.length; i++)
+    for (var i = 0; i < nodes.length; i++)
         dojo.html.hide(nodes[i]);
 }
 
@@ -735,10 +735,10 @@ function hideGenericMessages(genericMessageNode) {
 function createContextualMessageNode(field, fieldId) {
     field = getNodeIfString(field);
     var node = document.createElement("div");
-    node.id = fieldId +"Ctxmsg";
+    node.id = fieldId + "Ctxmsg";
     node.className = "ctxmsg formError";
     dojo.html.hide(node);
-    
+
     var next = field.nextSibling;
     if (next)
         next.parentNode.insertBefore(node, next);
@@ -750,18 +750,18 @@ function createContextualMessageNode(field, fieldId) {
 function showDwrMessages(/*DwrResponseI18n.messages*/messages, /*tbody*/genericMessageNode) {
     var m, field, node, next;
     var genericMessages = new Array();
-    for (var i=0; i<messages.length; i++) {
+    for (var i = 0; i < messages.length; i++) {
         m = messages[i];
         if (m.contextKey) {
-            node = $(m.contextKey +"Ctxmsg");
+            node = $(m.contextKey + "Ctxmsg");
             if (!node) {
                 field = $(m.contextKey);
                 if (field)
                     node = createContextualMessageNode(field, m.contextKey);
                 else
-                    alert("No contextual field found for key "+ m.contextKey);
+                    alert("No contextual field found for key " + m.contextKey);
             }
-            
+
             if (node) {
                 node.innerHTML = m.contextualMessage;
                 dojo.html.show(node);
@@ -770,15 +770,15 @@ function showDwrMessages(/*DwrResponseI18n.messages*/messages, /*tbody*/genericM
         else
             genericMessages[genericMessages.length] = m.genericMessage;
     }
-    
+
     if (genericMessages.length > 0) {
         if (!genericMessageNode)
             alert("generic messages node not defined");
         genericMessageNode = getNodeIfString(genericMessageNode);
         dwr.util.removeAllRows(genericMessageNode);
-        dwr.util.addRows(genericMessageNode, genericMessages, [ function(data) { return data; } ],
+        dwr.util.addRows(genericMessageNode, genericMessages, [function (data) { return data; }],
             {
-                cellCreator:function(options) {
+                cellCreator: function (options) {
                     var td = document.createElement("td");
                     td.className = "formError";
                     return td;
@@ -795,7 +795,7 @@ function setDateRange(data) {
     $set("fromHour", data.fromHour);
     $set("fromMinute", data.fromMinute);
     $set("fromSecond", data.fromSecond);
-    
+
     $set("toYear", data.toYear);
     $set("toMonth", data.toMonth);
     $set("toDay", data.toDay);
@@ -814,7 +814,7 @@ function updateDateRange() {
     setDisabled("fromMinute", inception);
     setDisabled("fromSecond", inception);
     setDisabled("fromNone", false);
-    
+
     var now = $get("toNone");
     setDisabled("toYear", now);
     setDisabled("toMonth", now);
@@ -826,11 +826,11 @@ function updateDateRange() {
 }
 
 function toggleSilence(eventId) {
-    MiscDwr.toggleSilence(eventId, function(response) { setSilenced(response.data.eventId, response.data.silenced); });
+    MiscDwr.toggleSilence(eventId, function (response) { setSilenced(response.data.eventId, response.data.silenced); });
 }
 
 function setSilenced(eventId, silenced) {
-    var imgNode = $("silenceImg"+ eventId);
+    var imgNode = $("silenceImg" + eventId);
     if (silenced)
         updateImg(imgNode, "images/sound_mute.png", mango.i18n["events.unsilence"], true, "inline");
     else
@@ -847,10 +847,10 @@ function setUserMuted(muted) {
 }
 
 function ackEvent(eventId) {
-    hide("silenceImg"+ eventId);
-    var imgNode = $("ackImg"+ eventId);
+    hide("silenceImg" + eventId);
+    var imgNode = $("ackImg" + eventId);
     updateImg(imgNode, "images/tick_off.png", mango.i18n["events.acknowledged"], true, "inline");
-    imgNode.onclick = function() {};
+    imgNode.onclick = function () { };
     dojo.html.removeClass(imgNode, "ptr");
     MiscDwr.acknowledgeEvent(eventId);
 }
@@ -863,21 +863,21 @@ function ackEvent(eventId) {
 mango.share = {};
 mango.share.dwr = null;
 mango.share.users = [];
-mango.share.addUserToShared = function() {
+mango.share.addUserToShared = function () {
     var userId = $get("allShareUsersList");
     if (userId)
         mango.share.dwr.addUpdateSharedUser(userId, 1/* ShareUser.ACCESS_READ */, mango.share.writeSharedUsers);
 }
 
-mango.share.updateUserAccess = function(sel, userId) {
+mango.share.updateUserAccess = function (sel, userId) {
     mango.share.dwr.addUpdateSharedUser(userId, $get(sel), mango.share.writeSharedUsers);
 }
 
-mango.share.removeFromSharedUsers = function(userId) {
+mango.share.removeFromSharedUsers = function (userId) {
     mango.share.dwr.removeSharedUser(userId, mango.share.writeSharedUsers);
 }
 
-mango.share.writeSharedUsers = function(sharedUsers) {
+mango.share.writeSharedUsers = function (sharedUsers) {
     dwr.util.removeAllRows("sharedUsersTable");
     if (sharedUsers.length == 0) {
         show("sharedUsersTableEmpty");
@@ -888,31 +888,31 @@ mango.share.writeSharedUsers = function(sharedUsers) {
         show("sharedUsersTableHeaders");
         dwr.util.addRows("sharedUsersTable", sharedUsers,
             [
-                function(data) { return getElement(mango.share.users, data.userId).username; },
-                function(data) {
-                    var s = '<select onchange="mango.share.updateUserAccess(this, '+ data.userId +')">';
+                function (data) { return getElement(mango.share.users, data.userId).username; },
+                function (data) {
+                    var s = '<select onchange="mango.share.updateUserAccess(this, ' + data.userId + ')">';
                     s += '<option value="1"'; // ShareUser.ACCESS_READ
                     if (data.accessType == 1) // ShareUser.ACCESS_READ
                         s += ' selected="selected"';
-                    s += '>'+ mango.i18n["common.access.read"] +'</option>';
-                    
+                    s += '>' + mango.i18n["common.access.read"] + '</option>';
+
                     s += '<option value="2"'; // ShareUser.ACCESS_SET
                     if (data.accessType == 2) // ShareUser.ACCESS_SET
                         s += ' selected="selected"';
-                    s += '>'+ mango.i18n["common.access.set"] +'</option>';
-                    
+                    s += '>' + mango.i18n["common.access.set"] + '</option>';
+
                     s += '</select>';
                     return s;
                 },
-                function(data) {
-                    return "<img src='images/bullet_delete.png' class='ptr' "+
-                            "onclick='mango.share.removeFromSharedUsers("+ data.userId +")'/>";
+                function (data) {
+                    return "<img src='images/bullet_delete.png' class='ptr' " +
+                        "onclick='mango.share.removeFromSharedUsers(" + data.userId + ")'/>";
                 }
             ],
             {
-                rowCreator:function(options) {
+                rowCreator: function (options) {
                     var tr = document.createElement("tr");
-                    tr.className = "smRow"+ (options.rowIndex % 2 == 0 ? "" : "Alt");
+                    tr.className = "smRow" + (options.rowIndex % 2 == 0 ? "" : "Alt");
                     return tr;
                 }
             }
@@ -921,18 +921,18 @@ mango.share.writeSharedUsers = function(sharedUsers) {
     mango.share.updateUserList(sharedUsers);
 }
 
-mango.share.updateUserList = function(sharedUsers) {
+mango.share.updateUserList = function (sharedUsers) {
     dwr.util.removeAllOptions("allShareUsersList");
     var availUsers = [];
-    for (var i=0; i<mango.share.users.length; i++) {
+    for (var i = 0; i < mango.share.users.length; i++) {
         var found = false;
-        for (var j=0; j<sharedUsers.length; j++) {
+        for (var j = 0; j < sharedUsers.length; j++) {
             if (sharedUsers[j].userId == mango.share.users[i].id) {
                 found = true;
                 break;
             }
         }
-        
+
         if (!found)
             availUsers.push(mango.share.users[i]);
     }

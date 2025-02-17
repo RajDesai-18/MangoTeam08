@@ -36,7 +36,6 @@ import com.serotonin.mango.rt.dataImage.DataPointRT;
 import com.serotonin.mango.rt.dataImage.PointValueFacade;
 import com.serotonin.mango.rt.dataImage.PointValueTime;
 import com.serotonin.mango.rt.dataImage.types.ImageValue;
-// Change Request #1 Implemented
 import com.serotonin.mango.rt.dataImage.types.NumericValue;
 import com.serotonin.mango.view.chart.StatisticsChartRenderer;
 import com.serotonin.mango.vo.DataPointVO;
@@ -55,7 +54,8 @@ import com.serotonin.web.taglib.DateFunctions;
 public class DataPointDetailsDwr extends BaseDwr {
     @MethodFilter
     public WatchListState getPointData() {
-        // Get the point from the user's session. It should have been set by the controller.
+        // Get the point from the user's session. It should have been set by the
+        // controller.
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         User user = Common.getUser(request);
         DataPointVO pointVO = user.getEditPoint();
@@ -79,9 +79,8 @@ public class DataPointDetailsDwr extends BaseDwr {
         } else {
             setPrettyText(state, pointVO, model, pointValue);
         }
-        if (state.getValue() != null) {
+        if (state.getValue() != null)
             setChange(pointVO, state, pointRT, request, model, user);
-        }
 
         setEvents(pointVO, user, model);
         setMessages(state, request, "watchListMessages", model);
@@ -144,7 +143,8 @@ public class DataPointDetailsDwr extends BaseDwr {
 
     @MethodFilter
     public void getChartData(int fromYear, int fromMonth, int fromDay, int fromHour, int fromMinute, int fromSecond,
-            boolean fromNone, int toYear, int toMonth, int toDay, int toHour, int toMinute, int toSecond, boolean toNone) {
+            boolean fromNone, int toYear, int toMonth, int toDay, int toHour, int toMinute, int toSecond,
+            boolean toNone) {
         DateTime from = createDateTime(fromYear, fromMonth, fromDay, fromHour, fromMinute, fromSecond, fromNone);
         DateTime to = createDateTime(toYear, toMonth, toDay, toHour, toMinute, toSecond, toNone);
         DataExportDefinition def = new DataExportDefinition(new int[] { getDataPointVO().getId() }, from, to);

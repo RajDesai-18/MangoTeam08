@@ -293,6 +293,10 @@ public class SystemSettingsDwr extends BaseDwr {
     public void saveInfoSettings(String newVersionNotificationLevel, String instanceDescription) {
         Permissions.ensureAdmin();
         SystemSettingsDao systemSettingsDao = new SystemSettingsDao();
+        // Change Request #2 Implmeneted
+         if (newVersionNotificationLevel == null || newVersionNotificationLevel.isEmpty()) {
+                 newVersionNotificationLevel = SystemSettingsDao.NOTIFICATION_LEVEL_MUTED; // Set default to muted
+        }
         systemSettingsDao.setValue(SystemSettingsDao.NEW_VERSION_NOTIFICATION_LEVEL, newVersionNotificationLevel);
         systemSettingsDao.setValue(SystemSettingsDao.INSTANCE_DESCRIPTION, instanceDescription);
     }

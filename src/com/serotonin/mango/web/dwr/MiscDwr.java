@@ -89,8 +89,7 @@ public class MiscDwr extends BaseDwr {
             boolean result = new EventDao().toggleSilence(eventId, user.getId());
             resetLastAlarmLevelChange();
             response.addData("silenced", result);
-        }
-        else
+        } else
             response.addData("silenced", false);
 
         return response;
@@ -134,14 +133,25 @@ public class MiscDwr extends BaseDwr {
             resetLastAlarmLevelChange();
         }
     }
-
+    // Change Request #2 Implemented
     public boolean toggleUserMuted() {
         User user = Common.getUser();
-        if (user != null) {
-            user.setMuted(!user.isMuted());
-            return user.isMuted();
+    if (user != null) {
+        // If mute setting is not explicitly stored, default to true
+        if (!user.hasMutePreference()) { 
+            user.setMuted(true); // Default to muted
+        } else {
+            user.setMuted(!user.isMuted()); // Toggle the existing setting
         }
-        return false;
+        return user.isMuted();
+    }
+    return false;
+        // User user = Common.getUser();
+        // if (user != null) {
+        // user.setMuted(!user.isMuted());
+        // return user.isMuted();
+        // }
+        // return false;
     }
 
     public Map<String, Object> getDocumentationItem(String documentId) {
@@ -171,11 +181,9 @@ public class MiscDwr extends BaseDwr {
                 }
 
                 result.put("relatedList", related);
-            }
-            catch (FileNotFoundException e) {
+            } catch (FileNotFoundException e) {
                 result.put("error", getMessage("dox.notFound") + " " + filename);
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 result.put("error", getMessage("dox.readError") + " " + e.getClass().getName() + ": " + e.getMessage());
             }
         }
@@ -211,8 +219,7 @@ public class MiscDwr extends BaseDwr {
                 MangoEmailContent cnt = new MangoEmailContent("testEmail", model, bundle, I18NUtils.getMessage(bundle,
                         "ftl.testEmail"), Common.UTF8);
                 EmailWorkItem.queueEmail(toAddrs, cnt);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 response.addGenericMessage("common.default", e.getMessage());
             }
         }
@@ -295,18 +302,22 @@ public class MiscDwr extends BaseDwr {
         LongPollState state = data.getState();
         int waitTime = SystemSettingsDao.getIntValue(SystemSettingsDao.UI_PERFORAMANCE);
 
-        // For users that log in on multiple machines (or browsers), reset the last alarm timestamp so that it always
-        // gets reset with at least each new poll. For now this beats writing user-specific event change tracking code.
+        // For users that log in on multiple machines (or browsers), reset the last
+        // alarm timestamp so that it always
+        // gets reset with at least each new poll. For now this beats writing
+        // user-specific event change tracking code.
         state.setLastAlarmLevelChange(0);
 
         while (!pollRequest.isTerminated() && System.currentTimeMillis() < expireTime) {
             if (pollRequest.isMaxAlarm() && user != null) {
-                // Check the max alarm. First check if the events have changed since the last time this request checked.
+                // Check the max alarm. First check if the events have changed since the last
+                // time this request checked.
                 long lastEMUpdate = eventManager.getLastAlarmTimestamp();
                 if (state.getLastAlarmLevelChange() < lastEMUpdate) {
                     state.setLastAlarmLevelChange(lastEMUpdate);
 
-                    // The events have changed. See if the user's particular max alarm level has changed.
+                    // The events have changed. See if the user's particular max alarm level has
+                    // changed.
                     int maxAlarmLevel = eventDao.getHighestUnsilencedAlarmLevel(user.getId());
                     if (maxAlarmLevel != state.getMaxAlarmLevel()) {
                         response.put("highestUnsilencedAlarmLevel", maxAlarmLevel);
@@ -427,8 +438,7 @@ public class MiscDwr extends BaseDwr {
             synchronized (pollRequest) {
                 try {
                     pollRequest.wait(waitTime);
-                }
-                catch (InterruptedException e) {
+                } catch (InterruptedException e) {
                     // no op
                 }
             }
@@ -548,7 +558,8 @@ public class MiscDwr extends BaseDwr {
             // Check if this user has a current long poll request (very likely)
             for (LongPollData lpd : data) {
                 LongPollState state = lpd.getState();
-                // Reset the last alarm level change time so that the alarm level gets rechecked.
+                // Reset the last alarm level change time so that the alarm level gets
+                // rechecked.
                 state.setLastAlarmLevelChange(0);
                 // Notify the long poll thread so that any change
                 notifyLongPollImpl(lpd.getRequest());

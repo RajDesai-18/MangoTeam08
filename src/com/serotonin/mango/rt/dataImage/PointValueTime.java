@@ -81,6 +81,10 @@ public class PointValueTime implements Serializable, IValueTime {
     }
 
     public MangoValue getValue() {
+        if (value instanceof NumericValue) {
+            double truncatedValue = Math.floor(((NumericValue) value).getDoubleValue() * 100) / 100.0;
+            return new NumericValue(truncatedValue);
+        }
         return value;
     }
 

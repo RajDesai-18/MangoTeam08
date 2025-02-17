@@ -122,7 +122,8 @@ public class AnalogRenderer extends BaseTextRenderer {
     private void readObject(ObjectInputStream in) throws IOException {
         int ver = in.readInt();
 
-        // Switch on the version of the class so that version changes can be elegantly handled.
+        // Switch on the version of the class so that version changes can be elegantly
+        // handled.
         if (ver == 1) {
             setFormat(SerializationHelper.readSafeUTF(in));
             suffix = SerializationHelper.readSafeUTF(in);
