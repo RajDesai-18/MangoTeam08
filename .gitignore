@@ -1,0 +1,52 @@
+# Ignore build and compiled files
+/build/
+/bin/
+/target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Ignore IDE-specific files
+/.idea/
+/.vscode/
+/*.iml
+/.project
+/.classpath
+/.settings/
+
+# Ignore dependency directories
+/lib/
+/node_modules/
+
+# Ignore logs and runtime files
+/logs/
+*.log
+hs_err_pid*
+/*.out
+
+# Ignore configuration and environment files
+*.properties
+*.env
+*.config
+*.db
+
+# Ignore temporary files
+*.swp
+*.swo
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+
+# Ignore Maven and Ant specific files
+/.mvn/
+/target/
+/build/
+*.log
+*.lock
+
+# Ignore Tomcat deployment files
+/webapps/
+*.keystore
+*.jks
