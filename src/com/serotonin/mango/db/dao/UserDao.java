@@ -30,6 +30,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 
 import com.serotonin.db.spring.GenericRowMapper;
 import com.serotonin.mango.Common;
+import com.serotonin.mango.db.dao.UserDao.UserRowMapper;
 import com.serotonin.mango.rt.dataImage.SetPointSource;
 import com.serotonin.mango.rt.event.EventInstance;
 import com.serotonin.mango.vo.User;
@@ -144,13 +145,37 @@ public class UserDao extends BaseDao {
             + "  username=?, password=?, email=?, phone=?, admin=?, disabled=?, homeUrl=?, receiveAlarmEmails=?, "
             + "  receiveOwnAuditEvents=? " + "where id=?";
 
+    // Change Request #3 Implemented
     void updateUser(User user) {
+        String username = (user.getUsername() != null) ? user.getUsername() : "";
+        String password = (user.getPassword() != null) ? user.getPassword() : "";
+        String email = (user.getEmail() != null) ? user.getEmail() : "";
+        String phone = (user.getPhone() != null) ? user.getPhone() : "";
+        String homeUrl = (user.getHomeUrl() != null) ? user.getHomeUrl() : "";
+
         ejt.update(
                 USER_UPDATE,
-                new Object[] { user.getUsername(), user.getPassword(), user.getEmail(), user.getPhone(),
-                        boolToChar(user.isAdmin()), boolToChar(user.isDisabled()), user.getHomeUrl(),
-                        user.getReceiveAlarmEmails(), boolToChar(user.isReceiveOwnAuditEvents()), user.getId() });
+                new Object[]{
+                    username,
+                    password,
+                    email,
+                    phone,
+                    boolToChar(user.isAdmin()),
+                    boolToChar(user.isDisabled()),
+                    homeUrl,
+                    user.getReceiveAlarmEmails(),
+                    boolToChar(user.isReceiveOwnAuditEvents()),
+                    user.getId()
+                }
+        );
         saveRelationalData(user);
+
+        // ejt.update(
+        //         USER_UPDATE,
+        //         new Object[] { user.getUsername(), user.getPassword(), user.getEmail(), user.getPhone(),
+        //                 boolToChar(user.isAdmin()), boolToChar(user.isDisabled()), user.getHomeUrl(),
+        //                 user.getReceiveAlarmEmails(), boolToChar(user.isReceiveOwnAuditEvents()), user.getId() });
+        // saveRelationalData(user);
     }
 
     private void saveRelationalData(final User user) {
