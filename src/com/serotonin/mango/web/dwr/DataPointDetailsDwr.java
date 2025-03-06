@@ -82,6 +82,8 @@ public class DataPointDetailsDwr extends BaseDwr {
         if (state.getValue() != null)
             setChange(pointVO, state, pointRT, request, model, user);
 
+            
+
         setEvents(pointVO, user, model);
         setMessages(state, request, "watchListMessages", model);
 
