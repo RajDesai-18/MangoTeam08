@@ -1,0 +1,1 @@
+Ë 2webXhr1war/resources/dojo/demos/widget/Mail/Friends.html

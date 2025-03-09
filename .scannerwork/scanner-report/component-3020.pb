@@ -1,0 +1,1 @@
+Ì 2webXhr/war/resources/dojo/demos/widget/Mail/Inbox.html

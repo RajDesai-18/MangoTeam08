@@ -1,0 +1,1 @@
+â 2webX[hrGwar/resources/dojo/src/widget/templates/Editor2/Dialog/inserttable.html

@@ -1,0 +1,1 @@
+ç  2webXThr:war/resources/dojo/tests/widget/Chart/test_fromScript.html

@@ -1,0 +1,1 @@
+Ÿ  2webXhr)war/resources/dojo/tests/widget/doc1.html

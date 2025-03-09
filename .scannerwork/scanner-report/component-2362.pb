@@ -1,0 +1,1 @@
+º 2javaX¢hrJsrc/com/serotonin/mango/vo/dataSource/virtual/AnalogAttractorChangeVO.java

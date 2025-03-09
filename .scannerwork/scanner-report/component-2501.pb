@@ -1,0 +1,1 @@
+≈ 2javaXèhrJsrc/com/serotonin/mango/web/mvc/controller/DataPointDetailsController.java

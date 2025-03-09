@@ -1,0 +1,1 @@
+ç 2webX;hr0war/resources/dojo/tests/i18n/test_strings2.html

@@ -1,0 +1,1 @@
+£ 2javaX¥hrBsrc/com/serotonin/mango/vo/dataSource/nmea/NmeaPointLocatorVO.java

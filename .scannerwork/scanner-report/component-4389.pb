@@ -1,0 +1,1 @@
+¥" 2webX-hr1war/resources/dojo/tests/xdomain/test_remote.html

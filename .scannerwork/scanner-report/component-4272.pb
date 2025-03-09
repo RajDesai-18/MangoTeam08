@@ -1,0 +1,1 @@
+°! 2webX–hr4war/resources/dojo/tests/widget/test_RemotePane.html

@@ -1,0 +1,1 @@
+â 2javaXîhr:src/com/serotonin/mango/rt/dataImage/types/ImageValue.java

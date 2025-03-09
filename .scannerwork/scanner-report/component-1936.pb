@@ -1,0 +1,1 @@
+ê 2javaXyhr;src/br/org/scadabr/vo/dataSource/opc/OPCPointLocatorVO.java

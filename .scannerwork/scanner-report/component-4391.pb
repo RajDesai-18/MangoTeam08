@@ -1,0 +1,1 @@
+§" 2webX:hr5war/resources/dojo/tests/xdomain/test_remoteFail.html

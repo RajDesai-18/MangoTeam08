@@ -1,0 +1,1 @@
+Ã 2javaXehr>src/com/serotonin/mango/view/component/ThumbnailComponent.java

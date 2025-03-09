@@ -1,0 +1,2 @@
+w
+javaS2142^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.2gg 6

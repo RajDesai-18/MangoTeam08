@@ -1,0 +1,1 @@
+©! 2webX˜hr;war/resources/dojo/tests/widget/test_ModalFloatingPane.html

@@ -1,0 +1,1 @@
+– 2webX'hr1war/resources/dojo/tests/dnd/test_draghandle.html

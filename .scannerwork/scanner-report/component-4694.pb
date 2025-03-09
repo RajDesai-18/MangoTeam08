@@ -1,0 +1,1 @@
+Ö$ 2jspX§hr!war/WEB-INF/jsp/publisherEdit.jsp

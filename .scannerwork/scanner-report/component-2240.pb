@@ -1,0 +1,1 @@
+À 2javaX”hrCsrc/com/serotonin/mango/view/component/SimpleCompoundComponent.java

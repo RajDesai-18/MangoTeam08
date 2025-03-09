@@ -1,0 +1,1 @@
+é  2webXhrAwar/resources/dojo/tests/widget/namespaces/test_myns_dynamic.html

@@ -1,0 +1,1 @@
+È$ 2jspX0hr%war/WEB-INF/jsp/pointEdit/buttons.jsp

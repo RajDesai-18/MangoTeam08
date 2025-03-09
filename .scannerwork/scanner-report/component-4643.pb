@@ -1,0 +1,1 @@
+£$ 2jspXáhr*war/WEB-INF/jsp/dataSourceEdit/editJmx.jsp

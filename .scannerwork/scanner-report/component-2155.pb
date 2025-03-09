@@ -1,0 +1,1 @@
+ë 2javaXlhr?src/com/serotonin/mango/rt/event/detectors/StateDetectorRT.java

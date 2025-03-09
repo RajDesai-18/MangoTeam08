@@ -1,0 +1,1 @@
+› 2webXNhr-war/resources/dojo/tests/dnd/test_simple.html

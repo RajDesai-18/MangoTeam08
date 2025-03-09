@@ -1,0 +1,1 @@
+´ 2javaX}hrLsrc/com/serotonin/mango/vo/dataSource/spinwave/SpinwaveV2PointLocatorVO.java

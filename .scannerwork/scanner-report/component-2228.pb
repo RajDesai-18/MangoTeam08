@@ -1,0 +1,1 @@
+´ 2javaXyhr?src/com/serotonin/mango/view/chart/TimePeriodChartRenderer.java

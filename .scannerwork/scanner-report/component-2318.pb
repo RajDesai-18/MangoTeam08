@@ -1,0 +1,1 @@
+Ž 2javaX¿hrHsrc/com/serotonin/mango/vo/dataSource/galil/TellPositionPointTypeVO.java

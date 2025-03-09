@@ -1,0 +1,6 @@
+projectKey=MangoDB
+serverUrl=http://localhost:9000
+serverVersion=25.3.0.104237
+dashboardUrl=http://localhost:9000/dashboard?id=MangoDB
+ceTaskId=8ee585f3-9a32-4eca-926e-a4e49c795334
+ceTaskUrl=http://localhost:9000/api/ce/task?id=8ee585f3-9a32-4eca-926e-a4e49c795334

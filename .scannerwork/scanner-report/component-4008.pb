@@ -1,0 +1,1 @@
+¨ 2webXUhr,war/resources/dojo/tests/lfx/test_scale.html

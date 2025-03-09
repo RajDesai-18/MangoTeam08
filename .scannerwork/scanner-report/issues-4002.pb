@@ -1,0 +1,149 @@
+J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @I
+
+javascriptS1533(Remove this use of "Number" constructor.2  @J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @I
+
+javascriptS1533(Remove this use of "Number" constructor.2 "@J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @I
+
+javascriptS1533(Remove this use of "String" constructor.2 "@J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @I
+
+javascriptS1533(Remove this use of "String" constructor.2 "@J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @\
+
+javascriptS1481=Remove the declaration of the unused 'booleanFalse' variable.2 Y
+
+javascriptS1854:Remove this useless assignment to variable "booleanFalse".2 J
+
+javascriptS1533)Remove this use of "Boolean" constructor.2 &@J
+
+javascriptS3504)Unexpected var, use let or const instead.2 
+@J
+
+javascriptS3504)Unexpected var, use let or const instead.2 
+@J
+
+javascriptS3504)Unexpected var, use let or const instead.2++ 
+@I
+
+javascriptS1533(Remove this use of "Number" constructor.211/ >@I
+
+javascriptS1533(Remove this use of "String" constructor.222/ @@J
+
+javascriptS1533)Remove this use of "Boolean" constructor.244/ @@J
+
+javascriptS3504)Unexpected var, use let or const instead.2>> @I
+
+javascriptS1533(Remove this use of "Number" constructor.2>>  @J
+
+javascriptS3504)Unexpected var, use let or const instead.2?? @I
+
+javascriptS1533(Remove this use of "String" constructor.2?? "@J
+
+javascriptS3504)Unexpected var, use let or const instead.2@@ @J
+
+javascriptS1533)Remove this use of "Boolean" constructor.2@@ &@J
+
+javascriptS3504)Unexpected var, use let or const instead.2AA 
+@A
+
+javascriptS125Remove this commented out code.2
+ÄÄ 3@L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ÑÑ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+àà @K
+
+javascriptS1533(Remove this use of "Number" constructor.2
+àà  @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ââ @K
+
+javascriptS1533(Remove this use of "String" constructor.2
+ââ "@L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ää @K
+
+javascriptS1533(Remove this use of "Number" constructor.2
+ää "@L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ãã @K
+
+javascriptS1533(Remove this use of "String" constructor.2
+ãã "@L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+åå @L
+
+javascriptS1533)Remove this use of "Boolean" constructor.2
+åå $@L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+çç @L
+
+javascriptS1533)Remove this use of "Boolean" constructor.2
+çç &@L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+éé 
+@L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+èè @=
+
+javascriptS1186Unexpected empty function.2
+èè @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ëë @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+íí @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+îî @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ÆÆ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ØØ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+∞∞ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+±± @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+≥≥ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+∂∂ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+∑∑ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ææ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+øø @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+¡¡ @A
+
+javascriptS125Remove this commented out code.2
+»» 6@

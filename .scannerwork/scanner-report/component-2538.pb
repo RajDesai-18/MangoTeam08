@@ -1,0 +1,1 @@
+ê 2javaXohr6src/com/serotonin/mango/web/taglib/StaticPointTag.java

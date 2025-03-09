@@ -1,0 +1,1 @@
+¹! 2webXYhr0war/resources/dojo/tests/widget/test_Slider.html

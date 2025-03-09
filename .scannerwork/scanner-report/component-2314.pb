@@ -1,0 +1,1 @@
+Š 2javaXßhrDsrc/com/serotonin/mango/vo/dataSource/galil/GalilPointLocatorVO.java

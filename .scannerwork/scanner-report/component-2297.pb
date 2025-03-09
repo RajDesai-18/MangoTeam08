@@ -1,0 +1,1 @@
+ù 2javaX)hr3src/com/serotonin/mango/vo/bean/ImageValueBean.java

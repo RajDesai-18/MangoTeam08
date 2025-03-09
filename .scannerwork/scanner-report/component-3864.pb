@@ -1,0 +1,1 @@
+˜ 2webXDhr/war/resources/dojo/tests/dnd/test_dragmove.html

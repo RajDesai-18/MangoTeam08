@@ -1,0 +1,1 @@
+µ 2javaXnhrBsrc/com/serotonin/mango/view/component/AnalogGraphicComponent.java

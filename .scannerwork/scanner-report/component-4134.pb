@@ -1,0 +1,1 @@
+¦  2webXhrJwar/resources/dojo/tests/widget/Editor/test_Editor2InsideFloatingPane.html

@@ -1,0 +1,1 @@
+© 2javaXñhr8src/com/serotonin/mango/util/mindprod/StripEntities.java

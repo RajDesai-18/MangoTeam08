@@ -1,0 +1,1 @@
+Ÿ 2javaXãhrFsrc/com/serotonin/mango/vo/dataSource/modbus/ModbusIpDataSourceVO.java

@@ -1,0 +1,1 @@
+¸ 2javaXŠhrJsrc/com/serotonin/mango/vo/dataSource/viconics/ViconicsPointLocatorVO.java

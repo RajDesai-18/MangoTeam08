@@ -1,0 +1,1 @@
+… 2javaXthr:src/com/serotonin/mango/web/dwr/beans/EBI25LoggerInfo.java

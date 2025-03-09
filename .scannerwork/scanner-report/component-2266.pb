@@ -1,0 +1,1 @@
+Ú 2javaXNhr;src/com/serotonin/mango/view/graphic/ThumbnailRenderer.java

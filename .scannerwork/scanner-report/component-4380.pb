@@ -1,0 +1,1 @@
+œ" 2xmlXhr1war/resources/dojo/tests/xdomain/browser/xhr2.xml

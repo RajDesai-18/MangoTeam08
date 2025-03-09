@@ -1,0 +1,1 @@
+Ò 2javaXùhr4src/com/serotonin/mango/view/text/RangeRenderer.java

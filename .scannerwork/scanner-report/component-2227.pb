@@ -1,0 +1,1 @@
+³ 2javaXbhr:src/com/serotonin/mango/view/chart/TableChartRenderer.java

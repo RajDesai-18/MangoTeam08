@@ -1,0 +1,1 @@
+´! 2webX4hr6war/resources/dojo/tests/widget/test_ResizeHandle.html

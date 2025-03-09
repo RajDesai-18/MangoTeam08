@@ -1,0 +1,1 @@
+å 2javaX€hr<src/com/serotonin/mango/rt/dataImage/types/NumericValue.java

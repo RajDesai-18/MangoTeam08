@@ -1,0 +1,1 @@
+ý 2javaXŽhr;src/com/serotonin/mango/web/dwr/beans/BACnetObjectBean.java

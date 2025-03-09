@@ -1,0 +1,1 @@
+ù 2javaXzhrDsrc/com/serotonin/mango/rt/event/type/CompoundDetectorEventType.java
