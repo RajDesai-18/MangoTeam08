@@ -169,13 +169,6 @@ public class UserDao extends BaseDao {
                 }
         );
         saveRelationalData(user);
-
-        // ejt.update(
-        //         USER_UPDATE,
-        //         new Object[] { user.getUsername(), user.getPassword(), user.getEmail(), user.getPhone(),
-        //                 boolToChar(user.isAdmin()), boolToChar(user.isDisabled()), user.getHomeUrl(),
-        //                 user.getReceiveAlarmEmails(), boolToChar(user.isReceiveOwnAuditEvents()), user.getId() });
-        // saveRelationalData(user);
     }
 
     private void saveRelationalData(final User user) {

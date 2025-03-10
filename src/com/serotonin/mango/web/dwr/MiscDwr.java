@@ -146,12 +146,6 @@ public class MiscDwr extends BaseDwr {
         return user.isMuted();
     }
     return false;
-        // User user = Common.getUser();
-        // if (user != null) {
-        // user.setMuted(!user.isMuted());
-        // return user.isMuted();
-        // }
-        // return false;
     }
 
     public Map<String, Object> getDocumentationItem(String documentId) {
