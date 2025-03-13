@@ -7,37 +7,38 @@
   - Nahush Patil
   - Mrunmayi Parker
 
-## **Tracking Changes**
-Each change request is clearly marked in the code using the following format:
+## **Assignment - 03**
+### **The Code changes can be located by**
+All **refactored sections** in the code have been **commented** with the following tag:
 ```java
-// Change Request #<*> Implemented
+// Code Smell Refactoring
 ```
-To find all changes, run:
-```sh
-grep -r "Change Request # " .
-```
+This comment is placed **above the modified code block** where a code smell was identified and fixed.
 
-### **Change Request Breakdown**
-#### **CR #2: Mute Notifications by Default**
-- **Files Modified:**
-  - `MiscDwr.java`
-  - `User.java`
-  - `soundmanager2.js`
-- **Fix Applied:**
-  - Ensured notifications are muted by default for new users.
-  - Maintained user preference when toggling mute/unmute.
-- **Verification:**
-  - Log in as a new user and confirm that `mango.soundPlayer.isMute();` returns `true` in the browser console.
-  - Toggle mute/unmute and verify persistence.
+---
 
-#### **CR #3: Fix Admin Password Change Bug**
-- **Files Modified:**
-  - `UserDao.java` or `UserService.java`
-  - `MiscDwr.java`
-- **Fix Applied:**
-  - Prevented `NULL` values from causing SQL errors during password updates.
-  - Ensured empty fields default to appropriate values.
-- **Verification:**
-  - Attempt to change the admin password.
-  - Verify successful update without database errors.
-  - Check database entry to confirm the password change.
+## **Files That Were Modified**
+The following files contain refactored code:
+
+1. **Dnp3DataSource.java**
+   - **Issue:** Long Method (Bloater) in `doPoll(long time)`
+   - **How to Locate:** Search for the comment:
+     ```java
+     // Code Smell #1
+     ```
+
+2. **SetPointSource.java**
+   - **Issue:** Speculative Generality (Dispensable Code Smell)
+   - **How to Locate:** Search for the comment:
+     ```java
+     // Code Smell #2
+     ```
+
+3. **EventDao.java**
+   - **Issue:** Shotgun Surgery (Change Preventer)
+   - **How to Locate:** Search for the comment:
+     ```java
+     // Code Smell #3
+     ```
+
+
