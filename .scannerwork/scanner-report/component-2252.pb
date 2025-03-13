@@ -1,1 +1,1 @@
-Ì 2javaX1hr<src/com/serotonin/mango/view/custom/CustomViewComponent.java
+Ì 2webXDhr1build/resources/dojo/tests/dnd/test_dragmove.html

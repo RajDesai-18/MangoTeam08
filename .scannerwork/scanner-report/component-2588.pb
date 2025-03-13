@@ -1,0 +1,1 @@
+œ 2webXqhr;build/resources/dojo/tests/widget/namespaces/test_myns.html

@@ -1,1 +1,0 @@
-® 2javaX<hrHsrc/com/serotonin/mango/rt/dataSource/pachube/PachubePointLocatorRT.java

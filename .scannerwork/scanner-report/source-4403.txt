@@ -1,28 +1,42 @@
 /*
-	Copyright (c) 2004-2006, The Dojo Foundation
-	All Rights Reserved.
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-	Licensed under the Academic Free License version 2.1 or above OR the
-	modified BSD license. For more information on Dojo licensing, see:
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-		http://dojotoolkit.org/community/licensing.shtml
-*/
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataSource.spinwave;
 
+import com.serotonin.mango.rt.dataSource.PointLocatorRT;
+import com.serotonin.mango.vo.dataSource.spinwave.BaseSpinwavePointLocatorVO;
 
 /**
- * Tests existance/functionality of rhino's ecma-357 scripted xml support.
- * 
- * See http://www.mozilla.org/rhino/overview.html
- * and
- * http://www.ecma-international.org/publications/standards/Ecma-357.htm
- * 
- * This means we more or less have a super bad ass native xml object 
- * to play with. When I have time I plan on incorporating this into
- * our fake dom to provide "complete" dom support in tests...Which means we'll
- * be able to test anything a widget can do. (more or less)
+ * @author Matthew Lohbihler
  */
-function test_xml_Present(){
-	var xml = new XML("<span>This is text <b>in bold</b>!</span>");
-	
-	dojo.debug(xml.toXMLString());
+public class SpinwavePointLocatorRT extends PointLocatorRT {
+    private final BaseSpinwavePointLocatorVO vo;
+
+    public SpinwavePointLocatorRT(BaseSpinwavePointLocatorVO vo) {
+        this.vo = vo;
+    }
+
+    @Override
+    public boolean isSettable() {
+        return vo.isSettable();
+    }
+
+    public BaseSpinwavePointLocatorVO getPointLocatorVO() {
+        return vo;
+    }
 }

@@ -1,1 +1,0 @@
-ª  2webX\hrEwar/resources/dojo/tests/widget/Editor/test_Editor_from_textarea.html

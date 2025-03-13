@@ -1,1 +1,1 @@
-Ç$ 2jspX1hr$war/WEB-INF/jsp/mobile/watchList.jsp
+Ç$ 2javaXEhr:src/com/serotonin/mango/vo/mailingList/EmailRecipient.java

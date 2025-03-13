@@ -1,4 +1,4 @@
-<%--
+/*
     Mango - Open Source M2M - http://mango.serotoninsoftware.com
     Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
     @author Matthew Lohbihler
@@ -14,51 +14,76 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see http://www.gnu.org/licenses/.
---%>
-<%@ include file="/WEB-INF/jsp/include/tech.jsp" %>
-<mobileTag:page>
-  <form action="mobile_login.htm" method="post">
-    <table>
-      <spring:bind path="login.username">
-        <tr>
-          <td class="formLabelRequired"><fmt:message key="login.userId"/></td>
-          <td class="formField">
-            <input id="username" type="text" name="username" value="${status.value}" maxlength="40"/>
-          </td>
-        </tr>
-        <tr><td colspan="2" class="formError">${status.errorMessage}</td></tr>
-      </spring:bind>
-      
-      <spring:bind path="login.password">
-        <tr>
-          <td class="formLabelRequired"><fmt:message key="login.password"/></td>
-          <td class="formField">
-            <input id="password" type="password" name="password" value="${status.value}" maxlength="20"/>
-          </td>
-          
-        </tr>
-        <tr><td colspan="2" class="formError">${status.errorMessage}</td></tr>
-      </spring:bind>
-          
-      <spring:bind path="login">
-        <c:if test="${status.error}">
-          <td colspan="2" class="formError">
-            <c:forEach items="${status.errorMessages}" var="error">
-              <c:out value="${error}"/><br/>
-            </c:forEach>
-          </td>
-        </c:if>
-      </spring:bind>
-      
-      <tr>
-        <td colspan="2" align="center">
-          <input type="submit" value="<fmt:message key="login.loginButton"/>"/>
-        </td>
-        <td></td>
-      </tr>
-    </table>
-  </form>
-  <br/>
-  <br/>
-</mobileTag:page>
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.vo.mailingList;
+
+import java.util.Map;
+import java.util.Set;
+
+import org.joda.time.DateTime;
+
+import com.serotonin.json.JsonException;
+import com.serotonin.json.JsonObject;
+import com.serotonin.json.JsonReader;
+import com.serotonin.json.JsonRemoteEntity;
+import com.serotonin.mango.util.LocalizableJsonException;
+import com.serotonin.util.StringUtils;
+
+@JsonRemoteEntity
+public class AddressEntry extends EmailRecipient {
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @Override
+    public void appendAddresses(Set<String> addresses, DateTime sendTime) {
+        appendAllAddresses(addresses);
+    }
+
+    @Override
+    public void appendAllAddresses(Set<String> addresses) {
+        addresses.add(address);
+    }
+
+    @Override
+    public int getRecipientType() {
+        return EmailRecipient.TYPE_ADDRESS;
+    }
+
+    @Override
+    public int getReferenceId() {
+        return 0;
+    }
+
+    @Override
+    public String getReferenceAddress() {
+        return address;
+    }
+
+    @Override
+    public String toString() {
+        return address;
+    }
+
+    @Override
+    public void jsonSerialize(Map<String, Object> map) {
+        super.jsonSerialize(map);
+        map.put("address", address);
+    }
+
+    @Override
+    public void jsonDeserialize(JsonReader reader, JsonObject json) throws JsonException {
+        super.jsonDeserialize(reader, json);
+
+        address = json.getString("address");
+        if (StringUtils.isEmpty(address))
+            throw new LocalizableJsonException("emport.error.recipient.missing.reference", "address");
+    }
+}

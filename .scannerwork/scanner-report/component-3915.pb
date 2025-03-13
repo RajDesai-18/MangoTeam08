@@ -1,1 +1,1 @@
-Ë 2jsXhr3war/resources/dojo/tests/i18n/nls/de/salutations.js
+Ë 2jspXVhr/build/WEB-INF/jsp/pointEdit/pointProperties.jsp

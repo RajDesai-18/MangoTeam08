@@ -1,4 +1,2 @@
-V
-WebFrameWithoutTitleCheck-Add a "title" attribute to this <iframe> tag.2 1>
-
-javascriptS1656'svgDoc' is assigned to itself.2 
+r
+javaS120ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.2 -

@@ -1,1 +1,1 @@
-è 2javaX‚hr8src/com/serotonin/mango/web/dwr/beans/MBusDiscovery.java
+è 2xmlXhr(build/resources/dojo/tests/test_dojo.xml

@@ -1,0 +1,1 @@
+é 2webX"hr1build/resources/dojo/tests/xml/test_svgScope.html

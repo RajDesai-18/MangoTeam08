@@ -1,1 +1,1 @@
-° 2webX/hr4war/resources/dojo/tests/flash/test_comm_simple.html
+° 2jspXÞhr1build/WEB-INF/jsp/dataSourceEdit/editSpinwave.jsp

@@ -1,2 +1,3 @@
-K
-javaS11352Complete the task associated to this TODO comment.2–– m
+ƒ
+
+javascriptS2703fAdd the "let", "const" or "var" keyword to this declaration of "ApplicationState" to make it explicit.2 

@@ -1,1 +1,1 @@
-‘ 2webX)hr6war/resources/dojo/tests/debug/test_debug_Firebug.html
+‘ 2jspX­hr$build/WEB-INF/jsp/compoundEvents.jsp

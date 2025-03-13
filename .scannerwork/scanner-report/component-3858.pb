@@ -1,1 +1,1 @@
-’ 2webX&hr*war/resources/dojo/tests/deferredList.html
+’ 2jspXÖhr&build/WEB-INF/jsp/dataPointDetails.jsp

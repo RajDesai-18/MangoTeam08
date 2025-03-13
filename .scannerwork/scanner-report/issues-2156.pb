@@ -1,7 +1,28 @@
-[
-javaS1066/Merge this if statement with the enclosing one.2,, :
-ì++ @`
-javaS1124EReorder the modifiers to comply with the Java Language Specification.2	 @`
-javaS1124EReorder the modifiers to comply with the Java Language Specification.2 @`
-javaS1124EReorder the modifiers to comply with the Java Language Specification.2&& @`
-javaS1124EReorder the modifiers to comply with the Java Language Specification.2== @
+J
+
+javascriptS3504)Unexpected var, use let or const instead.2 	@J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2!! @m
+
+javascriptS4138LExpected a `for-of` loop instead of a `for` loop with this simple iteration.2"& @J
+
+javascriptS3504)Unexpected var, use let or const instead.2"" @m
+
+javascriptS4138LExpected a `for-of` loop instead of a `for` loop with this simple iteration.2)- @J
+
+javascriptS3504)Unexpected var, use let or const instead.2)) @J
+
+javascriptS3504)Unexpected var, use let or const instead.2.. @J
+
+javascriptS3504)Unexpected var, use let or const instead.244 @J
+
+javascriptS3504)Unexpected var, use let or const instead.288 	@J
+
+javascriptS3504)Unexpected var, use let or const instead.2<< @J
+
+javascriptS3504)Unexpected var, use let or const instead.2AA 
+@

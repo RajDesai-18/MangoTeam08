@@ -1,1 +1,1 @@
-ç 2xmlX¹hr	build.xml
+ç 2jsXhr'build/resources/dojo/src/validate/jp.js

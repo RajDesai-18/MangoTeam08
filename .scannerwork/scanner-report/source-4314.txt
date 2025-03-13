@@ -1,104 +1,181 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<script type="text/javascript">
-	var djConfig = {isDebug: true, debugAtAllCosts: true };
-</script>
-<script type="text/javascript" src="../../../dojo.js"></script>
-<script type="text/javascript">
-	dojo.require("dojo.lang.*");
-	dojo.require("dojo.widget.*");
-	dojo.require("dojo.widget.Tree");
-	dojo.require("dojo.widget.TreeLoadingController");
-	dojo.require("dojo.widget.TreeContextMenu");
-	dojo.hostenv.writeIncludes();
-</script>
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataSource;
 
-</head>
-<body>
+import gnu.io.NoSuchPortException;
+import gnu.io.PortInUseException;
 
-<h4>New nodes are loaded dynamically. ContextMenu is working.</h4>
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-<div dojoType="TreeContextMenu" toggle="explode" contextMenuForWindow="false" widgetId="treeContextMenu">
-	<div dojoType="TreeMenuItem" treeActions="addChild" iconSrc="images/createsmall.gif" widgetId="treeContextMenuCreate" caption="Create"></div>
-	<div dojoType="TreeMenuItem" treeActions="remove" iconSrc="images/removesmall.gif" caption="Remove" widgetId="treeContextMenuRemove"></div>
-	<div dojoType="TreeMenuItem" treeActions="move" iconSrc="images/downsmall.png" caption="Up" widgetId="treeContextMenuUp"></div>
-	<div dojoType="TreeMenuItem" treeActions="move" iconSrc="images/upsmall.png" caption="Down" widgetId="treeContextMenuDown"></div>
-</div>
+import com.serotonin.ShouldNeverHappenException;
+import com.serotonin.mango.Common;
+import com.serotonin.mango.rt.dataImage.DataPointRT;
+import com.serotonin.mango.rt.dataImage.PointValueTime;
+import com.serotonin.mango.rt.dataImage.SetPointSource;
+import com.serotonin.mango.rt.event.type.DataSourceEventType;
+import com.serotonin.mango.vo.dataSource.DataSourceVO;
+import com.serotonin.mango.vo.event.EventTypeVO;
+import com.serotonin.util.ILifecycle;
+import com.serotonin.web.i18n.LocalizableMessage;
 
-<script>
+/**
+ * Data sources are things that produce data for consumption of this system. Anything that houses, creates, manages, or
+ * otherwise can get data to Mango can be considered a data source. As such, this interface can more precisely be
+ * considered a proxy of the real thing.
+ * 
+ * Mango contains multiple objects that carry the name data source. This interface represents those types of objects
+ * that execute and perform the actual task of getting information one way or another from the external data source and
+ * into the system, and is known as the "run-time" (RT) data source. (Another type is the data source VO, which
+ * represents the configuration of a data source RT, a subtle but useful distinction. In particular, a VO is
+ * serializable, while an RT is not.)
+ * 
+ * @author Matthew Lohbihler
+ */
+abstract public class DataSourceRT implements ILifecycle {
+    public static final String ATTR_UNRELIABLE_KEY = "UNRELIABLE";
 
-	dojo.addOnLoad(function() {
-		dojo.event.topic.subscribe('treeContextMenuRemove/engage',
-			function (menuItem) { dojo.widget.byId('treeController').removeNode(menuItem.getTreeNode()); }
-		);
+    private final DataSourceVO<?> vo;
 
+    /**
+     * Under the expectation that most data sources will run in their own threads, the addedPoints field is used as a
+     * cache for points that have been added to the data source, so that at a convenient time for the data source they
+     * can be included in the polling.
+     * 
+     * Note that updated versions of data points that could already be running may be added here, so implementations
+     * should always check for existing instances.
+     */
+    protected List<DataPointRT> addedChangedPoints = new ArrayList<DataPointRT>();
 
-		dojo.event.topic.subscribe('treeContextMenuCreate/engage',
-			function (menuItem) {
-                            dojo.widget.byId('treeController').createChild(menuItem.getTreeNode(), 0, {title:"New node"});
-                        }
-		);
+    /**
+     * Under the expectation that most data sources will run in their own threads, the removedPoints field is used as a
+     * cache for points that have been removed from the data source, so that at a convenient time for the data source
+     * they can be removed from the polling.
+     */
+    protected List<DataPointRT> removedPoints = new ArrayList<DataPointRT>();
 
+    /**
+     * Access to either the addedPoints or removedPoints lists should be synchronized with this object's monitor.
+     */
+    protected Boolean pointListChangeLock = new Boolean(false);
 
-		dojo.event.topic.subscribe('treeContextMenuUp/engage',
-			function (menuItem) {
-                            var node = menuItem.getTreeNode();
-                            if (node.isFirstNode()) return;
-                            dojo.widget.byId('treeController').move(node, node.parent, node.getParentIndex()-1);
-                        }
-		);
+    private final List<DataSourceEventType> eventTypes;
 
+    public DataSourceRT(DataSourceVO<?> vo) {
+        this.vo = vo;
 
-		dojo.event.topic.subscribe('treeContextMenuDown/engage',
-			function (menuItem) {
-                            var node = menuItem.getTreeNode();
-                            if (node.isLastNode()) return;
-                            dojo.widget.byId('treeController').move(node, node.parent, node.getParentIndex()+1);
-                        }
-		);
+        eventTypes = new ArrayList<DataSourceEventType>();
+        for (EventTypeVO etvo : vo.getEventTypes())
+            eventTypes.add((DataSourceEventType) etvo.createEventType());
+    }
 
-	});
-</script>
+    public int getId() {
+        return vo.getId();
+    }
 
-<div dojoType="TreeLoadingController" widgetId="treeController" DNDcontroller="create" RPCUrl="local"></div>
+    public String getName() {
+        return vo.getName();
+    }
 
+    public void addDataPoint(DataPointRT dataPoint) {
+        synchronized (pointListChangeLock) {
+            addedChangedPoints.remove(dataPoint);
+            addedChangedPoints.add(dataPoint);
+            removedPoints.remove(dataPoint);
+        }
+    }
 
-<h4>firstTree</h4>
+    public void removeDataPoint(DataPointRT dataPoint) {
+        synchronized (pointListChangeLock) {
+            addedChangedPoints.remove(dataPoint);
+            removedPoints.add(dataPoint);
+        }
+    }
 
-<div dojoType="Tree" DNDMode="between" controller="treeController" menu="treeContextMenu" toggle="fade" DNDAcceptTypes="firstTree;secondTree" widgetId="firstTree">
-    <div dojoType="TreeNode" title="Item 1">
-        <div dojoType="TreeNode" title="Item 1.1"><br/></div>
-        <div dojoType="TreeNode" title="Item 1.2">
-            <div dojoType="TreeNode" title="Item 1.2.1"></div>
-            <div dojoType="TreeNode" title="Item 1.2.2"></div>
-        </div>
-        <div dojoType="TreeNode" title="Can't add child to this node" actionsDisabled="addChild">
-            <div dojoType="TreeNode" isFolder="true" title="Empty folder"></div>
-            <div dojoType="TreeNode" title="Item 1.3.2"></div>
-        </div>
-        <div dojoType="TreeNode" title="Item 1.4">
-            <div dojoType="TreeNode" title="Item 1.4.1"></div>
-        </div>
-	<div dojoType="TreeNode" actionsDisabled="move" title="Can't move this node"></div>
-    </div>
-</div>
+    abstract public void setPointValue(DataPointRT dataPoint, PointValueTime valueTime, SetPointSource source);
 
+    public void relinquish(@SuppressWarnings("unused") DataPointRT dataPoint) {
+        throw new ShouldNeverHappenException("not implemented in " + getClass());
+    }
 
-<h4>secondTree</h4>
+    public void forcePointRead(@SuppressWarnings("unused") DataPointRT dataPoint) {
+        // No op by default. Override as required.
+    }
 
-<div dojoType="Tree" DNDMode="between" controller="treeController" DNDAcceptTypes="firstTree;secondTree" widgetId="secondTree">
-    <div dojoType="TreeNode" title="Node 1"></div>
-    <div dojoType="TreeNode" title="Node 2">
-        <div dojoType="TreeNode" isFolder="true" title="Node 2.1"></div>
-        <div dojoType="TreeNode" title="Node 2.2"></div>
-    </div>
+    protected void raiseEvent(int eventId, long time, boolean rtn, LocalizableMessage message) {
+        message = new LocalizableMessage("event.ds", vo.getName(), message);
+        DataSourceEventType type = getEventType(eventId);
 
-</div>
+        Map<String, Object> context = new HashMap<String, Object>();
+        context.put("dataSource", vo);
 
+        Common.ctx.getEventManager().raiseEvent(type, time, rtn, type.getAlarmLevel(), message, context);
+    }
 
-</body>
-</html>
+    protected void returnToNormal(int eventId, long time) {
+        DataSourceEventType type = getEventType(eventId);
+        Common.ctx.getEventManager().returnToNormal(type, time);
+    }
+
+    private DataSourceEventType getEventType(int eventId) {
+        for (DataSourceEventType et : eventTypes) {
+            if (et.getDataSourceEventTypeId() == eventId)
+                return et;
+        }
+        return null;
+    }
+
+    protected LocalizableMessage getSerialExceptionMessage(Exception e, String portId) {
+        if (e instanceof NoSuchPortException)
+            return new LocalizableMessage("event.serial.portOpenError", portId);
+        if (e instanceof PortInUseException)
+            return new LocalizableMessage("event.serial.portInUse", portId);
+        return getExceptionMessage(e);
+    }
+
+    protected static LocalizableMessage getExceptionMessage(Exception e) {
+        return new LocalizableMessage("event.exception2", e.getClass().getName(), e.getMessage());
+    }
+
+    //
+    // /
+    // / Lifecycle
+    // /
+    //
+    public void initialize() {
+        // no op
+    }
+
+    public void terminate() {
+        // Remove any outstanding events.
+        Common.ctx.getEventManager().cancelEventsForDataSource(vo.getId());
+    }
+
+    public void joinTermination() {
+        // no op
+    }
+
+    //
+    // Additional lifecycle.
+    public void beginPolling() {
+        // no op
+    }
+}

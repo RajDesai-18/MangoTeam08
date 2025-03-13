@@ -1,1 +1,1 @@
- $ 2jspX hr3war/WEB-INF/jsp/dataSourceEdit/editHttpReceiver.jsp
+ $ 2javaX˜hrBsrc/com/serotonin/mango/vo/dataSource/pop3/Pop3PointLocatorVO.java

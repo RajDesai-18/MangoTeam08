@@ -1,0 +1,1 @@
+å# 2javaXThr3src/com/serotonin/mango/view/text/TextRenderer.java

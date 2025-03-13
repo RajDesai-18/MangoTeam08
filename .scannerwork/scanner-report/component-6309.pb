@@ -1,0 +1,1 @@
+¥1 2jsXhrBwar/resources/dojo/tests/loader/2683/testlocal/nls/thingyBundle.js

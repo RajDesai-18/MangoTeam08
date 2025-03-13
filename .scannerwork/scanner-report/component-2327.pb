@@ -1,1 +1,1 @@
-— 2javaX¤hrJsrc/com/serotonin/mango/vo/dataSource/internal/InternalPointLocatorVO.java
+— 2jsXhr*build/resources/dojo/tests/i18n/testmod.js

@@ -1,68 +1,101 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-<title>Inline Edit Box Widget Demo</title>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<script type="text/javascript"> var djConfig = {isDebug: true}; </script>
-<script type="text/javascript" src="../../dojo.js"></script>
-<script type="text/javascript">
-	dojo.require("dojo.widget.InlineEditBox");
-	dojo.require("dojo.event.*");
-	dojo.hostenv.writeIncludes();
-</script>
-<script type="text/javascript">
-	function saveHandler(newValue, oldValue,name) {
-		dojo.debug("onSave was called -- New Value: " + newValue + " : Old Value: " + oldValue);
-	};
-	function cancelCall(){
-		dojo.debug('onCancel was called.');
-	};
-	function changeCall(newValue,oldValue){
-		dojo.debug('onChange was called'+"New Value: " + newValue + " : Old Value: " + oldValue);
-	};		
-	dojo.addOnLoad(function(){
-		var editable = dojo.widget.byId("editable");
-		dojo.event.connect(editable, "onSave", "saveHandler");
-		dojo.event.connect(editable,'onChange','changeCall');
-		dojo.event.connect(editable,'onCancel','cancelCall');
-	});
-	
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.db;
 
-</script>
+import java.sql.SQLException;
 
-<style type="text/css">
-	body { font-family : sans-serif; background:#fff; }
-	
-	.inlineEdit { background-color: #CCC76A; }
-</style>
-</head>
+import javax.servlet.ServletContext;
 
-<body>
-<h1 id="editable" dojoType="inlineEditBox">Edit me - I trigger the callbacks onSave,onCancel,onChange</h1>
+import org.springframework.dao.DataAccessException;
 
-<p id="areaEditable" dojoType="inlineEditBox" mode="textarea">
-I'm one big paragraph.  Go ahead and edit me.
-I dare you. 
-The quick brown fox jumped over the lazy dog.
-  Blah blah blah blah blah blah blah ...
-</p>
+import com.serotonin.db.spring.ExtendedJdbcTemplate;
+import com.serotonin.mango.Common;
 
-<p>
-These links will
-<a href="#" onClick="dojo.widget.byId('areaEditable').disable()">disable</a>
-/
-<a href="#" onClick="dojo.widget.byId('areaEditable').enable()">enable</a>
-the text area above.
+public class MySQLAccess extends BasePooledAccess {
+    public MySQLAccess(ServletContext ctx) {
+        super(ctx);
+    }
 
-</p>
+    @Override
+    protected void initializeImpl(String propertyPrefix) {
+        super.initializeImpl(propertyPrefix);
+        dataSource.setInitialSize(3);
+        dataSource.setMaxWait(-1);
+        dataSource.setTestWhileIdle(true);
+        dataSource.setTimeBetweenEvictionRunsMillis(10000);
+        dataSource.setMinEvictableIdleTimeMillis(60000);
+    }
 
-<p id="backgroundArea" class="inlineEdit" dojoType="inlineEditBox" >
-This text should have a colored background when not in editing mode.
-</p>
+    @Override
+    protected String getUrl(String propertyPrefix) {
+        String url = super.getUrl(propertyPrefix);
+        if (url.indexOf('?') > 0)
+            url += "&";
+        else
+            url += "?";
+        url += "useUnicode=yes&characterEncoding=" + Common.UTF8;
+        return url;
+    }
 
-<h2 dojoType="inlineEditBox" value="Parameter text value"></h2>
+    @Override
+    public DatabaseType getType() {
+        return DatabaseType.MYSQL;
+    }
 
-</body>
-</html>
+    @Override
+    protected String getDriverClassName() {
+        return "com.mysql.jdbc.Driver";
+    }
+
+    @Override
+    protected boolean newDatabaseCheck(ExtendedJdbcTemplate ejt) {
+        try {
+            ejt.execute("select count(*) from users");
+        }
+        catch (DataAccessException e) {
+            if (e.getCause() instanceof SQLException) {
+                SQLException se = (SQLException) e.getCause();
+                if ("42S02".equals(se.getSQLState())) {
+                    // This state means a missing table. Assume that the schema needs to be created.
+                    createSchema("/WEB-INF/db/createTables-mysql.sql");
+                    return true;
+                }
+            }
+            throw e;
+        }
+        return false;
+    }
+
+    @Override
+    public double applyBounds(double value) {
+        if (Double.isNaN(value))
+            return 0;
+        if (value == Double.POSITIVE_INFINITY)
+            return Double.MAX_VALUE;
+        if (value == Double.NEGATIVE_INFINITY)
+            return -Double.MAX_VALUE;
+
+        return value;
+    }
+
+    @Override
+    public void executeCompress(ExtendedJdbcTemplate ejt) {
+        // no op
+    }
+}

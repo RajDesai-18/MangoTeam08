@@ -1,65 +1,60 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:s="http://livestoryboard.com/schemas/lsb" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="s">
-  <!--  xmlns="http://www.w3.org/1999/xhtml" -->
-
-  <xsl:param name="debug" select="'false'"/>
-  <xsl:param name="focus-id" select="/*/@index_page"/>
-
-  <xsl:output encoding="UTF-8" indent="yes" method="xml" omit-xml-declaration="yes"/>
-
-  <xsl:template match="/">
-    <xsl:choose>
-      <xsl:when test="error">
-        <p class="error">
-          <xsl:value-of select="error"/>
-        </p>
-      </xsl:when>
-      <xsl:otherwise>
-        <div 
-          dojoType="TreeRPCController" 
-          RPCUrl="local" 
-          widgetId="treeController" 
-          id="treeController" 
-          DNDController="create">
-          <xsl:text> </xsl:text>
-        </div>
-        <div 
-          dojoType="TreeSelector" 
-          widgetId="treeSelector" 
-          id="treeSelector">
-          <xsl:text> </xsl:text>
-        </div>
-        <div 
-          controller="treeController" 
-          dojoType="Tree" 
-          selector="treeSelector" 
-          widgetId="navTree"
-          id="navTree">
-          <xsl:apply-templates/>
-        </div>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-  
-  
-  <xsl:template match="s:site">
-    <div id="{@id}" title="{@label}" actionsDisabled="remove" dojoType="TreeNode" isFolder="true" widgetId="{@id}">
-      <xsl:apply-templates/>
-    </div>
-  </xsl:template>
-  
-  <xsl:template match="s:folder | s:topic">
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
     
-    <div id="{@id}" title="{@label}" dojoType="TreeNode" isFolder="true" widgetId="{@id}">
-      <xsl:text> </xsl:text>
-      <xsl:apply-templates/>
-    </div>
-  </xsl:template>
-  
-  <xsl:template match="s:page | s:content">
-    <div id="{@id}" title="{@label}" dojoType="TreeNode" widgetId="{@id}">
-      <xsl:text> </xsl:text>
-    </div>
-  </xsl:template>
-  
-</xsl:stylesheet>
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataSource.snmp;
+
+import org.snmp4j.CommunityTarget;
+import org.snmp4j.PDU;
+import org.snmp4j.Snmp;
+import org.snmp4j.Target;
+import org.snmp4j.mp.SnmpConstants;
+import org.snmp4j.smi.OctetString;
+
+/**
+ * @author Matthew Lohbihler
+ * 
+ */
+public class Version1 extends Version {
+    private final OctetString community;
+
+    public Version1(String community) {
+        this.community = SnmpUtils.createOctetString(community);
+    }
+
+    @Override
+    public int getVersionId() {
+        return SnmpConstants.version1;
+    }
+
+    @Override
+    public void addUser(Snmp snmp) {
+        // no op
+    }
+
+    @Override
+    public PDU createPDU() {
+        return new PDU();
+    }
+
+    @Override
+    public Target getTarget() {
+        CommunityTarget target = new CommunityTarget();
+        target.setCommunity(community);
+        return target;
+    }
+}

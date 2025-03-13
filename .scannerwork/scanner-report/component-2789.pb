@@ -1,0 +1,1 @@
+å 2xmlXhr)build/resources/dojo/tests/xml/simple.xsl

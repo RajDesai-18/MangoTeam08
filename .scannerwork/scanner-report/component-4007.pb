@@ -1,1 +1,1 @@
-§ 2webX&hr.war/resources/dojo/tests/lfx/test_rounded.html
+§ 2jspXhr%build/WEB-INF/snippet/imageChart2.jsp

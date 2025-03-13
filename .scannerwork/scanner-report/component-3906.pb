@@ -1,1 +1,1 @@
-Â 2webXFhr.war/resources/dojo/tests/gfx/test_setPath.html
+Â 2jspX‘hr"build/WEB-INF/jsp/mailingLists.jsp

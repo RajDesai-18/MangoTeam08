@@ -1,0 +1,1 @@
+ä 2webXhr/build/resources/dojo/tests/xml/placeholder.html

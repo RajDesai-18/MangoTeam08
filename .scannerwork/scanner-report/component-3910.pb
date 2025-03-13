@@ -1,1 +1,1 @@
-Æ 2webXGhr.war/resources/dojo/tests/html/ie_byId_bug.html
+Æ 2jspX0hr'build/WEB-INF/jsp/pointEdit/buttons.jsp

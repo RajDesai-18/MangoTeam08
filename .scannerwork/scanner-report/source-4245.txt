@@ -1,142 +1,214 @@
-<html>
-<head>
-<title>Form test</title>
-</head>
-<script type="text/javascript">
-        var djConfig = {isDebug: true};
-        djConfig.debugAtAllCosts = true;
-</script>
-<script type="text/javascript" src="../../dojo.js"></script>
-<script type="text/javascript">
- dojo.require("dojo.json");
- dojo.require("dojo.widget.Form");
- dojo.require("dojo.widget.LayoutContainer");
- dojo.require("dojo.widget.ContentPane");
- dojo.require("dojo.widget.ComboBox");
- dojo.require("dojo.widget.Checkbox");
- dojo.require("dojo.widget.DropdownDatePicker");
-        dojo.hostenv.writeIncludes();
- var obj = null;
- function changeIgnore() {
-   var myForm = dojo.widget.byId('myForm');
-   myForm.ignoreNullValues=!myForm.ignoreNullValues;
-   dojo.debug("Changing ignoreNullValues to " + myForm.ignoreNullValues);
- }
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
- function getValues() {
-   this.obj = dojo.widget.byId('myForm').getValues();
-   dojo.debug("Object is: " + dojo.json.serialize(this.obj));
- }
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
- function setValues() {
-   if (this.obj == null) {
-    this.obj ={};
-    this.obj.testF='testi';
-   }
-   dojo.debug("Object is: " + dojo.json.serialize(this.obj));
-   dojo.widget.byId('myForm').setValues(this.obj);
- }
-</script>
-<body>
-<h1>Form Widget Test</h1>
-<p>
-The form widget takes data in a form and serializes/deserializes it,
-so it can be submitted as a JSON string of nested objects.
-</p>
-<form dojoType="Form" id="myForm" action="showPost.php">
-<p>Just HTML text</p>
-<table border=2>
-<tr><th>Description</th><th>Name</th><th>Form node/widget</th></tr>
-<tr><td>text</td><td>testF</td><td><input type="text" name="testF" value="bar1" /></td></tr>
-<tr><td>password</td><td>passwordF</td><td><input type="password" name="passwordF" value="bar4" /></td></tr>
-<tr><td>hidden</td><td>hiddenF</td><td><input type="hidden" name="hiddenF" value="bar4" /></td></tr>
-<tr><td>select</td><td>plop.noncombo</td><td>
-<div class="group">
-	<select name="plop.noncombo">
-	 <option value="1">one</option>
-	 <option value="2">two</option>
-	 <option value="3">three</option>
-	</select>
-</div>
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.db.dao;
 
-</td></tr>
-<tr><td>DropdownDatePicker inside contentpane</td><td>foo.bar.baz.quux</td><td>
-<div dojoType="ContentPane" layoutAlign="left">
-<input type="text" name="foo.bar.baz.quux" dojoType="dropdowndatepicker" displayFormat="dd.MM.yyyy" date="2007-12-30" />
-</div>
-</td></tr>
-<tr><td>Layoutcontainer</td><td>
-<div dojoType="LayoutContainer">
-</div>
-</td></tr>
-<tr>
-<td>Dropdowndatepicker 1</td><td>available.from</td><td>
-<input type="text" name="available.from" dojoType="dropdowndatepicker" displayFormat="dd.MM.yyyy" />
-</td>
-</tr>
-<tr>
-<td>Dropdowndatepicker 2</td><td>available.to</td><td>
-<input type="text" name="available.to" dojoType="dropdowndatepicker" displayFormat="dd.MM.yyyy" date="2006-01-02" />
-</td>
-</tr>
+import java.sql.Blob;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.List;
 
-<tr><td>Combobox</td><td>plop.combo</td>
-<td>
-<select name="plop.combo" dojoType="ComboBox">
- <option value="1">one</option>
- <option value="2">two</option>
- <option value="3">three</option>
-</select>
-</td></tr>
-<tr>
-<td>textarea</td><td>myTextArea</td>
-<td>
-<textarea name="myTextArea">
-text text text """ \\\/
-</textarea>
-</td>
-</tr>
-<tr>
-<td>Checkbox</td><td>cb1</td>
-<td>
-<input type="checkbox" name="cb1" value="1" /> 1
-<input type="checkbox" name="cb1" value="2" checked="checked" /> 2
-<input type="checkbox" name="cb1" value="3" checked="checked" /> 3
-<input type="checkbox" name="cb1" value="4" /> 4
-</td>
-</tr>
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 
-<tr>
-<td>Checkbox widget</td><td>cb2</td>
-<td>
-<input dojotype="checkbox" type="checkbox" name="cb2" value="1" /> 1
-<input dojotype="checkbox" type="checkbox" name="cb2" value="2" checked="checked" /> 2
-<input dojotype="checkbox" type="checkbox" name="cb2" value="3" checked="checked" /> 3
-<input dojotype="checkbox" type="checkbox" name="cb2" value="4" /> 4
-</td>
-</tr>
-<tr>
-<td>radio</td><td>r1</td>
-<td>
-<input type="radio" name="r1" value="1" /> 1
-<input type="radio" name="r1" value="2" /> 2
-<input type="radio" name="r1" value="3" /> 3
-<input type="radio" name="r1" value="4" /> 4
-</td>
-</tr>
-</table>
+import com.serotonin.db.IntValuePair;
+import com.serotonin.db.spring.GenericRowMapper;
+import com.serotonin.db.spring.IntValuePairRowMapper;
+import com.serotonin.mango.Common;
+import com.serotonin.mango.view.ShareUser;
+import com.serotonin.mango.view.View;
+import com.serotonin.util.SerializationHelper;
 
-<input type="checkbox" name="ignoreNullValues" value="true" onChange="changeIgnore();" /> Ignore null values<br />
-<input type="button" onClick="getValues();" value="Get Values from form!" />
-<input type="button" onClick="setValues();" value="Set Values to form!" />
-</form>
+public class ViewDao extends BaseDao {
+    //
+    // /
+    // / Views
+    // /
+    //
+    private static final String VIEW_SELECT = "select data, id, xid, name, background, userId, anonymousAccess from mangoViews";
+    private static final String USER_ID_COND = " where userId=? or id in (select mangoViewId from mangoViewUsers where userId=?)";
 
-<p>Widgets that are not yet supported:
-<ul>
-<li>Editor</li>
-<li>Tree</li>
-<li>Others?</li>
-</ul>
-</p>
-</body>
-</html>
+    public List<View> getViews() {
+        List<View> views = query(VIEW_SELECT, new ViewRowMapper());
+        setViewUsers(views);
+        return views;
+    }
+
+    public List<View> getViews(int userId) {
+        List<View> views = query(VIEW_SELECT + USER_ID_COND, new Object[] { userId, userId }, new ViewRowMapper());
+        setViewUsers(views);
+        return views;
+    }
+
+    public List<IntValuePair> getViewNames(int userId) {
+        return query("select id, name from mangoViews" + USER_ID_COND, new Object[] { userId, userId },
+                new IntValuePairRowMapper());
+    }
+
+    private void setViewUsers(List<View> views) {
+        for (View view : views)
+            setViewUsers(view);
+    }
+
+    public View getView(int id) {
+        return getSingleView(VIEW_SELECT + " where id=?", new Object[] { id });
+    }
+
+    public View getViewByXid(String xid) {
+        return getSingleView(VIEW_SELECT + " where xid=?", new Object[] { xid });
+    }
+
+    public View getView(String name) {
+        return getSingleView(VIEW_SELECT + " where name=?", new Object[] { name });
+    }
+
+    private View getSingleView(String sql, Object[] params) {
+        View view = queryForObject(sql, params, new ViewRowMapper(), null);
+        if (view == null)
+            return null;
+
+        setViewUsers(view);
+        return view;
+    }
+
+    class ViewRowMapper implements GenericRowMapper<View> {
+        public View mapRow(ResultSet rs, int rowNum) throws SQLException {
+            View v;
+            Blob blob = rs.getBlob(1);
+            if (blob == null)
+                // This can happen during upgrade
+                v = new View();
+            else
+                v = (View) SerializationHelper.readObject(blob.getBinaryStream());
+
+            v.setId(rs.getInt(2));
+            v.setXid(rs.getString(3));
+            v.setName(rs.getString(4));
+            v.setBackgroundFilename(rs.getString(5));
+            v.setUserId(rs.getInt(6));
+            v.setAnonymousAccess(rs.getInt(7));
+
+            return v;
+        }
+    }
+
+    class ViewNameRowMapper implements GenericRowMapper<View> {
+        public View mapRow(ResultSet rs, int rowNum) throws SQLException {
+            View v = new View();
+            v.setId(rs.getInt(1));
+            v.setName(rs.getString(2));
+            v.setUserId(rs.getInt(3));
+
+            return v;
+        }
+    }
+
+    public String generateUniqueXid() {
+        return generateUniqueXid(View.XID_PREFIX, "mangoViews");
+    }
+
+    public boolean isXidUnique(String xid, int excludeId) {
+        return isXidUnique(xid, excludeId, "mangoViews");
+    }
+
+    public void saveView(final View view) {
+        getTransactionTemplate().execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus status) {
+                // Decide whether to insert or update.
+                if (view.getId() == Common.NEW_ID)
+                    insertView(view);
+                else
+                    updateView(view);
+
+                saveViewUsers(view);
+            }
+        });
+    }
+
+    void insertView(View view) {
+        view.setId(doInsert(
+                "insert into mangoViews (xid, name, background, userId, anonymousAccess, data) values (?,?,?,?,?,?)",
+                new Object[] { view.getXid(), view.getName(), view.getBackgroundFilename(), view.getUserId(),
+                        view.getAnonymousAccess(), SerializationHelper.writeObject(view) }, new int[] { Types.VARCHAR,
+                        Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.INTEGER, Types.BLOB }));
+    }
+
+    void updateView(View view) {
+        ejt.update("update mangoViews set xid=?, name=?, background=?, anonymousAccess=?, data=? where id=?",
+                new Object[] { view.getXid(), view.getName(), view.getBackgroundFilename(), view.getAnonymousAccess(),
+                        SerializationHelper.writeObject(view), view.getId() }, new int[] { Types.VARCHAR,
+                        Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.BLOB, Types.INTEGER });
+    }
+
+    public void removeView(final int viewId) {
+        deleteViewUsers(viewId);
+        ejt.update("delete from mangoViews where id=?", new Object[] { viewId });
+    }
+
+    //
+    // /
+    // / View users
+    // /
+    //
+    private void setViewUsers(View view) {
+        view.setViewUsers(query("select userId, accessType from mangoViewUsers where mangoViewId=?",
+                new Object[] { view.getId() }, new ViewUserRowMapper()));
+    }
+
+    class ViewUserRowMapper implements GenericRowMapper<ShareUser> {
+        public ShareUser mapRow(ResultSet rs, int rowNum) throws SQLException {
+            ShareUser vu = new ShareUser();
+            vu.setUserId(rs.getInt(1));
+            vu.setAccessType(rs.getInt(2));
+            return vu;
+        }
+    }
+
+    private void deleteViewUsers(int viewId) {
+        ejt.update("delete from mangoViewUsers where mangoViewId=?", new Object[] { viewId });
+    }
+
+    void saveViewUsers(final View view) {
+        // Delete anything that is currently there.
+        deleteViewUsers(view.getId());
+
+        // Add in all of the entries.
+        ejt.batchUpdate("insert into mangoViewUsers values (?,?,?)", new BatchPreparedStatementSetter() {
+            @Override
+            public int getBatchSize() {
+                return view.getViewUsers().size();
+            }
+
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ShareUser vu = view.getViewUsers().get(i);
+                ps.setInt(1, view.getId());
+                ps.setInt(2, vu.getUserId());
+                ps.setInt(3, vu.getAccessType());
+            }
+        });
+    }
+
+    public void removeUserFromView(int viewId, int userId) {
+        ejt.update("delete from mangoViewUsers where mangoViewId=? and userId=?", new Object[] { viewId, userId });
+    }
+}

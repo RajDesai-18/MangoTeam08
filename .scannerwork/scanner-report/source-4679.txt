@@ -1,4 +1,4 @@
-<%--
+/*
     Mango - Open Source M2M - http://mango.serotoninsoftware.com
     Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
     @author Matthew Lohbihler
@@ -14,36 +14,55 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see http://www.gnu.org/licenses/.
---%>
-<%@ include file="/WEB-INF/jsp/include/tech.jsp" %>
-<mobileTag:page>
-  <table border="1">
-    <c:forEach items="${watchListData}" var="state">
-      <tr>
-        <td>${state.name}</td>
-        <c:choose>
-          <c:when test="${state.disabled}">
-            <td colspan="2"><fmt:message key="common.pointWarning"/></td>
-          </c:when>
-          <c:otherwise>
-            <td align="center">${state.value}</td>
-            <td>${state.time}</td>
-          </c:otherwise>
-        </c:choose>
-      </tr>
-    </c:forEach>
-  </table>
-  
-  <fmt:message key="header.watchlist"/>:
-  <sst:select id="watchListSelect" value="${selectedWatchList}"
-          onchange="window.location='mobile_watch_list.shtm?watchListId='+ this.value">
-    <c:forEach items="${watchLists}" var="wl">
-      <sst:option value="${wl.key}">${wl.value}</sst:option>
-    </c:forEach>
-  </sst:select>
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.vo.mailingList;
 
-  <a href="mobile_watch_list.shtm"><fmt:message key="header.reload"/></a>
-  
-  <a href="mobile_logout.htm"><fmt:message key="header.logout"/></a>
-</mobileTag:page>
+import java.util.Map;
+import java.util.Set;
+
+import org.joda.time.DateTime;
+
+import com.serotonin.json.JsonException;
+import com.serotonin.json.JsonObject;
+import com.serotonin.json.JsonReader;
+import com.serotonin.json.JsonRemoteEntity;
+import com.serotonin.json.JsonSerializable;
+import com.serotonin.mango.util.ExportCodes;
+
+@JsonRemoteEntity(typeFactory = EmailRecipientFactory.class)
+abstract public class EmailRecipient implements JsonSerializable {
+    public static final int TYPE_MAILING_LIST = 1;
+    public static final int TYPE_USER = 2;
+    public static final int TYPE_ADDRESS = 3;
+
+    public static final ExportCodes TYPE_CODES = new ExportCodes();
+    static {
+        TYPE_CODES.addElement(TYPE_MAILING_LIST, "MAILING_LIST", "mailingLists.mailingList");
+        TYPE_CODES.addElement(TYPE_USER, "USER", "mailingLists.emailAddress");
+        TYPE_CODES.addElement(TYPE_ADDRESS, "ADDRESS", "common.user");
+    }
+
+    abstract public int getRecipientType();
+
+    abstract public void appendAddresses(Set<String> addresses, DateTime sendTime);
+
+    abstract public void appendAllAddresses(Set<String> addresses);
+
+    abstract public int getReferenceId();
+
+    abstract public String getReferenceAddress();
+
+    /**
+     * @throws JsonException
+     */
+    @Override
+    public void jsonDeserialize(JsonReader reader, JsonObject json) throws JsonException {
+        // no op. The type value is used by the factory.
+    }
+
+    @Override
+    public void jsonSerialize(Map<String, Object> map) {
+        map.put("recipientType", TYPE_CODES.getCode(getRecipientType()));
+    }
+}

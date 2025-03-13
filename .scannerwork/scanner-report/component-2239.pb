@@ -1,1 +1,1 @@
-¿ 2javaXŒhr;src/com/serotonin/mango/view/component/ScriptComponent.java
+¿ 2jsX¤hr,build/resources/dojo/tests/date/test_date.js

@@ -1,42 +1,46 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<title>Dojo: test of Parse.js and the &lt;propertyset&gt; tag</title>
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-<script type="text/javascript"> var djConfig = {isDebug: true}; </script>
-<script type="text/javascript" src="../../dojo.js"></script>
-<script type="text/javascript">
-	dojo.require("dojo.xml.Parse");
-	dojo.require("dojo.widget.Widget");
-	dojo.require("dojo.widget.Parse");
-</script>
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.db.upgrade;
 
-<style type="text/css">
-	#output {
-		font-family:monospace;
-		border: 3px solid #000000;
-	}
-</style>
+import java.io.OutputStream;
 
-<script type="text/javascript">
-	// register a new do-nothing tag
-	dojo.widget.tags["dojo:donothing"] = function(frag, parser){
-		var properties = parser.parseProperties(frag["dojo:donothing"]);
-		// now that we've pulled in the propsets that should apply to
-		// this tag, lets inspect them
-		testPropsets(properties);
-	}
+/**
+ * @author Matthew Lohbihler
+ */
+public class Upgrade1_12_1 extends DBUpgrade {
+    @Override
+    public void upgrade() throws Exception {
+        OutputStream out = createUpdateLogOutputStream("1_12_1");
 
-	function testPropsets(props){
-		for(var x in props){ alert("x: "+x); }
-		/*
-		alert(props.foo=="bar");
-		alert(props["dojo:baz"]);
-		*/
-	}
-</script>
+        runScript(script, out);
 
-<div dojoType="propertyset" foo="bar">
-	<div dojoType="baz" quux="xyzzy"></div>
-</div>
-<div dojoType="donothing" test="foo"></div>
+        out.flush();
+        out.close();
+    }
+
+    @Override
+    protected String getNewSchemaVersion() {
+        return "1.12.2";
+    }
+
+    private static String[] script = { //
+    "alter table reportInstancePoints add column consolidatedChart char(1);", //
+            "update reportInstancePoints set consolidatedChart='Y';", //
+    };
+}

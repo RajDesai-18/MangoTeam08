@@ -1,0 +1,1 @@
+¤4 2xmlX,hr%war/resources/dojo/tests/xml/site.xml

@@ -1,1 +1,1 @@
-“ 2javaX˜hrJsrc/com/serotonin/mango/vo/dataSource/http/HttpReceiverPointLocatorVO.java
+“ 2jsXhr5build/resources/dojo/tests/i18n/nls/tr/salutations.js

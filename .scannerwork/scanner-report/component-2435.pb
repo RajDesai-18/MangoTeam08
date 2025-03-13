@@ -1,1 +1,1 @@
-ƒ 2javaXÔhr?src/com/serotonin/mango/web/dwr/beans/EBI25InterfaceReader.java
+ƒ 2webX;hr1build/resources/dojo/tests/style/test_sizing.html

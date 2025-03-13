@@ -1,1 +1,0 @@
-Ý 2webXhr.war/resources/dojo/tests/test_dojo_double.html

@@ -1,2 +1,21 @@
-`
-javaS1124EReorder the modifiers to comply with the Java Language Specification.2	 @
+J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2%% @J
+
+javascriptS3504)Unexpected var, use let or const instead.2-- @J
+
+javascriptS3504)Unexpected var, use let or const instead.266 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2<< @J
+
+javascriptS3504)Unexpected var, use let or const instead.2BB @J
+
+javascriptS3504)Unexpected var, use let or const instead.2GG @

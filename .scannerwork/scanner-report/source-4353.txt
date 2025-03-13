@@ -1,55 +1,40 @@
-<html>
-<head>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<script type="text/javascript">
-	var djConfig = {isDebug: true, debugAtAllCosts: true };
-</script>
-<script type="text/javascript" src="../../../dojo.js"></script>
-<script type="text/javascript">
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-	dojo.require("dojo.widget.*");
-	dojo.require("dojo.widget.TreeV3");
-	dojo.require("dojo.widget.TreeNodeV3");
-	dojo.require("dojo.widget.TreeLoadingControllerV3");
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataSource.meta;
 
-	dojo.require("dojo.widget.TreeEmphasizeOnSelect");	
-	dojo.require("dojo.widget.TreeSelectorV3");	
-	dojo.require("dojo.widget.TreeDeselectOnDblselect");	
+import com.serotonin.web.i18n.LocalizableException;
+import com.serotonin.web.i18n.LocalizableMessage;
 
-	dojo.hostenv.writeIncludes();
+/**
+ * @author Matthew Lohbihler
+ */
+public class DataPointStateException extends LocalizableException {
+    static final long serialVersionUID = -1;
 
-</script>
+    private final int dataPointId;
 
+    public DataPointStateException(int dataPointId, LocalizableMessage message) {
+        super(message);
+        this.dataPointId = dataPointId;
+    }
 
-</head>
-<body>
-
-<h3>Dynamically loads nodes from server</h3>
-
-<input type="button" value="Expand tree to level 3" onClick="dojo.widget.byId('treeController').expandToLevel(dojo.widget.byId('firstTree'),3)"/>
-<br/>
-
-<input type="button" value="Expand node 2 tree to level 3" onClick="dojo.widget.byId('treeController').expandToLevel(dojo.widget.byId('2'),3)"/>
-<br/>
-
-<div dojoType="TreeLoadingControllerV3" widgetId="treeController" RpcUrl="local"></div>
-
-
-<div dojoType="TreeSelectorV3" widgetId="selector"></div>	
-
-<div dojoType="TreeDeselectOnDblselect" selector="selector"></div>
-<div dojoType="TreeEmphasizeOnSelect" selector="selector"></div>
-
-
-<div dojoType="TreeV3" widgetId="firstTree" listeners="treeController;selector">
-    <div dojoType="TreeNodeV3" title="Node 1"></div>
-    <div dojoType="TreeNodeV3" title="Node 2" widgetId="2">
-        <div dojoType="TreeNodeV3" title="Node 2.1"></div>
-        <div dojoType="TreeNodeV3" isFolder="true" title="Node 2.2"></div>
-    </div>
-    <div dojoType="TreeNodeV3" title="Node 3" isFolder="true">
-    </div>	
-
-</div>
-
-</html>
+    public int getDataPointId() {
+        return dataPointId;
+    }
+}

@@ -1,1 +1,1 @@
-• 2webXwhr5war/resources/dojo/tests/dnd/test_dragdropparent.html
+• 2jspXhr,build/WEB-INF/jsp/dataSourceEdit/dsFoot.jspf

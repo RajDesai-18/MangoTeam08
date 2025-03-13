@@ -1,4 +1,4 @@
-`
-WebDoctypePresenceCheck:Insert a <!DOCTYPE> declaration to before this <html> tag.2 ÆJ
-WebAvoidCommentedOutCodeCheckRemove this commented out code.2 RJ
-WebAvoidCommentedOutCodeCheckRemove this commented out code.2// *
+X
+javaS2077?Make sure using a dynamically formatted SQL query is safe here.2mm/ Kq
+javaS6912VUse "addBatch" and "executeBatch" to execute multiple SQL statements in a single call.2
+ŠŠ &

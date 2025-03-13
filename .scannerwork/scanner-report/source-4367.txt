@@ -1,58 +1,77 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-<title>Dojo Tree Widget Test (dynamic node creation)</title>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<script type="text/javascript">
-	var djConfig = {isDebug: true, debugAtAllCosts: true };
-</script>
-<script type="text/javascript" src="../../../dojo.js"></script>
-<script type="text/javascript">
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-	dojo.require("dojo.widget.*");
-	dojo.require("dojo.widget.TreeV3");
-	dojo.require("dojo.widget.TreeNodeV3");
-	dojo.require("dojo.widget.TreeBasicControllerV3");
-	dojo.hostenv.writeIncludes();
-</script>
-<script type="text/javascript">
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataSource.modbus;
 
-	dojo.addOnLoad(function(){
+import gnu.io.NoSuchPortException;
 
-		var controller = dojo.widget.createWidget("TreeBasicControllerV3");
+import com.serotonin.io.serial.SerialParameters;
+import com.serotonin.mango.rt.dataSource.DataSourceRT;
+import com.serotonin.mango.vo.dataSource.modbus.ModbusSerialDataSourceVO;
+import com.serotonin.mango.vo.dataSource.modbus.ModbusSerialDataSourceVO.EncodingType;
+import com.serotonin.modbus4j.ModbusFactory;
+import com.serotonin.modbus4j.ModbusMaster;
+import com.serotonin.modbus4j.exception.ModbusInitException;
+import com.serotonin.web.i18n.LocalizableMessage;
 
-		var treeNodes = [
-			{
-				title: "Node 1" ,
-				children: [
-					{title: "Node 1.1"},
-					{title: "Node 1.2"}
-				]
-			},
-			{title: "Node 2" }
-		]
-	
+public class ModbusSerialDataSource extends ModbusDataSource {
 
-		
-		var tree = dojo.widget.createWidget("TreeV3", {listeners: [controller.widgetId]});
+    private final ModbusSerialDataSourceVO configuration;
 
-		/**
-			 lazy initialization is in effect 
-			only root-level widgets will be created
-		*/
-		tree.setChildren(treeNodes);
+    public ModbusSerialDataSource(ModbusSerialDataSourceVO configuration) {
+        super(configuration);
+        this.configuration = configuration;
+    }
 
-		document.body.appendChild(tree.domNode);
+    //
+    // /
+    // / Lifecycle
+    // /
+    //
+    @Override
+    public void initialize() {
+        SerialParameters params = new SerialParameters();
+        params.setCommPortId(configuration.getCommPortId());
+        params.setPortOwnerName("Mango Modbus Serial Data Source");
+        params.setBaudRate(configuration.getBaudRate());
+        params.setFlowControlIn(configuration.getFlowControlIn());
+        params.setFlowControlOut(configuration.getFlowControlOut());
+        params.setDataBits(configuration.getDataBits());
+        params.setStopBits(configuration.getStopBits());
+        params.setParity(configuration.getParity());
 
-	});
+        ModbusMaster modbusMaster;
+        if (configuration.getEncoding() == EncodingType.ASCII)
+            modbusMaster = new ModbusFactory().createAsciiMaster(params, configuration.getConcurrency());
+        else
+            modbusMaster = new ModbusFactory().createRtuMaster(params, configuration.getConcurrency());
 
-</script>
-</head>
-<body>
+        super.initialize(modbusMaster);
+    }
 
-<h4>Create whole tree from js object</h4>
+    @Override
+    protected LocalizableMessage getLocalExceptionMessage(Exception e) {
+        if (e instanceof ModbusInitException) {
+            Throwable cause = e.getCause();
+            if (cause instanceof NoSuchPortException)
+                return new LocalizableMessage("event.serial.portOpenError", configuration.getCommPortId());
+        }
 
-
-</body>
-</html>
+        return DataSourceRT.getExceptionMessage(e);
+    }
+}

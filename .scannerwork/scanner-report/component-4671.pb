@@ -1,1 +1,1 @@
-¿$ 2jspXŠhr*war/WEB-INF/jsp/include/settingsEditor.jsp
+¿$ 2javaXhr;src/com/serotonin/mango/vo/event/SimpleEventDetectorVO.java

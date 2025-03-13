@@ -1,1 +1,1 @@
-Ò$ 2jspX8hrwar/WEB-INF/jsp/publicView.jsp
+Ò$ 2javaXQhrDsrc/com/serotonin/mango/vo/publish/persistent/PersistentPointVO.java

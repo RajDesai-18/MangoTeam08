@@ -1,1 +1,1 @@
-“ 2webXLhr0war/resources/dojo/tests/dnd/test_container.html
+“ 2jspX+hr#build/WEB-INF/jsp/dataPointEdit.jsp

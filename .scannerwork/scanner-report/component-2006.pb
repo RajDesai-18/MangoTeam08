@@ -1,1 +1,0 @@
-Ö 2javaXAhr;src/com/serotonin/mango/rt/dataImage/DataPointListener.java

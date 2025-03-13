@@ -1,2 +1,7 @@
-r
-javaS120ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.2 )
+E
+WebS1827/Remove this deprecated "cellpadding" attribute.2 >E
+WebS1827/Remove this deprecated "cellspacing" attribute.2 >?
+WebS1827)Remove this deprecated "width" attribute.2 >;
+WebS5256%Add "<th>" headers to this "<table>".2 >A
+WebS1827)Remove this deprecated "width" attribute.2 $A
+WebS1827)Remove this deprecated "width" attribute.2 $

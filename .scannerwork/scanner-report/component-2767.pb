@@ -1,0 +1,1 @@
+Ï 2xmlXhr3build/resources/dojo/tests/xdomain/browser/xhr1.xml

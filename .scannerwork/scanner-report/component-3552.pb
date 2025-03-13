@@ -1,1 +1,0 @@
-à 2webXhr@war/resources/dojo/src/widget/templates/Editor2/Dialog/find.html

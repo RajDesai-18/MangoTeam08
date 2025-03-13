@@ -1,1 +1,1 @@
-¤ 2javaX>hr7src/com/serotonin/mango/util/DocumentationManifest.java
+¤ 2jsXhr-build/resources/dojo/tests/crypto/test_SHA.js

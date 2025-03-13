@@ -1,4 +1,4 @@
-<%--
+/*
     Mango - Open Source M2M - http://mango.serotoninsoftware.com
     Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
     @author Matthew Lohbihler
@@ -14,26 +14,15 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see http://www.gnu.org/licenses/.
---%>
-<%-- The snippet used for table charts in rollovers --%>
-<%@ include file="/WEB-INF/snippet/common.jsp" %>
-<c:choose>
-  <c:when test="${empty chartData}"><fmt:message key="common.noData"/></c:when>
-  <c:otherwise>
-    <c:forEach items="${chartData}" var="historyPointValue">
-      ${mango:pointValueTime(historyPointValue)} - ${mango:htmlText(point, historyPointValue)}
-      <c:if test="${historyPointValue.annotated}">
-        (<fmt:message key="${historyPointValue.sourceDescriptionKey}">
-          <fmt:param>
-            <c:choose>
-              <c:when test="${empty historyPointValue.sourceDescriptionArgument}"><fmt:message key="common.deleted"/></c:when>
-              <c:otherwise>${historyPointValue.sourceDescriptionArgument}</c:otherwise>
-            </c:choose>
-          </fmt:param>
-        </fmt:message>)
-      </c:if>
-      <br/>
-    </c:forEach>
-  </c:otherwise>
-</c:choose>
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.web.filter;
+
+import com.serotonin.mango.vo.User;
+
+public class NormalLoggedInFilter extends LoggedInFilter {
+    @Override
+    protected boolean checkAccess(User user) {
+        return user != null;
+    }
+}

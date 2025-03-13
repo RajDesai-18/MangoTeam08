@@ -1,3 +1,2 @@
-V
-WebS5254@Add "lang" and/or "xml:lang" attributes to this "<html>" element2 W
-WebS6840?DOM elements should use the "autocomplete" attribute correctly.2 
+e
+javaS101MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.2 

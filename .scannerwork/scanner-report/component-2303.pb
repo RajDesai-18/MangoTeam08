@@ -1,1 +1,1 @@
-ÿ 2javaX¢hr+src/com/serotonin/mango/vo/DataPointVO.java
+ÿ 2jsXhr5build/resources/dojo/tests/i18n/nls/de/salutations.js

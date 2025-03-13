@@ -1,1 +1,0 @@
-©  2webXMhr?war/resources/dojo/tests/widget/Editor/test_Editor2_shared.html

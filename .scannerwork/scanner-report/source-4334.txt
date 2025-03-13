@@ -1,39 +1,42 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-<title>Dojo Tree Widget Test</title>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<script type="text/javascript">
-	var djConfig = {isDebug: true, debugAtAllCosts: true };
-</script>
-<script type="text/javascript" src="../../../dojo.js"></script>
-<script type="text/javascript">
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-	dojo.require("dojo.widget.*");
-	dojo.require("dojo.widget.TreeV3");
-	dojo.require("dojo.widget.TreeNodeV3");
-	dojo.require("dojo.widget.TreeBasicControllerV3");
-	dojo.hostenv.writeIncludes();
-</script>
-</head>
-<body>
-	
-<h3>Markup tree with basic controller attached, multiline content and empty folder</h3>
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataSource.http;
 
-	
- <div dojoType="TreeBasicControllerV3" widgetId="treeController" ></div>
+import com.serotonin.mango.rt.dataSource.PointLocatorRT;
+import com.serotonin.mango.vo.dataSource.http.HttpImagePointLocatorVO;
 
- <div dojoType="TreeV3" widgetId="firstTree" listeners="treeController">
- <div dojoType="TreeNodeV3" title="Node A" expandLevel="1">
- <div dojoType="TreeNodeV3" title="Node B">
-<div dojoType="TreeNodeV3" title="Node C">
- <div dojoType="TreeNodeV3" title="Node D"></div>
-                </div>
-            </div>
-</div> 
- </div>
+/**
+ * @author Matthew Lohbihler
+ */
+public class HttpImagePointLocatorRT extends PointLocatorRT {
+    private final HttpImagePointLocatorVO vo;
 
+    public HttpImagePointLocatorRT(HttpImagePointLocatorVO vo) {
+        this.vo = vo;
+    }
 
-</body>
-</html>
+    @Override
+    public boolean isSettable() {
+        return vo.isSettable();
+    }
+
+    public HttpImagePointLocatorVO getVo() {
+        return vo;
+    }
+}

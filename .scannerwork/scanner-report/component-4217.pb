@@ -1,1 +1,1 @@
-ù  2webXhr/war/resources/dojo/tests/widget/test_Clock.html
+ù  2javaXhr=src/br/org/scadabr/rt/dataSource/dnp3/Dnp3PointLocatorRT.java

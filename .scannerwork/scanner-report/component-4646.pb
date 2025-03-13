@@ -1,1 +1,1 @@
-¦$ 2jspX·hr-war/WEB-INF/jsp/dataSourceEdit/editModbus.jsp
+¦$ 2javaX}hrLsrc/com/serotonin/mango/vo/dataSource/spinwave/SpinwaveV2PointLocatorVO.java

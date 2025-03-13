@@ -1,1 +1,1 @@
-‚! 2webXohr>war/resources/dojo/tests/widget/test_Custom_Widget_Inline.html
+‚! 2javaXyhr;src/br/org/scadabr/vo/dataSource/opc/OPCPointLocatorVO.java

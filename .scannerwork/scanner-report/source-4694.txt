@@ -1,4 +1,4 @@
-<%--
+/*
     Mango - Open Source M2M - http://mango.serotoninsoftware.com
     Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
     @author Matthew Lohbihler
@@ -14,154 +14,109 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see http://www.gnu.org/licenses/.
---%>
-<%@ include file="/WEB-INF/jsp/include/tech.jsp" %>
-<tag:page dwr="PublisherEditDwr" onload="initPublisher">
-  <script type="text/javascript">
-    function savePublisher() {
-        hide("nameMsg");
-        hide("cacheWarningSizeMsg");
-        hide("message");
-        
-        savePublisherImpl($get("name"), $get("xid"), $get("enabled"), $get("cacheWarningSize"),
-                $get("changesOnly") == "true", $get("sendSnapshot"), $get("snapshotSendPeriods"),
-                $get("snapshotSendPeriodType"));
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.vo.report;
+
+import java.awt.Paint;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import com.serotonin.mango.rt.dataImage.PointValueTime;
+import com.serotonin.mango.rt.dataImage.types.MangoValue;
+import com.serotonin.mango.view.text.TextRenderer;
+
+/**
+ * @author Matthew Lohbihler
+ */
+public class DiscreteTimeSeries {
+    private final String name;
+    private final TextRenderer textRenderer;
+    private final Paint paint;
+    private final List<PointValueTime> valueTimes = new ArrayList<PointValueTime>();
+    private final List<ValueDescription> valueDescriptions = new ArrayList<ValueDescription>();
+
+    public DiscreteTimeSeries(String name, TextRenderer textRenderer) {
+        this(name, textRenderer, null);
     }
-    
-    function savePublisherCB(response) {
-        if (response.hasMessages) {
-            for (var i=0; i<response.messages.length; i++)
-                showMessage(response.messages[i].contextKey +"Msg", response.messages[i].contextualMessage);
+
+    public DiscreteTimeSeries(String name, TextRenderer textRenderer, Paint paint) {
+        this.name = name;
+        this.textRenderer = textRenderer;
+        this.paint = paint;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void addValueTime(PointValueTime pvt) {
+        MangoValue value = pvt.getValue();
+        if (value == null)
+            return;
+
+        valueTimes.add(pvt);
+
+        if (getValueIndex(value) == -1) {
+            String text;
+            if (textRenderer == null)
+                text = value.toString();
+            else
+                text = textRenderer.getText(value, TextRenderer.HINT_FULL);
+
+            ValueDescription vd = new ValueDescription((Comparable<Object>) value, text);
+
+            int index = Collections.binarySearch(valueDescriptions, vd);
+            valueDescriptions.add(-index - 1, vd);
         }
-        else
-            showMessage("message", "<fmt:message key="publisherEdit.saved"/>");
     }
-    
-    function sendSnapshotChanged() {
-        if ($get("sendSnapshot")) {
-            setDisabled("snapshotSendPeriods", false);
-            setDisabled("snapshotSendPeriodType", false);
+
+    public String getName() {
+        return name;
+    }
+
+    public Paint getPaint() {
+        return paint;
+    }
+
+    public List<PointValueTime> getValueTimes() {
+        return valueTimes;
+    }
+
+    public int getDiscreteValueCount() {
+        return valueDescriptions.size();
+    }
+
+    public int getValueIndex(MangoValue value) {
+        for (int i = 0; i < valueDescriptions.size(); i++) {
+            if (valueDescriptions.get(i).getValue().equals(value))
+                return i;
         }
-        else {
-            setDisabled("snapshotSendPeriods", true);
-            setDisabled("snapshotSendPeriodType", true);
+        return -1;
+    }
+
+    public String getValueText(int index) {
+        return valueDescriptions.get(index).getDescription();
+    }
+
+    class ValueDescription implements Comparable<ValueDescription> {
+        private final Comparable<Object> value;
+        private final String description;
+
+        public ValueDescription(Comparable<Object> value, String description) {
+            this.value = value;
+            this.description = description;
+        }
+
+        @Override
+        public int compareTo(ValueDescription that) {
+            return value.compareTo(that.getValue());
+        }
+
+        public Comparable<Object> getValue() {
+            return value;
+        }
+
+        public String getDescription() {
+            return description;
         }
     }
-    
-    function initPublisher() {
-        sendSnapshotChanged();
-    }
-  </script>
-  
-  <table cellspacing="0" cellpadding="0" border="0">
-    <tr>
-      <td>
-        <c:if test="${!empty publisherEvents}">
-          <table class="borderDiv marB">
-            <tr><td class="smallTitle"><fmt:message key="publisherEdit.currentAlarms"/></td></tr>
-            <c:forEach items="${publisherEvents}" var="event">
-              <tr><td class="formError">
-                <tag:eventIcon eventBean="${event}"/>
-                ${event.prettyActiveTimestamp}:
-                ${event.message}
-              </td></tr>
-            </c:forEach>
-          </table>
-        </c:if>
-        
-        <div id="message" class="formError" style="display:none;"></div>
-        
-        <div class="borderDiv marR marB">
-          <table>
-            <tr>
-              <td colspan="2" class="smallTitle">
-                <tag:img png="transmit" title="common.edit"/>
-                <fmt:message key="publisherEdit.generalProperties"/> <tag:help id="generalPublisherProperties"/>
-              </td>
-            </tr>
-            
-            <tr>
-              <td class="formLabelRequired"><fmt:message key="publisherEdit.name"/></td>
-              <td class="formField">
-                <input type="text" id="name" value="${publisher.name}"/>
-                <div id="nameMsg" class="formError" style="display:none;"></div>
-              </td>
-            </tr>
-            
-            <tr>
-              <td class="formLabelRequired"><fmt:message key="common.xid"/></td>
-              <td class="formField">
-                <input type="text" id="xid" value="${publisher.xid}"/>
-                <div id="xidMsg" class="formError" style="display:none;"></div>
-              </td>
-            </tr>
-            
-            <tr>
-              <td class="formLabelRequired"><fmt:message key="common.enabled"/></td>
-              <td class="formField"><sst:checkbox id="enabled" selectedValue="${publisher.enabled}"/></td>
-            </tr>
-            
-            <tr>
-              <td class="formLabelRequired"><fmt:message key="publisherEdit.cacheWarning"/></td>
-              <td class="formField">
-                <input type="text" id="cacheWarningSize" value="${publisher.cacheWarningSize}" class="formShort"/>
-                <div id="cacheWarningSizeMsg" class="formError" style="display:none;"></div>
-              </td>
-            </tr>
-            
-            <tr>
-              <td class="formLabelRequired"><fmt:message key="publisherEdit.updateEvent"/></td>
-              <td class="formField">
-                <sst:select id="changesOnly" value="${publisher.changesOnly}">
-                  <sst:option value="false"><fmt:message key="publisherEdit.updateEvent.all"/></sst:option>
-                  <sst:option value="true"><fmt:message key="publisherEdit.updateEvent.changes"/></sst:option>
-                </sst:select>
-              </td>
-            </tr>
-            
-            <tr>
-              <td class="formLabelRequired"><fmt:message key="publisherEdit.snapshot"/></td>
-              <td class="formField"><sst:checkbox id="sendSnapshot" onclick="sendSnapshotChanged()"
-                      selectedValue="${publisher.sendSnapshot}"/></td>
-            </tr>
-            
-            <tr>
-              <td class="formLabelRequired"><fmt:message key="publisherEdit.snapshotPeriod"/></td>
-              <td class="formField">
-                <input type="text" id="snapshotSendPeriods" value="${publisher.snapshotSendPeriods}" class="formShort"/>
-                <sst:select id="snapshotSendPeriodType" value="${publisher.snapshotSendPeriodType}">
-                  <tag:timePeriodOptions sst="true" s="true" min="true" h="true"/>
-                </sst:select>
-                <div id="snapshotSendPeriodsMsg" class="formError" style="display:none;"></div>
-              </td>
-            </tr>
-          </table>
-        </div>
-        
-        <div>
-          <c:choose>
-            <c:when test="${publisher.type.id == applicationScope['constants.PublisherVO.Types.HTTP_SENDER']}">
-              <%@ include file="/WEB-INF/jsp/publisherEdit/editHttpSender.jsp" %>
-            </c:when>
-            <c:when test="${publisher.type.id == applicationScope['constants.PublisherVO.Types.PACHUBE']}">
-              <%@ include file="/WEB-INF/jsp/publisherEdit/editPachube.jsp" %>
-            </c:when>
-            <c:when test="${publisher.type.id == applicationScope['constants.PublisherVO.Types.PERSISTENT']}">
-              <%@ include file="/WEB-INF/jsp/publisherEdit/editPersistent.jsp" %>
-            </c:when>
-          </c:choose>
-        </div>
-      </td>
-    </tr>
-    
-    <tr><td>&nbsp;</td></tr>
-    
-    <tr>
-      <td align="center">
-        <input type="button" value="<fmt:message key="common.save"/>" onclick="savePublisher()"/>
-        <input type="button" value="<fmt:message key="common.cancel"/>" onclick="window.location='publishers.shtm'"/>
-      </td>
-    </tr>
-  </table>
-</tag:page>
+}

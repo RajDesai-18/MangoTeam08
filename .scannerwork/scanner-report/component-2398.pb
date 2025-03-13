@@ -1,1 +1,1 @@
-Þ 2javaXMhr>src/com/serotonin/mango/vo/publish/pachube/PachubePointVO.java
+Þ 2webXmhr/build/resources/dojo/tests/lfx/test_wipes2.html

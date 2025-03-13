@@ -1,0 +1,1 @@
+Í 2webX5hr;build/resources/dojo/tests/widget/test_HslColorPicker.xhtml

@@ -1,1 +1,1 @@
-¶$ 2jspXKhr-war/WEB-INF/jsp/dataSourceEdit/editVMStat.jsp
+¶$ 2javaX¥hrHsrc/com/serotonin/mango/vo/dataSource/virtual/VirtualPointLocatorVO.java

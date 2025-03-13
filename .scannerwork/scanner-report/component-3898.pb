@@ -1,1 +1,1 @@
-∫ 2webXêhr1war/resources/dojo/tests/gfx/test_Colorspace.html
+∫ 2jspXhrbuild/WEB-INF/jsp/help.jsp

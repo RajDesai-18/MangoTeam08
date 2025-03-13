@@ -1,1 +1,1 @@
-Ë$ 2jspXÒhr/war/WEB-INF/jsp/pointEdit/loggingProperties.jsp
+Ë$ 2javaX]hr:src/com/serotonin/mango/vo/permission/DataPointAccess.java

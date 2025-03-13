@@ -1,4 +1,4 @@
-<%--
+/*
     Mango - Open Source M2M - http://mango.serotoninsoftware.com
     Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
     @author Matthew Lohbihler
@@ -14,11 +14,28 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see http://www.gnu.org/licenses/.
---%><%--
---%><%-- The snippet used for image charts in rollovers --%><%--
---%><%@ include file="/WEB-INF/jsp/include/tech.jsp" %><%--
---%><c:choose><%--
-  --%><c:when test="${empty pointValue}"><tag:img png="hourglass" title="common.noData"/></c:when><%--
-  --%><c:otherwise><img src="chart/${pointValue.time}_${point.chartRenderer.duration}_${point.id}.png?w=400&h=150" width="400" height="150" alt="<fmt:message key="common.genChart"/>"/></c:otherwise><%--
---%></c:choose>
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.web.dwr.util;
+
+import java.lang.reflect.Method;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.directwebremoting.AjaxFilter;
+import org.directwebremoting.AjaxFilterChain;
+
+import com.serotonin.mango.vo.permission.Permissions;
+
+/**
+ * @author Matthew Lohbihler
+ */
+public class LoggedInAjaxFilter implements AjaxFilter {
+    private static final Log LOG = LogFactory.getLog(LoggedInAjaxFilter.class);
+
+    public Object doFilter(Object obj, Method method, Object[] params, AjaxFilterChain chain) throws Exception {
+        LOG.debug("Running LoggedInAjaxFilter, hash=" + hashCode());
+        Permissions.ensureValidUser();
+        return chain.doFilter(obj, method, params);
+    }
+}

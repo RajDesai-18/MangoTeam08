@@ -1,1 +1,1 @@
-ò 2javaX|hr1src/com/serotonin/mango/view/text/RangeValue.java
+ò 2webX4hr.build/resources/dojo/tests/gfx/test_image.html

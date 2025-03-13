@@ -1,0 +1,1 @@
+´# 2javaXphr@src/com/serotonin/mango/view/component/SimplePointComponent.java

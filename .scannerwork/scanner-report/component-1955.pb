@@ -1,1 +1,1 @@
-£ 2javaX×hr+src/com/serotonin/mango/db/dao/ViewDao.java
+£ 2webXhr;build/resources/dojo/src/widget/templates/FloatingPane.html

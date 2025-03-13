@@ -1,1 +1,1 @@
-ª$ 2jspX´hr.war/WEB-INF/jsp/dataSourceEdit/editOneWire.jsp
+ª$ 2javaXŠhrJsrc/com/serotonin/mango/vo/dataSource/viconics/ViconicsPointLocatorVO.java

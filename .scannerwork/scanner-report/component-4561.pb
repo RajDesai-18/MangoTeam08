@@ -1,0 +1,1 @@
+Ñ# 2javaXIhr=src/com/serotonin/mango/view/stats/AbstractDataQuantizer.java

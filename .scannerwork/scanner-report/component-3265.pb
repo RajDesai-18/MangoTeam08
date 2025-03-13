@@ -1,1 +1,0 @@
-Á 2jsXhr2war/resources/dojo/src/i18n/currency/nls/en/JPY.js

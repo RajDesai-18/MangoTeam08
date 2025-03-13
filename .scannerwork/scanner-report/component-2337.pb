@@ -1,1 +1,1 @@
-¡ 2javaXÉhrJsrc/com/serotonin/mango/vo/dataSource/modbus/ModbusSerialDataSourceVO.java
+¡ 2xmlXhr&build/resources/dojo/tests/io/frag.xml

@@ -1,1 +1,1 @@
-œ 2javaXÇhr1src/com/serotonin/mango/db/dao/PointValueDao.java
+œ 2cssXhrKbuild/resources/dojo/src/widget/templates/Editor2/showtableborder_gecko.css

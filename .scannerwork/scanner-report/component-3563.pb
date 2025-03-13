@@ -1,1 +1,0 @@
-ë 2webX™hr:war/resources/dojo/src/widget/templates/EditorToolbar.html

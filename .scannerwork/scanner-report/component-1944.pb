@@ -1,1 +1,1 @@
-˜ 2javaX«hr,src/com/serotonin/mango/db/dao/EventDao.java
+˜ 2webXhrCbuild/resources/dojo/src/widget/templates/Editor2/EditorDialog.html

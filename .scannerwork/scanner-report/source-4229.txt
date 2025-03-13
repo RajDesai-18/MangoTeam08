@@ -1,197 +1,141 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
-<title>dojo.widget.defineWidget test</title>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<script type="text/javascript"> djConfig = { isDebug: true }; </script>
-<script type="text/javascript" src="../../dojo.js"></script>
-<script type="text/javascript">
-	dojo.require("dojo.widget.*");
-	
-	// standard defines 
-	
-	dojo.widget.defineWidget('test.html.FooA', dojo.widget.HtmlWidget, {
-		declaration: 'no initializer',
-		fillInTemplate: function() {
-			this.domNode.innerHTML = this.declaration;
-		}
-	});
-	
-	dojo.widget.defineWidget('test.html.FooB', dojo.widget.HtmlWidget, 
-		function() {
-			this.declaration = 'initializer as parameter';
-		},{
-		declaration: '[init failed]',
-		fillInTemplate: function() {
-			this.domNode.innerHTML = this.declaration;
-		}
-	});
-	
-	dojo.widget.defineWidget('test.html.FooC', dojo.widget.HtmlWidget, {
-		initializer: function() {
-			this.declaration = 'initializer as property';
-		},
-		declaration: '[init failed]',
-		fillInTemplate: function() {
-			this.domNode.innerHTML = this.declaration;
-		}
-	});
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-	test.html.FooD = function() {
-		this.declaration = 'initializer as faux-constructor';
-	}	
-	dojo.widget.defineWidget('test.html.FooD', dojo.widget.HtmlWidget, {
-		declaration: '[init failed]',
-		fillInTemplate: function() {
-			this.domNode.innerHTML = this.declaration;
-		}
-	});
-	
-	// multi-class defines
-	
-	dojo.declare('base.foo', null, {
-		fillInTemplate: function() {
-			this.domNode.innerHTML = 'mixin-superclass and ' + this.declaration;
-		}
-	});
-			
-	dojo.widget.defineWidget('test.html.Foo2A', [dojo.widget.HtmlWidget, base.foo], {
-		declaration: 'no initializer'
-	});
-	
-	dojo.widget.defineWidget('test.html.Foo2B', [dojo.widget.HtmlWidget, base.foo], 
-		function() {
-			this.declaration = 'initializer as parameter';
-		},{
-		declaration: '[init failed]'
-	});
-	
-	dojo.widget.defineWidget('test.html.Foo2C', [dojo.widget.HtmlWidget, base.foo], {
-		initializer: function() {
-			this.declaration = 'initializer as property';
-		},
-		declaration: '[init failed]'
-	});
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.db;
 
-	test.html.Foo2D = function() {
-		this.declaration = 'initializer as faux-constructor';
-	}	
-	dojo.widget.defineWidget('test.html.Foo2D', [dojo.widget.HtmlWidget, base.foo], {
-		declaration: '[init failed]'
-	});
-	
-	// default renderer defines (deprecated)
-	
-	dojo.widget.defineWidget('test.DefaultFooA', dojo.widget.HtmlWidget, {
-		declaration: 'default renderer, no initializer',
-		fillInTemplate: function() {
-			this.domNode.innerHTML = this.declaration;
-		}
-	});
-	
-	dojo.widget.defineWidget('test.DefaultFooB', dojo.widget.HtmlWidget, 
-		function() {
-			this.declaration = 'default renderer, initializer as parameter';
-		},{
-		declaration: '[init failed]',
-		fillInTemplate: function() {
-			this.domNode.innerHTML = this.declaration;
-		}
-	});
-	
-	// old-style defines (deprecated)
-	
-	dojo.widget.defineWidget('test.HtmlFooOld', dojo.widget.HtmlWidget, {
-		declaration: '[init failed]',
-		fillInTemplate: function() {
-			this.domNode.innerHTML = this.declaration;
-		}
-	}, 
-	'', 
-	function() {
-		this.declaration = 'simple deprecated';
-	});
-	
-	dojo.widget.defineWidget('test.html.fooOld', dojo.widget.HtmlWidget, {
-		declaration: '[init failed]',
-		fillInTemplate: function() {
-			this.domNode.innerHTML = this.declaration;
-		}
-	}, 
-	'html', 
-	function() {
-		this.declaration = 'deprecated';
-	});
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-	// explicit renderer 
-	
-	dojo.widget.defineWidget('test.html.Foo3A', 'html', dojo.widget.HtmlWidget, {
-		declaration: 'explicit renderer, no initializer',
-		fillInTemplate: function() {
-			this.domNode.innerHTML = this.declaration;
-		}
-	});
-	
-	dojo.widget.defineWidget('test.html.Foo3B', 'html', dojo.widget.HtmlWidget, 
-		function() {
-			this.declaration = 'explicit renderer, initializer as parameter';
-		},{
-		declaration: '[init failed]',
-		fillInTemplate: function() {
-			this.domNode.innerHTML = this.declaration;
-		}
-	});
-	
-	dojo.widget.defineWidget('test.html.Foo3C', 'html', dojo.widget.HtmlWidget, {
-		initializer: function() {
-			this.declaration = 'explicit renderer, initializer as property';
-		},
-		declaration: '[init failed]',
-		fillInTemplate: function() {
-			this.domNode.innerHTML = this.declaration;
-		}
-	});
+import javax.servlet.ServletContext;
+import javax.sql.DataSource;
 
-	test.html.Foo3D = function() {
-		this.declaration = 'explicit renderer, initializer as faux-constructor';
-	}	
-	dojo.widget.defineWidget('test.html.Foo3D', 'html', dojo.widget.HtmlWidget, {
-		declaration: '[init failed]',
-		fillInTemplate: function() {
-			this.domNode.innerHTML = this.declaration;
-		}
-	});
-	
-</script>
+import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-<script type="text/javascript">
-</script>
+import com.serotonin.ShouldNeverHappenException;
+import com.serotonin.db.spring.ExtendedJdbcTemplate;
+import com.serotonin.mango.Common;
 
-<style type="text/css">
-body { 
-	font-family : sans-serif; 
+/**
+ * @author Matthew Lohbihler
+ */
+abstract public class BasePooledAccess extends DatabaseAccess {
+    private final Log log = LogFactory.getLog(BasePooledAccess.class);
+    protected BasicDataSource dataSource;
+
+    public BasePooledAccess(ServletContext ctx) {
+        super(ctx);
+    }
+
+    @Override
+    protected void initializeImpl(String propertyPrefix) {
+        log.info("Initializing pooled connection manager");
+        dataSource = new BasicDataSource();
+        dataSource.setDriverClassName(getDriverClassName());
+        dataSource.setUrl(getUrl(propertyPrefix));
+        dataSource.setUsername(Common.getEnvironmentProfile().getString(propertyPrefix + "db.username"));
+        dataSource.setPassword(getDatabasePassword(propertyPrefix));
+        dataSource.setMaxActive(Common.getEnvironmentProfile().getInt(propertyPrefix + "db.pool.maxActive", 10));
+        dataSource.setMaxIdle(Common.getEnvironmentProfile().getInt(propertyPrefix + "db.pool.maxIdle", 10));
+    }
+
+    protected String getUrl(String propertyPrefix) {
+        return Common.getEnvironmentProfile().getString(propertyPrefix + "db.url");
+    }
+
+    abstract protected String getDriverClassName();
+
+    @Override
+    public void runScript(String[] script, OutputStream out) {
+        ExtendedJdbcTemplate ejt = new ExtendedJdbcTemplate();
+        ejt.setDataSource(dataSource);
+
+        StringBuilder statement = new StringBuilder();
+
+        for (String line : script) {
+            // Trim whitespace
+            line = line.trim();
+
+            // Skip comments
+            if (line.startsWith("--"))
+                continue;
+
+            statement.append(line);
+            statement.append(" ");
+            if (line.endsWith(";")) {
+                // Execute the statement
+                ejt.execute(statement.toString());
+                statement.delete(0, statement.length() - 1);
+            }
+        }
+    }
+
+    protected void createSchema(String scriptFile) {
+        BufferedReader in = new BufferedReader(new InputStreamReader(ctx.getResourceAsStream(scriptFile)));
+
+        List<String> lines = new ArrayList<String>();
+        try {
+            String line;
+            while ((line = in.readLine()) != null)
+                lines.add(line);
+
+            String[] script = new String[lines.size()];
+            lines.toArray(script);
+            runScript(script, null);
+        }
+        catch (IOException ioe) {
+            throw new ShouldNeverHappenException(ioe);
+        }
+        finally {
+            try {
+                in.close();
+            }
+            catch (IOException ioe) {
+                log.warn("", ioe);
+            }
+        }
+    }
+
+    @Override
+    public void terminate() {
+        log.info("Stopping database");
+        try {
+            dataSource.close();
+        }
+        catch (SQLException e) {
+            log.warn("", e);
+        }
+    }
+
+    @Override
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    @Override
+    public File getDataDirectory() {
+        return null;
+    }
 }
-</style>
-
-<h3><b>Foo</b> Widgets with Varying Define Syntaxes</h4>
-ERROR or [init failed] text below indicates a failure in <em>dojo.widget.defineWidget</em> or <em>dojo.lang.declare</em>.<br>
-<br>
-<b>html.FooA</b> uses <em><span dojoType="FooA">ERROR</span></em><br>
-<b>html.FooB</b> uses <em><span dojoType="FooB">ERROR</span></em><br>
-<b>html.FooC</b> uses <em><span dojoType="FooC">ERROR</span></em><br>
-<b>html.FooD</b> uses <em><span dojoType="FooD">ERROR</span></em><br>
-<br>
-<b>html.Foo2A</b> uses <em><span dojoType="Foo2A">ERROR</span></em><br>
-<b>html.Foo2B</b> uses <em><span dojoType="Foo2B">ERROR</span></em><br>
-<b>html.Foo2C</b> uses <em><span dojoType="Foo2C">ERROR</span></em><br>
-<b>html.Foo2D</b> uses <em><span dojoType="Foo2D">ERROR</span></em><br>
-<br>
-<b>html.Foo3A</b> uses <em><span dojoType="Foo3A">ERROR</span></em><br>
-<b>html.Foo3B</b> uses <em><span dojoType="Foo3B">ERROR</span></em><br>
-<b>html.Foo3C</b> uses <em><span dojoType="Foo3C">ERROR</span></em><br>
-<b>html.Foo3D</b> uses <em><span dojoType="Foo3D">ERROR</span></em><br>
-<br>
-<b>DefaultFooA</b> uses <em><span dojoType="DefaultFooA">ERROR</span></em><br>
-<b>DefaultFooB</b> uses <em><span dojoType="DefaultFooB">ERROR</span></em><br>
-<br>
-<b>HtmlFooOld</b> uses <em><span dojoType="HtmlFooOld">ERROR</span></em><br>
-<b>html.fooOld</b> uses <em><span dojoType="fooOld">ERROR</span></em><br>

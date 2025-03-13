@@ -1,1 +1,1 @@
-”$ 2jspXÖhr$war/WEB-INF/jsp/dataPointDetails.jsp
+”$ 2javaX©hr@src/com/serotonin/mango/vo/dataSource/nmea/NmeaDataSourceVO.java

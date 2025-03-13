@@ -1,6 +1,2 @@
-V
-WebS5254@Add "lang" and/or "xml:lang" attributes to this "<html>" element2 v
-
-javascriptS2703WAdd the "let", "const" or "var" keyword to this declaration of "i" to make it explicit.2 ~
-
-javascriptS2703_Add the "let", "const" or "var" keyword to this declaration of "eventName" to make it explicit.2&& 
+r
+javaS120ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.2 )

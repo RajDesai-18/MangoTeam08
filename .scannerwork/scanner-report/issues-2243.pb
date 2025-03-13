@@ -1,7 +1,5 @@
-o
-javaS1104VMake DEFINITION a static final constant or non-public and provide accessors if needed.2&&! +I
-javaS14440Make this "public static DEFINITION" field final2&&! +r
-javaS115ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.2UU $n
-javaS3008URename this field "DEFINITION" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.2&&! +›
-javaS1845YRename field "DEFINITION" to prevent any misunderstanding/clash with method "definition".2&&! +:'
-%Ã:: $Conflicting identifier
+V
+WebS5254@Add "lang" and/or "xml:lang" attributes to this "<html>" element2 B
+WebS6844*Anchor tags should not be used as buttons.2.. +B
+WebS6844*Anchor tags should not be used as buttons.2// 2B
+WebS6844*Anchor tags should not be used as buttons.200 /

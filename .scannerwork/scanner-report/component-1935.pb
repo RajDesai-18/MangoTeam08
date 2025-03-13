@@ -1,1 +1,1 @@
-è 2javaXÂhr9src/br/org/scadabr/vo/dataSource/opc/OPCDataSourceVO.java
+è 2webXhr5build/resources/dojo/src/widget/templates/Dialog.html

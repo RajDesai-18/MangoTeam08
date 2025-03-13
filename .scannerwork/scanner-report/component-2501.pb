@@ -1,1 +1,1 @@
-≈ 2javaXèhrJsrc/com/serotonin/mango/web/mvc/controller/DataPointDetailsController.java
+≈ 2cssXhr/build/resources/dojo/tests/widget/css/demos.css

@@ -1,1 +1,0 @@
-Û 2webXhr2war/resources/dojo/demos/widget/Mail/SentMail.html

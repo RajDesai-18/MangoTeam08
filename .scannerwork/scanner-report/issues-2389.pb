@@ -1,8 +1,7 @@
-r
-javaS120ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.2 *`
-javaS1124EReorder the modifiers to comply with the Java Language Specification.2""	 @`
-javaS1124EReorder the modifiers to comply with the Java Language Specification.2.. @`
-javaS1124EReorder the modifiers to comply with the Java Language Specification.200 @`
-javaS1124EReorder the modifiers to comply with the Java Language Specification.222 @`
-javaS1124EReorder the modifiers to comply with the Java Language Specification.244 @`
-javaS1124EReorder the modifiers to comply with the Java Language Specification.266 @
+}
+
+javascriptS2703^Add the "let", "const" or "var" keyword to this declaration of "djConfig" to make it explicit.2	  
+
+javascriptS4144WUpdate this function so that its implementation is not identical to the one on line 57.2ss :(
+&Õ99 Original implementationV
+WebS5254@Add "lang" and/or "xml:lang" attributes to this "<html>" element2 

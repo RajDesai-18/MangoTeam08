@@ -51,6 +51,11 @@ import com.serotonin.mango.Common;
 import com.serotonin.mango.DataTypes;
 import com.serotonin.mango.ImageSaveException;
 import com.serotonin.mango.db.DatabaseAccess;
+import com.serotonin.mango.db.dao.PointValueDao.BatchWriteBehind;
+import com.serotonin.mango.db.dao.PointValueDao.BatchWriteBehindEntry;
+import com.serotonin.mango.db.dao.PointValueDao.IdPointValueRowMapper;
+import com.serotonin.mango.db.dao.PointValueDao.PointValueRowMapper;
+import com.serotonin.mango.db.dao.PointValueDao.UnsavedPointValue;
 import com.serotonin.mango.rt.dataImage.AnnotatedPointValueTime;
 import com.serotonin.mango.rt.dataImage.IdPointValueTime;
 import com.serotonin.mango.rt.dataImage.PointValueTime;
@@ -242,10 +247,11 @@ public class PointValueDao extends BaseDao {
             svalue = Long.toString(id);
 
         // Check if we need to create an annotation.
+        // Code Smell 2
         if (svalue != null || source != null) {
             Integer sourceType = null, sourceId = null;
             if (source != null) {
-                sourceType = source.getSetPointSourceType();
+                sourceType = source.getSetPointSourceType().getValue();
                 sourceId = source.getSetPointSourceId();
             }
 
@@ -387,7 +393,8 @@ public class PointValueDao extends BaseDao {
         for (PointValueTime pv : values) {
             if (pv instanceof AnnotatedPointValueTime) {
                 apv = (AnnotatedPointValueTime) pv;
-                if (apv.getSourceType() == SetPointSource.Types.USER) {
+                // Code Smell 2
+                if (apv.getSourceType().ordinal() == SetPointSource.Type.USER.ordinal()) {
                     alist = userIds.get(apv.getSourceId());
                     if (alist == null) {
                         alist = new ArrayList<AnnotatedPointValueTime>();

@@ -1,0 +1,1 @@
+– 2jsXhr=build/resources/dojo/tests/widget/namespaces/myns/manifest.js

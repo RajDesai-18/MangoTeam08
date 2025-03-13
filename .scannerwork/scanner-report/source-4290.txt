@@ -1,55 +1,145 @@
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<meta http-equiv="Context-Type" content="text/html; charset=UTF-8">
-<!--
-<!DOCTYPE html
-	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
--->
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<title>TabContainer Demo</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.db.upgrade;
 
-<script type="text/javascript">
-	var djConfig = { isDebug: true };
-</script>
-<script type="text/javascript" src="../../dojo.js"></script>
-<script type="text/javascript">
-	dojo.require("dojo.widget.TabContainer");
-	dojo.require("dojo.widget.Tooltip");
-	dojo.require("dojo.widget.LinkPane");
-	dojo.require("dojo.widget.ContentPane");
-	dojo.require("dojo.widget.Button");
-</script>
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-<style type="text/css">
-body {
-	font-family : sans-serif;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.serotonin.mango.db.DatabaseAccess;
+import com.serotonin.mango.db.dao.CompoundEventDetectorDao;
+import com.serotonin.mango.db.dao.EventDao;
+import com.serotonin.mango.db.dao.MailingListDao;
+import com.serotonin.mango.db.dao.PublisherDao;
+import com.serotonin.mango.db.dao.ScheduledEventDao;
+
+/**
+ * @author Matthew Lohbihler
+ */
+public class Upgrade1_8_3 extends DBUpgrade {
+    private final Log log = LogFactory.getLog(getClass());
+
+    @Override
+    public void upgrade() throws Exception {
+        OutputStream out = createUpdateLogOutputStream("1_8_3");
+
+        // Run the script.
+        log.info("Running script 1");
+        runScript(script1, out);
+
+        xid();
+
+        // Run the script.
+        log.info("Running script 2");
+        Map<String, String[]> scripts = new HashMap<String, String[]>();
+        scripts.put(DatabaseAccess.DatabaseType.DERBY.name(), derbyScript2);
+        scripts.put(DatabaseAccess.DatabaseType.MYSQL.name(), mysqlScript2);
+        runScript(scripts, out);
+
+        // Run the MySQL fix script
+        log.info("Running MySQL fix script");
+        scripts.clear();
+        scripts.put(DatabaseAccess.DatabaseType.DERBY.name(), new String[0]);
+        scripts.put(DatabaseAccess.DatabaseType.MYSQL.name(), mysqlScript3);
+        try {
+            runScript(scripts, out);
+        }
+        catch (Exception e) {
+            // Ignore. The FKs likely already existed.
+        }
+
+        out.flush();
+        out.close();
+    }
+
+    @Override
+    protected String getNewSchemaVersion() {
+        return "1.9.0";
+    }
+
+    private static String[] script1 = { "alter table scheduledEvents add column xid varchar(50);",
+            "alter table compoundEventDetectors add column xid varchar(50);",
+            "alter table mailingLists add column xid varchar(50);",
+            "alter table publishers add column xid varchar(50);",
+            "alter table eventHandlers add column xid varchar(50);", };
+
+    private static String[] derbyScript2 = { "alter table scheduledEvents alter xid not null;",
+            "alter table scheduledEvents add constraint scheduledEventsUn1 unique (xid);",
+            "alter table compoundEventDetectors alter xid not null;",
+            "alter table compoundEventDetectors add constraint compoundEventDetectorsUn1 unique (xid);",
+            "alter table mailingLists alter xid not null;",
+            "alter table mailingLists add constraint mailingListsUn1 unique (xid);",
+            "alter table publishers alter xid not null;",
+            "alter table publishers add constraint publishersUn1 unique (xid);",
+            "alter table eventHandlers alter xid not null;",
+            "alter table eventHandlers add constraint eventHandlersUn1 unique (xid);", };
+
+    private static String[] mysqlScript2 = { "alter table scheduledEvents modify xid varchar(50) not null;",
+            "alter table scheduledEvents add constraint scheduledEventsUn1 unique (xid);",
+            "alter table compoundEventDetectors modify xid varchar(50) not null;",
+            "alter table compoundEventDetectors add constraint compoundEventDetectorsUn1 unique (xid);",
+            "alter table mailingLists modify xid varchar(50) not null;",
+            "alter table mailingLists add constraint mailingListsUn1 unique (xid);",
+            "alter table publishers modify xid varchar(50) not null;",
+            "alter table publishers add constraint publishersUn1 unique (xid);",
+            "alter table eventHandlers modify xid varchar(50) not null;",
+            "alter table eventHandlers add constraint eventHandlersUn1 unique (xid);", };
+
+    private static String[] mysqlScript3 = {
+            "alter table userEvents engine=InnoDB;",
+            "delete from userEvents where eventId not in (select id from events);",
+            "delete from userEvents where userId not in (select id from users);",
+            "alter table userEvents add constraint userEventsFk1 foreign key (eventId) references events(id) on delete cascade;",
+            "alter table userEvents add constraint userEventsFk2 foreign key (userId) references users(id) on delete cascade;", };
+
+    private void xid() {
+        // Default the xid values.
+        ScheduledEventDao scheduledEventDao = new ScheduledEventDao();
+        List<Integer> ids = queryForList("select id from scheduledEvents", Integer.class);
+        for (Integer id : ids)
+            ejt.update("update scheduledEvents set xid=? where id=?", new Object[] {
+                    scheduledEventDao.generateUniqueXid(), id });
+
+        CompoundEventDetectorDao compoundEventDetectorDao = new CompoundEventDetectorDao();
+        ids = queryForList("select id from compoundEventDetectors", Integer.class);
+        for (Integer id : ids)
+            ejt.update("update compoundEventDetectors set xid=? where id=?", new Object[] {
+                    compoundEventDetectorDao.generateUniqueXid(), id });
+
+        MailingListDao mailingListDao = new MailingListDao();
+        ids = queryForList("select id from mailingLists", Integer.class);
+        for (Integer id : ids)
+            ejt.update("update mailingLists set xid=? where id=?", new Object[] { mailingListDao.generateUniqueXid(),
+                    id });
+
+        PublisherDao publisherDao = new PublisherDao();
+        ids = queryForList("select id from publishers", Integer.class);
+        for (Integer id : ids)
+            ejt.update("update publishers set xid=? where id=?", new Object[] { publisherDao.generateUniqueXid(), id });
+
+        EventDao eventDao = new EventDao();
+        ids = queryForList("select id from eventHandlers", Integer.class);
+        for (Integer id : ids)
+            ejt.update("update eventHandlers set xid=? where id=?", new Object[] { eventDao.generateUniqueXid(), id });
+    }
 }
-
-/* add padding to each contentpane inside the tab container, and scrollbar if necessary */
-.dojoTabPane {
-  padding : 10px 10px 10px 10px;
-  overflow: auto;
-}
-
-</style>
-</head>
-
-<body>
-	<h1>Test for tab lazy loading</h1>
-	<ol>
-		<li>Watch the debug messages below the tab container to make sure
-		that the lazy-load tab isn't loaded until you click it.
-		<li>Also check that the "refresh on show" tab is reloaded every time you click it
-	</ol>
-	<div id="mainTabContainer" dojoType="TabContainer" style="width: 100%; height: 20em;">
-		<div id="initialTab" dojoType="ContentPane" href="tab1.html" label="Initial Tab"></div>
-		<div id="refreshTab" dojoType="ContentPane" href="tab2.html" refreshOnShow="true" label="Refresh On Show Tab" onload="dojo.debug('loaded refresh-on-show-tab');"></div>
-		<div id="preloadTab" dojoType="ContentPane" href="doc0.html" label="Preload Tab" onload="dojo.debug('loaded preload tab');"></div>
-		<div id="lazyTab" style="display: none;" dojoType="ContentPane" href="doc1.html" label="Lazy Load Tab" onload="dojo.debug('loaded lazy tab');"></div>
-	</div>
-
-</body>
-</html>

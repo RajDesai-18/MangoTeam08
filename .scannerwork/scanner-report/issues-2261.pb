@@ -1,6 +1,6 @@
-r
-javaS115ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.2|| $N
-javaS11335Do not forget to remove this deprecated code someday.2%% ! 
-javaS4144]Update this method so that its implementation is not identical to "getDefinition" on line 41.211  :(
-&Õ))! .original implementationA
-javaS1123(Add the missing @deprecated Javadoc tag.2%% !
+}
+
+javascriptS2703^Add the "let", "const" or "var" keyword to this declaration of "djConfig" to make it explicit.2 _
+WebDoctypePresenceCheck:Insert a <!DOCTYPE> declaration to before this <html> tag.2 V
+WebS5254@Add "lang" and/or "xml:lang" attributes to this "<html>" element2 E
+WebPageWithoutTitleCheckAdd a <title> tag to this page.2 

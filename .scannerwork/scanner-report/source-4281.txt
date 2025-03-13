@@ -1,88 +1,79 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-	"http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-	<title>Slider Widget Demo</title>
-	<script type="text/javascript">
-		var djConfig = {
-			isDebug: true,
-			debugAtAllCosts: false,
-			parseWidgets: true
-		};
- 	</script>
-	<script type="text/javascript" src="../../dojo.js"></script>
-	<script type="text/javascript">
-		dojo.require ("dojo.widget.*");
-		dojo.require ("dojo.widget.Slider");
-	</script>
-</head>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<body bgcolor="#C0C0C0">
-<h1>Slider Widget Demo</h1>
-This page demos the three types of slider widgets, with slightly different behaviours.
-<table border="1">
-<thead><tr><td>Type</td><td>Range</td><td>onDragMove</td><td>onDragEnd</td><td>onClick</td><td>reversed</td></tr></thead>
-<tbody>
-<tr><td>vertical</td><td>1..9</td><td>&nbsp;</td><td>update text field</td><td>update text field</td><td>yes</td></tr>
-<tr><td>horizontal</td><td>-10..10</td><td>update text field</td><td>&nbsp;</td><td>update text field</td><td>no</td></tr>
-<tr><td>box</td><td>0..10</td><td>&nbsp;</td><td>update text field</td><td>&nbsp;</td><td>X:yes<br>Y:no</td></tr>
-</tbody>
-</table>
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-Red, blue, and green borders shown to test the correct placement of slider components.<br>
-<table>
-<tr><td></td><td style="border:2px solid green;line-height:0px;white-space:nowrap;">
-[before]<div id="horizontalSlider" dojoType="SliderHorizontal" 
-	initialValue="5" minimum="-10" maximum="10" snapValues="11"
-	activeDrag="true"
-   	onValueChanged="dojo.byId('horizontalSliderValue').value = arguments[0];"
-	buttonStyle="top:1px;"
-	backgroundStyle="padding:8px 4px 8px 4px;border:1px solid red;"
-	backgroundSize="width:100px;height:5px;"
-	backgroundSrc="src/widget/templates/images/blank.gif"
-	progressBackgroundSrc="src/widget/templates/images/slider-bg.gif"
-	handleStyle="top:0px;width:13px;height:18px;"
-	handleSrc="src/widget/templates/images/slider.gif"
-	style="border:solid blue;border-width:16px 12px 8px 4px;padding:4px 8px 12px 16px;margin:9px;"
-   ></div>[after]</td>
-<td rowspan="2" style="border:2px solid green;line-height:0px;white-space:nowrap;vertical-align:middle;">
-[before]<div id="boxSlider" dojoType="Slider" maximumX="10" maximumY="10" minimumX="0" minimumY="0" initialValueX="5" initialValueY="5"
-	clickSelect="false"
-	showButtons="false"
-	backgroundStyle="padding:2px 4px 8px 16px;border:1px solid red;"
-	backgroundSize="width:200px;height:200px;"
-	handleStyle="top:-1px;"
-	onValueChanged="dojo.byId('boxX').value = arguments[0]; dojo.byId('boxY').value = arguments[1];"
-	flipX="true"
-   ></div>[after]</td>
-</tr>
-<tr><td style="border:2px solid green;line-height:0px;white-space:nowrap;">
-[before]<div id="verticalSlider" dojoType="SliderVertical" 
-	initialValue="5" snapValues="9" maximum="9" minimum="1"
-	clickSelect="true"
-  	onValueChanged="dojo.byId('verticalSliderValue').value = arguments[0];"
-	buttonStyle="width:28px;height:16px;"
-	backgroundStyle="padding:8px 8px 8px 8px;border:1px solid red;background-color:yellow;"
-	progressBackgroundSrc="src/widget/templates/images/slider-bg-progress-vert.gif"
-	handleStyle="left:2px;top:-1px;"
-	handleSrc="src/widget/templates/images/slider-button-vert.png"
-	flip="true"
-   ></div>[after]</td></tr>
-</table>
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.db.upgrade;
 
-<p>
-Horizontal Slider Value:
-   <input
-   	id="horizontalSliderValue" name="horizontalSliderValue" value="0"/> 
-   <button onclick="dojo.widget.byId ('horizontalSlider').setValue (dojo.byId('horizontalSliderValue').value)">set</button> <i>(updates when slider handle is moved)</i><br />
-Vertical Slider Value:
-   <input id="verticalSliderValue" name="verticalSliderValue" value="0"/> 
-   <button onclick="dojo.widget.byId ('verticalSlider').setValue (dojo.byId('verticalSliderValue').value)">set</button> <i>(updates when slider handle drag ends)</i><br />
-Box Slider Value:
-   <input id="boxX" name="boxX" value="0"/> 
-   <input id="boxY" name="boxY" value="0"/> 
-</p>
-<p><u>Debug Messages</u></p>
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-</body>
-</html>
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.serotonin.mango.db.DatabaseAccess;
+import com.serotonin.mango.db.dao.ViewDao;
+
+/**
+ * @author Matthew Lohbihler
+ */
+public class Upgrade1_6_0 extends DBUpgrade {
+    private final Log log = LogFactory.getLog(getClass());
+
+    @Override
+    public void upgrade() throws Exception {
+        OutputStream out = createUpdateLogOutputStream("1_6_0");
+
+        // Run the script.
+        log.info("Running script 1");
+        runScript(script1, out);
+
+        xid();
+
+        // Run the script.
+        log.info("Running script 2");
+        Map<String, String[]> scripts = new HashMap<String, String[]>();
+        scripts.put(DatabaseAccess.DatabaseType.DERBY.name(), derbyScript2);
+        scripts.put(DatabaseAccess.DatabaseType.MYSQL.name(), mysqlScript2);
+        runScript(scripts, out);
+
+        out.flush();
+        out.close();
+    }
+
+    @Override
+    protected String getNewSchemaVersion() {
+        return "1.6.1";
+    }
+
+    private static String[] script1 = { "alter table mangoViews add column xid varchar(20);", };
+
+    private static String[] derbyScript2 = { "alter table mangoViews alter xid not null;",
+            "alter table mangoViews add constraint mangoViewsUn1 unique (xid);", };
+
+    private static String[] mysqlScript2 = { "alter table mangoViews modify xid varchar(20) not null;",
+            "alter table mangoViews add constraint mangoViewsUn1 unique (xid);", };
+
+    private void xid() {
+        // Default the xid values.
+        ViewDao viewDao = new ViewDao();
+        List<Integer> ids = queryForList("select id from mangoViews", Integer.class);
+        for (Integer id : ids)
+            ejt.update("update mangoViews set xid=? where id=?", new Object[] { viewDao.generateUniqueXid(), id });
+    }
+}

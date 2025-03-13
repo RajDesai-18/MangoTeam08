@@ -1,3 +1,3 @@
-S
-javaS1118:Add a private constructor to hide the implicit public one.2 :
-javaS131"Add a default case to this switch.2"" 
+=
+WebS5256%Add "<th>" headers to this "<table>".2 9J
+WebImgWithoutAltCheck%Add an "alt" attribute to this image.2 #

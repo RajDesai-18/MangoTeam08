@@ -1,1 +1,0 @@
-— 2jsXNhr*war/resources/dojo/src/widget/SlideShow.js

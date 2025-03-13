@@ -1,1 +1,1 @@
-Š 2javaXßhrDsrc/com/serotonin/mango/vo/dataSource/galil/GalilPointLocatorVO.java
+Š 2jsXhr5build/resources/dojo/tests/i18n/nls/it/salutations.js

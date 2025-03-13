@@ -1,0 +1,1 @@
+þ1 2webXMhr3war/resources/dojo/tests/widget/Chart/test_bar.html

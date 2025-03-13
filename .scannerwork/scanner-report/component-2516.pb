@@ -1,1 +1,1 @@
-Ô 2javaX9hrHsrc/com/serotonin/mango/web/mvc/controller/WebcamLiveFeedController.java
+Ô 2webXhr+build/resources/dojo/tests/widget/doc2.html

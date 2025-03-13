@@ -1,36 +1,47 @@
-/*
-    Mango - Open Source M2M - http://mango.serotoninsoftware.com
-    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
-    @author Matthew Lohbihler
-    
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd"> 
+<html>
+<head>
+	<title>Dojo Editor2 Stylesheet test</title>
+	<script type="text/javascript">
+		var djConfig = {
+			isDebug: true,
+			dojoRichTextFrameUrl: "../../../src/widget/templates/richtextframe.html" //for xdomain
+		};
+	</script>
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	<script type="text/javascript" src="../../../dojo.js"></script>
+	<script type="text/javascript">
+		dojo.require("dojo.widget.Editor2");
+	</script>
+</head>
+<body bgcolor="white">
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-package com.serotonin.mango.web.servlet;
+this is text above the editor
+<br>
+<input type="button" value="Add Stylesheet" onclick="dojo.widget.byId('editor1').addStyleSheet(new dojo.uri.Uri(dojo.global().location, 'test_richtext_other.css'));">
+<input type="button" value="Remove Stylesheet" onclick="dojo.widget.byId('editor1').removeStyleSheet(new dojo.uri.Uri(dojo.global().location, 'test_richtext_other.css'));">
+<br>
+<br>
+<div style="position: relative;" parseWidgets="false">
+	<div style="border: 1px solid black;">
+		<div dojoType="RichText" widgetid="editor1"
+			htmlEditing="true" useActiveX="false" styleSheets="test_richtext.css"
+			shareToolbar="false" id="editor" toolbarAlwaysVisible="true">
+			look ma! it's editable content!
+			<ul>
+				<li>foo</li>
+				<li>bar</li>
+				<li>baz</li>
 
-import java.io.IOException;
+			</ul>
+			<h1>Lorem!</h1>
+		</div>
+	</div>
+	text below the first editor instance
+</div>
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-/**
- * @author Matthew Lohbihler
- */
-public class ReportEventExportServlet extends ReportExportBase {
-    private static final long serialVersionUID = -1;
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        execute(request, response, CONTENT_EVENTS);
-    }
-}
+<br>
+text above the second editor instance. This second editor shares a toolbar with the first.
+</body>
+</html>

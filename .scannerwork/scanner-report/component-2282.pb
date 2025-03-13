@@ -1,1 +1,0 @@
-ê 2javaX…hr5src/com/serotonin/mango/view/text/AnalogRenderer.java

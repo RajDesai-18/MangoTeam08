@@ -1,0 +1,1 @@
+§4 2webX"hr/war/resources/dojo/tests/xml/test_svgScope.html

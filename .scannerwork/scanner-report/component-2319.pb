@@ -1,1 +1,1 @@
-è 2javaXòhrDsrc/com/serotonin/mango/vo/dataSource/galil/VariablePointTypeVO.java
+è 2jsXhr5build/resources/dojo/tests/i18n/nls/ru/salutations.js

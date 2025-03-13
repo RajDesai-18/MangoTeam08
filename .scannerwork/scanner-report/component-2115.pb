@@ -1,1 +1,1 @@
-Ã 2javaX+hr@src/com/serotonin/mango/rt/dataSource/sql/SqlPointLocatorRT.java
+Ã 2webX9hr5build/resources/dojo/src/widget/templates/Slider.html

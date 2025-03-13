@@ -1,1 +1,1 @@
-¹ 2webXNhr,war/resources/dojo/tests/gfx/test_color.html
+¹ 2jspX¹hrbuild/WEB-INF/jsp/events.jsp

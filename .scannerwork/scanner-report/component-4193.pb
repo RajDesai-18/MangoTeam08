@@ -1,1 +1,0 @@
-á  2webX/hr-war/resources/dojo/tests/widget/loading1.html

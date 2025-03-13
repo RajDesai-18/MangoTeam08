@@ -1,1 +1,1 @@
-ï 2javaXFhr4src/com/serotonin/mango/vo/report/ReportPointVO.java
+ï 2jsXPhr1build/resources/dojo/tests/logging/test_Logger.js

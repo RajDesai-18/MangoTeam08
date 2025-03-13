@@ -1,1 +1,1 @@
-ª% 2jspXhr$war/WEB-INF/snippet/imageContent.jsp
+ª% 2javaX©hr,src/com/serotonin/mango/web/dwr/ViewDwr.java

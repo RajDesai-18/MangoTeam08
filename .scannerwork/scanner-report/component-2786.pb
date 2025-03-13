@@ -1,0 +1,1 @@
+â 2xmlXhr.build/resources/dojo/tests/xml/hello-world.xml

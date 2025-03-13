@@ -1,5 +1,6 @@
-r
-javaS120ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.2 1`
-javaS1124EReorder the modifiers to comply with the Java Language Specification.2	 @^
-javaS2245EMake sure that using this pseudorandom number generator is safe here.2/ 5`
-javaS1124EReorder the modifiers to comply with the Java Language Specification.2 @
+G
+WebS1827/Remove this deprecated "cellpadding" attribute.2 9G
+WebS1827/Remove this deprecated "cellspacing" attribute.2 9=
+WebS5256%Add "<th>" headers to this "<table>".2 9J
+WebImgWithoutAltCheck%Add an "alt" attribute to this image.2 J
+WebImgWithoutAltCheck%Add an "alt" attribute to this image.2 

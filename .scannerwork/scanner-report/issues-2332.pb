@@ -1,5 +1,5 @@
-r
-javaS120ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.2 .r
-javaS115ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.2hh $l
-javaS2975SRemove this "clone" implementation; use a copy constructor or copy factory instead.2JJ A
-javaS1185(Remove this method to simply inherit it.2JJ 
+}
+
+javascriptS2703^Add the "let", "const" or "var" keyword to this declaration of "djConfig" to make it explicit.2 _
+WebDoctypePresenceCheck:Insert a <!DOCTYPE> declaration to before this <html> tag.2 V
+WebS5254@Add "lang" and/or "xml:lang" attributes to this "<html>" element2 

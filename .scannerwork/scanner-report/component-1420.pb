@@ -1,0 +1,1 @@
+Œ 2webX	hr1build/resources/dojo/demos/widget/Mail/Paint.html

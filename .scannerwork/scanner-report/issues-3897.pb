@@ -1,17 +1,8 @@
-}
-
-javascriptS2703^Add the "let", "const" or "var" keyword to this declaration of "djConfig" to make it explicit.2 	m
-
-javascriptS4138LExpected a `for-of` loop instead of a `for` loop with this simple iteration.2 @Á
-
-javascriptS2392YConsider moving declaration of 'rgb' as it is referenced outside current binding context.2 	:#
-!π-- 	Outside reference.:#
-!π.. Outside reference.:#
-!π..- 0Outside reference.8
-
-javascriptS2814'rgb' is already defined.2-- 	6
-
-javascriptS2814'c' is already defined.277 -
-cssS4667Unexpected empty source2
-
- 
+?
+WebS5256%Add "<th>" headers to this "<table>".2
+ÑÑ C
+WebS1827)Remove this deprecated "align" attribute.2
+≠≠
+ )‹
+WebS6848¬Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element.2	∂∂ èj
+Web(MouseEventWithoutKeyboardEquivalentCheck,Add a 'onFocus' attribute to this <div> tag.2∂∂ è

@@ -1,3 +1,9 @@
-=
-WebS5256%Add "<th>" headers to this "<table>".2 	J
-WebImgWithoutAltCheck%Add an "alt" attribute to this image.2!! .
+±
+javaS1214CMove constants defined in this interfaces to another class or enum.2(( ):
+Í$)) :
+Í$** :
+Í$++ :
+Í$,, :
+Í$-- <
+javaS131"Add a default case to this switch.2
+ðð 

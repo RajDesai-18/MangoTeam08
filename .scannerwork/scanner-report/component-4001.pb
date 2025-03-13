@@ -1,1 +1,1 @@
-¡ 2webXöhr<war/resources/dojo/tests/lang/test_superclass_benchmark.html
+¡ 2jspXhr build/WEB-INF/snippet/common.jsp

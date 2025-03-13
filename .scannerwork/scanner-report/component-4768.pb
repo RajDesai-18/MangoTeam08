@@ -1,1 +1,1 @@
- % 2jspXhr*war/WEB-INF/snippet/changeContentRadio.jsp
+ % 2javaX®hr2src/com/serotonin/mango/web/dwr/PointLinksDwr.java

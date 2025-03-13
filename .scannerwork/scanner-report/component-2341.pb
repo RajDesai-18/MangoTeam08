@@ -1,1 +1,1 @@
-¥ 2javaXãhrHsrc/com/serotonin/mango/vo/dataSource/onewire/OneWirePointLocatorVO.java
+¥ 2webX(hrFbuild/resources/dojo/tests/io/iframeproxy/test_BrowserIO_ifp.frag.html

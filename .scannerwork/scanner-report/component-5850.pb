@@ -1,0 +1,1 @@
+Ú- 2cssXhrIwar/resources/dojo/src/widget/templates/Editor2/showtableborder_gecko.css

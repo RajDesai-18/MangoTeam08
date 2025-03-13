@@ -1,0 +1,1 @@
+í# 2javaX5hr6src/com/serotonin/mango/vo/bean/PointHistoryCount.java

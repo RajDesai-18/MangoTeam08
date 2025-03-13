@@ -1,0 +1,1 @@
+š 2webXhrFbuild/resources/dojo/tests/widget/namespaces/myns/widget/CheckBox.html

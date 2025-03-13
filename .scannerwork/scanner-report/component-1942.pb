@@ -1,1 +1,1 @@
-– 2javaXÐhr0src/com/serotonin/mango/db/dao/DataPointDao.java
+– 2webX[hrIbuild/resources/dojo/src/widget/templates/Editor2/Dialog/inserttable.html

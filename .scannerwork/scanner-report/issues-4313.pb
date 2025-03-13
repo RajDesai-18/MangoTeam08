@@ -1,3 +1,3 @@
-V
-WebS5254@Add "lang" and/or "xml:lang" attributes to this "<html>" element2 E
-WebPageWithoutTitleCheckAdd a <title> tag to this page.2 
+r
+javaS120ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.2 0o
+javaS3008VRename this field "NEXT_COV_ID" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.2%% "

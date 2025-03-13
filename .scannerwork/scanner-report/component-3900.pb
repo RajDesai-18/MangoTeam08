@@ -1,1 +1,1 @@
-¼ 2webXÉhr,war/resources/dojo/tests/gfx/test_gfx12.html
+¼ 2jspXÉhr3build/WEB-INF/jsp/include/graphicRendererEditor.jsp

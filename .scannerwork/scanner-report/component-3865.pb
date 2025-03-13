@@ -1,1 +1,1 @@
-™ 2webXphr5war/resources/dojo/tests/dnd/test_dragmoveparent.html
+™ 2jspX)hr/build/WEB-INF/jsp/dataSourceEdit/editDnp3Ip.jsp

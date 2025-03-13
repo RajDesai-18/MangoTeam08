@@ -1,4 +1,4 @@
-<%--
+/*
     Mango - Open Source M2M - http://mango.serotoninsoftware.com
     Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
     @author Matthew Lohbihler
@@ -14,42 +14,70 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see http://www.gnu.org/licenses/.
---%>
-<%@ include file="/WEB-INF/snippet/common.jsp" %>
-<c:if test="${!empty startsAndRuntimes}">
-  <b><fmt:message key="common.stats.start"/></b>: ${sst:fullTime(start)}<br/>
-  <b><fmt:message key="common.stats.end"/></b>: ${sst:fullTime(end)}<br/>
-  <table>
-    <tr>
-      <th><fmt:message key="common.value"/></th>
-      <th><fmt:message key="common.stats.starts"/></th>
-      <th><fmt:message key="common.stats.runtime"/></th>
-    </tr>
-  <c:forEach items="${startsAndRuntimes}" var="sar">
-    <tr>
-      <td>${mango:htmlTextValue(point, sar.mangoValue)}</td>
-      <td align="right">${sar.starts}</td>
-      <td align="right"><fmt:formatNumber value="${sar.proportion}" pattern="0%"/></td>
-    </tr>
-  </c:forEach>
-  </table>
-</c:if>
-<c:if test="${!empty average}">
-  <c:choose>
-    <c:when test="${noData}">
-      <b><fmt:message key="common.noData"/></b><br/>
-    </c:when>
-    <c:otherwise>
-      <b><fmt:message key="common.stats.start"/></b>: ${sst:fullTime(start)}<br/>
-      <b><fmt:message key="common.stats.end"/></b>: ${sst:fullTime(end)}<br/>
-      <b><fmt:message key="common.stats.min"/></b>: ${mango:specificHtmlTextValue(point, minimum)} @ ${sst:time(minTime)}<br/>
-      <b><fmt:message key="common.stats.max"/></b>: ${mango:specificHtmlTextValue(point, maximum)} @ ${sst:time(maxTime)}<br/>
-      <b><fmt:message key="common.stats.avg"/></b>: ${mango:specificHtmlTextValue(point, average)}<br/>
-      <c:if test="${!empty sum}">
-        <b><fmt:message key="common.stats.sum"/></b>: ${mango:specificHtmlTextValue(point, sum)}<br/>
-      </c:if>
-    </c:otherwise>
-  </c:choose>
-</c:if>
-<b><fmt:message key="common.stats.logEntries"/></b>: ${logEntries}
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.web.filter;
+
+import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.serotonin.mango.Common;
+import com.serotonin.mango.vo.User;
+import com.serotonin.mango.web.integration.CrowdUtils;
+
+abstract public class LoggedInFilter implements Filter {
+    private final Log LOGGER = LogFactory.getLog(LoggedInFilter.class);
+
+    private String forwardUrl;
+
+    public void init(FilterConfig config) {
+        forwardUrl = config.getInitParameter("forwardUrl");
+    }
+
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+            throws IOException, ServletException {
+        // Assume an http request.
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+
+        boolean loggedIn = true;
+
+        User user = Common.getUser(request);
+        if (!checkAccess(user))
+            loggedIn = false;
+
+        if (loggedIn && CrowdUtils.isCrowdEnabled()) {
+            if (CrowdUtils.isCrowdAuthenticated(user))
+                // The user may not have been authenticated by Crowd, so only check with Crowd if it was.
+                loggedIn = CrowdUtils.isAuthenticated(request, response);
+        }
+
+        if (!loggedIn) {
+            LOGGER.info("Denying access to secure page for session id " + request.getSession().getId() + ", uri="
+                    + request.getRequestURI());
+            response.sendRedirect(request.getContextPath() + forwardUrl);
+            //request.getRequestDispatcher(forwardUrl).forward(request, response);
+            return;
+        }
+
+        // Continue with the chain.
+        filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    public void destroy() {
+        // no op
+    }
+
+    abstract protected boolean checkAccess(User user);
+}

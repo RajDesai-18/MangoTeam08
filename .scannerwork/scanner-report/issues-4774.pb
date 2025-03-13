@@ -1,21 +1,11 @@
-B
-WebS6844*Anchor tags should not be used as buttons.2 EB
-WebS6844*Anchor tags should not be used as buttons.2 LB
-WebS6844*Anchor tags should not be used as buttons.2$$ VB
-WebS6844*Anchor tags should not be used as buttons.2)) MB
-WebS6844*Anchor tags should not be used as buttons.2-- MB
-WebS6844*Anchor tags should not be used as buttons.244 ;G
-WebS1827/Remove this deprecated "cellspacing" attribute.2:: 4G
-WebS1827/Remove this deprecated "cellpadding" attribute.2:: 4=
-WebS5256%Add "<th>" headers to this "<table>".2:: 4A
-WebS1827)Remove this deprecated "align" attribute.2GG A
-WebS1827)Remove this deprecated "align" attribute.2HH G
-WebS1827/Remove this deprecated "cellspacing" attribute.2KK
- >G
-WebS1827/Remove this deprecated "cellpadding" attribute.2KK
- >A
-WebS1827)Remove this deprecated "width" attribute.2KK
- >=
-WebS5256%Add "<th>" headers to this "<table>".2KK
- >A
-WebS1827)Remove this deprecated "align" attribute.2NN  
+©
+javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2442 B@©
+javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2>>A V@©
+javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2CC  0@©
+javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2FF' <@©
+javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2HH$ 4@´
+javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2
+ΩΩ0 @@´
+javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2
+¿¿3 C@;
+javaS1659 Declare "dp" on a separate line.2??$ &@

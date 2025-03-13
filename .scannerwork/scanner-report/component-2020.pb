@@ -1,1 +1,0 @@
-ä 2javaXzhr?src/com/serotonin/mango/rt/dataImage/types/MultistateValue.java

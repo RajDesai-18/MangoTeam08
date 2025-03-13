@@ -1,1 +1,1 @@
-˜ 2webXDhr/war/resources/dojo/tests/dnd/test_dragmove.html
+˜ 2jspX¬hr-build/WEB-INF/jsp/dataSourceEdit/editDnp3.jsp

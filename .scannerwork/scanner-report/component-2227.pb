@@ -1,1 +1,1 @@
-³ 2javaXbhr:src/com/serotonin/mango/view/chart/TableChartRenderer.java
+³ 2jsX"hr8build/resources/dojo/tests/data/old/test_data_binding.js

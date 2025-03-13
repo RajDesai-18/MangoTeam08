@@ -1,1 +1,1 @@
-½$ 2jspXÍhr*war/WEB-INF/jsp/include/compoundEditor.jsp
+½$ 2javaX×hr:src/com/serotonin/mango/vo/event/PointEventDetectorVO.java

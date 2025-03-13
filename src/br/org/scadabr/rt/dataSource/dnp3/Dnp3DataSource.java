@@ -34,65 +34,84 @@ public class Dnp3DataSource extends PollingDataSource {
         setPollingPeriod(Common.TimePeriods.SECONDS, vo.getRbePollPeriods(), false);
     }
 
+//  Code Smell 1: Long method (Bloater)
     @Override
     protected void doPoll(long time) {
+        processDataPoints(time);
+        executeDnp3Polling(time);
+        updateDataPoints(time);
+    }
+
+// Step 1: Handle Data Points Processing
+    private void processDataPoints(long time) {
         for (DataPointRT dataPoint : dataPoints) {
             try {
                 if (dnp3Master.getElement(dataPoint.getId()) == null) {
-                    Dnp3PointLocatorVO pointLocator = (Dnp3PointLocatorVO) dataPoint.getVO().getPointLocator();
-                    try {
-                        dnp3Master.addElement(dataPoint.getId(), pointLocator.getDnp3DataType(),
-                                ((Dnp3PointLocatorVO) dataPoint.getVO().getPointLocator()).getIndex());
-                    }
-                    catch (Exception e) {
-                        raiseEvent(DATA_SOURCE_EXCEPTION_EVENT, time, true, new LocalizableMessage("event.exception2",
-                                vo.getName(), e.getMessage()));
-                    }
+                    addDataPointElement(dataPoint, time);
                 }
-            }
-            catch (Exception e) {
-                raiseEvent(DATA_SOURCE_EXCEPTION_EVENT, time, true,
-                        new LocalizableMessage("event.exception2", vo.getName(), e.getMessage()));
-            }
-        }
-
-        try {
-            dnp3Master.doPoll();
-            returnToNormal(DATA_SOURCE_EXCEPTION_EVENT, time);
-        }
-        catch (Exception e) {
-            raiseEvent(DATA_SOURCE_EXCEPTION_EVENT, time, true, new LocalizableMessage("event.exception2",
-                    vo.getName(), e.getMessage()));
-        }
-
-        for (DataPointRT dataPoint : dataPoints) {
-            DNPElementVO dnpElementScada = new DNPElementVO();
-            try {
-                dnpElementScada = dnp3Master.getElement((dataPoint.getId()));
-            }
-            catch (Exception e) {
-                raiseEvent(DATA_SOURCE_EXCEPTION_EVENT, time, true,
-                        new LocalizableMessage("event.exception2", vo.getName(), e.getMessage()));
-            }
-
-            if (dnpElementScada != null) {
-                MangoValue value = null;
-                if (dataPoint.getDataTypeId() == DataTypes.BINARY) {
-                    value = MangoValue.stringToValue(dnpElementScada.getValue().toString(), DataTypes.BINARY);
-
-                }
-                else if (dataPoint.getDataTypeId() == DataTypes.ALPHANUMERIC) {
-                    value = MangoValue.stringToValue(dnpElementScada.getValue().toString(), DataTypes.ALPHANUMERIC);
-
-                }
-                else {
-                    value = MangoValue.stringToValue(dnpElementScada.getValue().toString(), DataTypes.NUMERIC);
-
-                }
-                dataPoint.updatePointValue(new PointValueTime(value, time));
+            } catch (Exception e) {
+                handlePollingException(time, e);
             }
         }
     }
+
+// Step 2: Add Data Point Element
+    private void addDataPointElement(DataPointRT dataPoint, long time) {
+        try {
+            Dnp3PointLocatorVO pointLocator = (Dnp3PointLocatorVO) dataPoint.getVO().getPointLocator();
+            dnp3Master.addElement(dataPoint.getId(), pointLocator.getDnp3DataType(), pointLocator.getIndex());
+        } catch (Exception e) {
+            handlePollingException(time, e);
+        }
+    }
+
+// Step 3: Execute DNP3 Polling
+    private void executeDnp3Polling(long time) {
+        try {
+            dnp3Master.doPoll();
+            returnToNormal(DATA_SOURCE_EXCEPTION_EVENT, time);
+        } catch (Exception e) {
+            handlePollingException(time, e);
+        }
+    }
+
+// Step 4: Update Data Points
+    private void updateDataPoints(long time) {
+        for (DataPointRT dataPoint : dataPoints) {
+            try {
+                DNPElementVO dnpElementScada = dnp3Master.getElement(dataPoint.getId());
+                if (dnpElementScada != null) {
+                    updateDataPointValue(dataPoint, dnpElementScada, time);
+                }
+            } catch (Exception e) {
+                handlePollingException(time, e);
+            }
+        }
+    }
+
+// Step 5: Update Individual Data Point Value
+    private void updateDataPointValue(DataPointRT dataPoint, DNPElementVO dnpElementScada, long time) {
+        MangoValue value;
+        int dataTypeId = dataPoint.getDataTypeId();
+
+        if (dataTypeId == DataTypes.BINARY) {
+            value = MangoValue.stringToValue(dnpElementScada.getValue().toString(), DataTypes.BINARY);
+        } else if (dataTypeId == DataTypes.ALPHANUMERIC) {
+            value = MangoValue.stringToValue(dnpElementScada.getValue().toString(), DataTypes.ALPHANUMERIC);
+        } else {
+            value = MangoValue.stringToValue(dnpElementScada.getValue().toString(), DataTypes.NUMERIC);
+        }
+
+        dataPoint.updatePointValue(new PointValueTime(value, time));
+    }
+
+// Step 6: Handle Exception
+    private void handlePollingException(long time, Exception e) {
+        raiseEvent(DATA_SOURCE_EXCEPTION_EVENT, time, true,
+                new LocalizableMessage("event.exception2", vo.getName(), e.getMessage()));
+    }
+
+
 
     protected void initialize(DNP3Master dnp3Master) {
         this.dnp3Master = dnp3Master;

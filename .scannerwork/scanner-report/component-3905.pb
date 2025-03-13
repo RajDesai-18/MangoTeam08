@@ -1,1 +1,1 @@
-Á 2webX+hr+war/resources/dojo/tests/gfx/test_poly.html
+Á 2jspXuhrbuild/WEB-INF/jsp/login.jsp

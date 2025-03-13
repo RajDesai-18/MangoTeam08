@@ -1,8 +1,12 @@
-©
-javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2\\@ P@´
-javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2
-““I Y@w
-javaS3008\Rename this field "FUTURE_DATE_LIMIT" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.2
-–– )Q
-javaS26966Make the enclosing method "static" or remove this set.2
-∞∞ 
+G
+WebS1827/Remove this deprecated "cellpadding" attribute.2 3G
+WebS1827/Remove this deprecated "cellspacing" attribute.2 3=
+WebS5256%Add "<th>" headers to this "<table>".2 3B
+WebS1827*Remove this deprecated "valign" attribute.2 !A
+WebS1827)Remove this deprecated "align" attribute.2 !b
+WebS1134LTake the required action to fix the issue indicated by this "FIXME" comment.2 :d
+WebS1134LTake the required action to fix the issue indicated by this "FIXME" comment.2òò GL
+WebAvoidCommentedOutCodeCheckRemove this commented out code.2üü >L
+WebAvoidCommentedOutCodeCheckRemove this commented out code.2§§ PC
+WebS1827)Remove this deprecated "width" attribute.2
+®® 

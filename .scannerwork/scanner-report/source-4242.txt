@@ -1,154 +1,249 @@
-<html>
-<head>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<title>FloatingPane Widget Demo</title>
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-<script type="text/javascript">
-	var djConfig = {isDebug: true};
-</script>
-<script type="text/javascript" src="../../dojo.js"></script>
-<script language="JavaScript" type="text/javascript">
-	dojo.require("dojo.widget.*");
-	dojo.require("dojo.widget.FloatingPane");
-	dojo.require("dojo.widget.ComboBox");
-	dojo.require("dojo.widget.ContentPane");
-	dojo.require("dojo.widget.TabContainer");
-	dojo.require("dojo.widget.TreeV3");
-	dojo.require("dojo.widget.TreeBasicControllerV3");
-</script>
-</head>
-<body>
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.db.dao;
 
-<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nam facilisis enim. Pellentesque in elit et lacus euismod dignissim. Aliquam dolor pede, convallis eget, dictum a, blandit ac, urna. Pellentesque sed nunc ut justo volutpat egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. In erat. Suspendisse potenti. Fusce faucibus nibh sed nisi. Phasellus faucibus, dui a cursus dapibus, mauris nulla euismod velit, a lobortis turpis arcu vel dui. Pellentesque fermentum ultrices pede. Donec auctor lectus eu arcu. Curabitur non orci eget est porta gravida. Aliquam pretium orci id nisi. Duis faucibus, mi non adipiscing venenatis, erat urna aliquet elit, eu fringilla lacus tellus quis erat. Nam tempus ornare lorem. Nullam feugiat.</p>
+import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
 
-<p>Sed congue. Aenean blandit sollicitudin mi. Maecenas pellentesque. Vivamus ac urna. Nunc consequat nisi vitae quam. Suspendisse sed nunc. Proin suscipit porta magna. Duis accumsan nunc in velit. Nam et nibh. Nulla facilisi. Cras venenatis urna et magna. Aenean magna mauris, bibendum sit amet, semper quis, aliquet nec, sapien. Aliquam aliquam odio quis erat. Etiam est nisi, condimentum non, lacinia ac, vehicula laoreet, elit. Sed interdum augue sit amet quam dapibus semper. Nulla facilisi. Pellentesque lobortis erat nec quam.</p>
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 
-<textarea>
-Testing to make sure floating panes appear above textareas...
-</textarea>
+import com.serotonin.InvalidArgumentException;
+import com.serotonin.ShouldNeverHappenException;
+import com.serotonin.db.spring.ExtendedJdbcTemplate;
+import com.serotonin.mango.Common;
+import com.serotonin.util.ColorUtils;
 
-<div dojoType="FloatingPane"
-	title="Outer window"
-	constrainToContainer="true"
-	iconSrc="images/check.gif"
-	style="width: 300px; height: 200px; left: 500px; top: 200px;"
->
-		main panel with <a href="http://www.dojotoolkit.org/">a link</a>.<br />
-		(to check we're copying children around properly).<br />
+public class SystemSettingsDao extends BaseDao {
+    // Database schema version
+    public static final String DATABASE_SCHEMA_VERSION = "databaseSchemaVersion";
 
-		<select dojoType="combobox">
-			<option value="1">foo</option>
-			<option value="2">bar</option>
-			<option value="3">baz</option>
-		</select>
+    // Email settings
+    public static final String EMAIL_SMTP_HOST = "emailSmtpHost";
+    public static final String EMAIL_SMTP_PORT = "emailSmtpPort";
+    public static final String EMAIL_FROM_ADDRESS = "emailFromAddress";
+    public static final String EMAIL_FROM_NAME = "emailFromName";
+    public static final String EMAIL_AUTHORIZATION = "emailAuthorization";
+    public static final String EMAIL_SMTP_USERNAME = "emailSmtpUsername";
+    public static final String EMAIL_SMTP_PASSWORD = "emailSmtpPassword";
+    public static final String EMAIL_TLS = "emailTls";
+    public static final String EMAIL_CONTENT_TYPE = "emailContentType";
 
-		Here's some text that comes AFTER the combo box. This checks we don't set the contained widget to position: absolute.
+    // Event purging
+    public static final String EVENT_PURGE_PERIOD_TYPE = "eventPurgePeriodType";
+    public static final String EVENT_PURGE_PERIODS = "eventPurgePeriods";
 
-	<div dojoType="FloatingPane"
-		title="Inner window"
-		constrainToContainer="true"
-		iconSrc="images/graph.gif"
-		style="left: 20px; top: 60px; width: 120px; height: 80px;"
-	>
-		weird, huh?
-	</div>
+    // Report purging
+    public static final String REPORT_PURGE_PERIOD_TYPE = "reportPurgePeriodType";
+    public static final String REPORT_PURGE_PERIODS = "reportPurgePeriods";
 
-</div>
+    // HTTP Client configuration
+    public static final String HTTP_CLIENT_USE_PROXY = "httpClientUseProxy";
+    public static final String HTTP_CLIENT_PROXY_SERVER = "httpClientProxyServer";
+    public static final String HTTP_CLIENT_PROXY_PORT = "httpClientProxyPort";
+    public static final String HTTP_CLIENT_PROXY_USERNAME = "httpClientProxyUsername";
+    public static final String HTTP_CLIENT_PROXY_PASSWORD = "httpClientProxyPassword";
 
+    // New Mango version
+    public static final String NEW_VERSION_NOTIFICATION_LEVEL = "newVersionNotificationLevel";
+    public static final String NOTIFICATION_LEVEL_STABLE = "S";
+    public static final String NOTIFICATION_LEVEL_RC = "C";
+    public static final String NOTIFICATION_LEVEL_BETA = "B";
+    // Change Request #2 Implmeneted
+    public static final String NOTIFICATION_LEVEL_MUTED = "M"; 
 
-<div dojoType="FloatingPane"
-	title="Resizable window w/shadow"
-	constrainToContainer="true"
-	hasShadow="true"
-	resizable="true"
-	displayMinimizeAction="true"
-	displayMaximizeAction="true"
-	displayCloseAction="true"
-	iconSrc="images/note.gif"
-	style="width: 300px; height: 200px; left: 600px; top: 400px;"
->
-		main panel with <a href="http://www.dojotoolkit.org/">a link</a>.<br />
-		(to check we're copying children around properly).<br />
+    // i18n
+    public static final String LANGUAGE = "language";
 
-	<div dojoType="FloatingPane"
-		title="Inner window"
-		constrainToContainer="1"
-		style="left: 20px; top: 60px; width: 120px; height: 80px;"
-	>
-		weirder, huh?
-	</div>
+    // Customization
+    public static final String FILEDATA_PATH = "filedata.path";
+    public static final String DATASOURCE_DISPLAY_SUFFIX = ".display";
+    public static final String HTTPDS_PROLOGUE = "httpdsPrologue";
+    public static final String HTTPDS_EPILOGUE = "httpdsEpilogue";
+    public static final String UI_PERFORAMANCE = "uiPerformance";
+    public static final String GROVE_LOGGING = "groveLogging";
+    public static final String FUTURE_DATE_LIMIT_PERIODS = "futureDateLimitPeriods";
+    public static final String FUTURE_DATE_LIMIT_PERIOD_TYPE = "futureDateLimitPeriodType";
+    public static final String INSTANCE_DESCRIPTION = "instanceDescription";
 
-</div>
+    // Colours
+    public static final String CHART_BACKGROUND_COLOUR = "chartBackgroundColour";
+    public static final String PLOT_BACKGROUND_COLOUR = "plotBackgroundColour";
+    public static final String PLOT_GRIDLINE_COLOUR = "plotGridlineColour";
 
-<div dojoType="FloatingPane"
-	title="Layout window w/shadow"
-	constrainToContainer="true"
-	hasShadow="true"
-	resizable="true"
-	displayMinimizeAction="true"
-	displayMaximizeAction="true"
-	iconSrc="images/flatScreen.gif"
-	style="width: 300px; height: 200px; top: 600px; left: 400px;"
->
-	<div dojoType="ContentPane" layoutAlign="top" style="border: solid white;">TOP</div>
-	<div dojoType="ContentPane" layoutAlign="bottom" style="border: solid white;">BOTTOM</div>
-	<div dojoType="ContentPane" layoutAlign="left" style="border: solid white;">LEFT</div>
-	<div dojoType="ContentPane" layoutAlign="right" style="border: solid white;">RIGHT</div>
-	<div dojoType="ContentPane" layoutAlign="client" style="border: solid white;">CENTER</div>
-</div>
+    // Value cache
+    private static final Map<String, String> cache = new HashMap<String, String>();
 
-<div dojoType="FloatingPane" style="width: 300px; height: 300px; left: 100px; top: 100px;"
-	href="doc0.html" executeScripts="true" title="externally loaded"></div>
+    public static String getValue(String key) {
+        return getValue(key, (String) DEFAULT_VALUES.get(key));
+    }
 
-<div dojoType="FloatingPane" id="tfp" title="Tabbed Floating Pane" hasShadow="true" resizable="true"
-	style="width: 300px; height: 300px; left: 300px; top: 300px;">
-	<div dojoType="TabContainer" id="tabs" layoutAlign="client">
-		<div dojoType="ContentPane" label="tab1">Tab1 Content</div>
-		<div dojoType="ContentPane" label="tab2">Tab2 Content</div>
-	</div>
-</div>
+    public static String getValue(String key, String defaultValue) {
+        String result = cache.get(key);
+        if (result == null) {
+            if (!cache.containsKey(key)) {
+                result = new BaseDao().queryForObject("select settingValue from systemSettings where settingName=?",
+                        new Object[] { key }, String.class, null);
+                cache.put(key, result);
+                if (result == null)
+                    result = defaultValue;
+            }
+            else
+                result = defaultValue;
+        }
+        return result;
+    }
 
-<div dojoType="FloatingPane"
-	title="Content pane is tree"
-	constrainToContainer="true"
-	hasShadow="true"
-	resizable="true"
-	displayMinimizeAction="true"
-	displayMaximizeAction="true"
-	contentWrapper="none"
-	style="width: 300px; height: 200px; top: 100px; left: 400px;"
->
-	<div dojoType="TreeBasicControllerV3" widgetId="controller"></div>	
-	<div dojoType="TreeV3" listeners="controller" publishSelectionTopic="treeSelected" toggle="fade" widgetId="firstTree">
-	    <div dojoType="TreeNodeV3" title="Item 1">
-	        <div dojoType="TreeNodeV3" title="Item 1.1"><br/></div>
-	        <div dojoType="TreeNodeV3" title="Item 1.2">
-	            <div dojoType="TreeNodeV3" title="Item 1.2.1"></div>
-	            <div dojoType="TreeNodeV3" title="Item 1.2.2"></div>
-	        </div>
-	        <div dojoType="TreeNodeV3" title="Item 1.3">
-	            <div dojoType="TreeNodeV3" title="Item 1.3.1"></div>
-	            <div dojoType="TreeNodeV3" title="Item 1.3.2"></div>
-	        </div>
-	        <div dojoType="TreeNodeV3" title="Item 1.4">
-	            <div dojoType="TreeNodeV3" title="Item 1.4.1"></div>
-	        </div>
-	    </div>
-	</div>
-</div>
+    public static int getIntValue(String key) {
+        Integer defaultValue = (Integer) DEFAULT_VALUES.get(key);
+        if (defaultValue == null)
+            return getIntValue(key, 0);
+        return getIntValue(key, defaultValue);
+    }
 
-<p>Sed arcu magna, molestie at, fringilla in, sodales eu, elit. Curabitur mattis lorem et est. Quisque et tortor. Integer bibendum vulputate odio. Nam nec ipsum. Vestibulum mollis eros feugiat augue. Integer fermentum odio lobortis odio. Nullam mollis nisl non metus. Maecenas nec nunc eget pede ultrices blandit. Ut non purus ut elit convallis eleifend. Fusce tincidunt, justo quis tempus euismod, magna nulla viverra libero, sit amet lacinia odio diam id risus. Ut varius viverra turpis. Morbi urna elit, imperdiet eu, porta ac, pharetra sed, nisi. Etiam ante libero, ultrices ac, faucibus ac, cursus sodales, nisl. Praesent nisl sem, fermentum eu, consequat quis, varius interdum, nulla. Donec neque tortor, sollicitudin sed, consequat nec, facilisis sit amet, orci. Aenean ut eros sit amet ante pharetra interdum.</p>
+    public static int getIntValue(String key, int defaultValue) {
+        String value = getValue(key, null);
+        if (value == null)
+            return defaultValue;
+        try {
+            return Integer.parseInt(value);
+        }
+        catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
 
-<h2>for ie bleed through testing...</h2>
-<select style="margin-left: 200px;">
-	<option value="1">foo</option>
-	<option value="2">bar</option>
-	<option value="3">baz</option>
-</select>
-	
-<p>Fusce rutrum pede eget quam. Praesent purus. Aenean at elit in sem volutpat facilisis. Nunc est augue, commodo at, pretium a, fermentum at, quam. Nam sit amet enim. Suspendisse potenti. Cras hendrerit rhoncus justo. Integer libero. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Sed adipiscing mi vel ipsum.</p>
+    public static boolean getBooleanValue(String key) {
+        return getBooleanValue(key, false);
+    }
 
-<p>Sed aliquam, quam consectetuer condimentum bibendum, neque libero commodo metus, non consectetuer magna risus vitae eros. Pellentesque mollis augue id libero. Morbi nonummy hendrerit dui. Morbi nisi felis, fringilla ac, euismod vitae, dictum mollis, pede. Integer suscipit, est sed posuere ullamcorper, ipsum lectus interdum nunc, quis blandit erat eros hendrerit pede. Vestibulum varius, elit id mattis mattis, nulla est feugiat ante, eget vestibulum augue eros ut odio. Maecenas euismod purus quis felis. Ut hendrerit tincidunt est. Fusce euismod, nunc eu tempus tempor, purus ligula volutpat tellus, nec lacinia sapien enim id risus. Aliquam orci turpis, condimentum sed, sollicitudin vel, placerat in, purus. Proin tortor nisl, blandit quis, imperdiet quis, scelerisque at, nisl. Maecenas suscipit fringilla erat. Curabitur consequat, dui blandit suscipit dictum, felis lectus imperdiet tellus, sit amet ornare risus mauris non ipsum. Fusce a purus. Vestibulum sodales. Sed porta ultrices nibh. Vestibulum metus.</p>
+    public static boolean getBooleanValue(String key, boolean defaultValue) {
+        String value = getValue(key, null);
+        if (value == null)
+            return defaultValue;
+        return charToBool(value);
+    }
 
-</body>
-</html>
+    public void setValue(final String key, final String value) {
+        // Update the cache
+        cache.put(key, value);
+
+        // Update the database
+        final ExtendedJdbcTemplate ejt2 = ejt;
+        getTransactionTemplate().execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus status) {
+                // Delete any existing value.
+                removeValue(key);
+
+                // Insert the new value if it's not null.
+                if (value != null)
+                    ejt2.update("insert into systemSettings values (?,?)", new Object[] { key, value });
+            }
+        });
+    }
+
+    public void setIntValue(String key, int value) {
+        setValue(key, Integer.toString(value));
+    }
+
+    public void setBooleanValue(String key, boolean value) {
+        setValue(key, boolToChar(value));
+    }
+
+    public void removeValue(String key) {
+        // Remove the value from the cache
+        cache.remove(key);
+
+        // Reset the cached values too.
+        FUTURE_DATE_LIMIT = -1;
+
+        ejt.update("delete from systemSettings where settingName=?", new Object[] { key });
+    }
+
+    public static long getFutureDateLimit() {
+        if (FUTURE_DATE_LIMIT == -1) {
+            FUTURE_DATE_LIMIT = Common.getMillis(getIntValue(FUTURE_DATE_LIMIT_PERIOD_TYPE),
+                    getIntValue(FUTURE_DATE_LIMIT_PERIODS));
+        }
+        return FUTURE_DATE_LIMIT;
+    }
+
+    public static Color getColour(String key) {
+        try {
+            return ColorUtils.toColor(getValue(key));
+        }
+        catch (InvalidArgumentException e) {
+            // Should never happen. Just use the default.
+            try {
+                return ColorUtils.toColor((String) DEFAULT_VALUES.get(key));
+            }
+            catch (InvalidArgumentException e1) {
+                // This should definitely never happen
+                throw new ShouldNeverHappenException(e1);
+            }
+        }
+    }
+
+    /**
+     * Special caching for the future dated values property, which needs high performance.
+     */
+    private static long FUTURE_DATE_LIMIT = -1;
+
+    private static final Map<String, Object> DEFAULT_VALUES = new HashMap<String, Object>();
+    static {
+        DEFAULT_VALUES.put(DATABASE_SCHEMA_VERSION, "0.7.0");
+
+        DEFAULT_VALUES.put(HTTP_CLIENT_PROXY_SERVER, "");
+        DEFAULT_VALUES.put(HTTP_CLIENT_PROXY_PORT, -1);
+        DEFAULT_VALUES.put(HTTP_CLIENT_PROXY_USERNAME, "");
+        DEFAULT_VALUES.put(HTTP_CLIENT_PROXY_PASSWORD, "");
+
+        DEFAULT_VALUES.put(EMAIL_SMTP_HOST, "");
+        DEFAULT_VALUES.put(EMAIL_SMTP_PORT, 25);
+        DEFAULT_VALUES.put(EMAIL_FROM_ADDRESS, "");
+        DEFAULT_VALUES.put(EMAIL_SMTP_USERNAME, "");
+        DEFAULT_VALUES.put(EMAIL_SMTP_PASSWORD, "");
+        DEFAULT_VALUES.put(EMAIL_FROM_NAME, "Mango M2M");
+
+        DEFAULT_VALUES.put(EVENT_PURGE_PERIOD_TYPE, Common.TimePeriods.YEARS);
+        DEFAULT_VALUES.put(EVENT_PURGE_PERIODS, 1);
+
+        DEFAULT_VALUES.put(REPORT_PURGE_PERIOD_TYPE, Common.TimePeriods.MONTHS);
+        DEFAULT_VALUES.put(REPORT_PURGE_PERIODS, 1);
+
+        DEFAULT_VALUES.put(NEW_VERSION_NOTIFICATION_LEVEL, NOTIFICATION_LEVEL_STABLE);
+
+        DEFAULT_VALUES.put(LANGUAGE, "en");
+
+        DEFAULT_VALUES.put(FILEDATA_PATH, "~/WEB-INF/filedata");
+        DEFAULT_VALUES.put(HTTPDS_PROLOGUE, "");
+        DEFAULT_VALUES.put(HTTPDS_EPILOGUE, "");
+        DEFAULT_VALUES.put(UI_PERFORAMANCE, 2000);
+        DEFAULT_VALUES.put(GROVE_LOGGING, false);
+        DEFAULT_VALUES.put(FUTURE_DATE_LIMIT_PERIODS, 24);
+        DEFAULT_VALUES.put(FUTURE_DATE_LIMIT_PERIOD_TYPE, Common.TimePeriods.HOURS);
+        DEFAULT_VALUES.put(INSTANCE_DESCRIPTION, "My Mango M2M");
+
+        DEFAULT_VALUES.put(CHART_BACKGROUND_COLOUR, "white");
+        DEFAULT_VALUES.put(PLOT_BACKGROUND_COLOUR, "white");
+        DEFAULT_VALUES.put(PLOT_GRIDLINE_COLOUR, "silver");
+    }
+}

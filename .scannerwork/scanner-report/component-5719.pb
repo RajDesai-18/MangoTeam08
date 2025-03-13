@@ -1,0 +1,1 @@
+×, 2jsX8hr@war/resources/dojo/src/widget/Editor2Plugin/InsertImageDialog.js

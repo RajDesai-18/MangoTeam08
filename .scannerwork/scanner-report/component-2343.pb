@@ -1,1 +1,1 @@
-§ 2javaXµhrHsrc/com/serotonin/mango/vo/dataSource/openv4j/OpenV4JPointLocatorVO.java
+§ 2webXªhrHbuild/resources/dojo/tests/io/iframeproxy/test_BrowserIO_ifp.method.html

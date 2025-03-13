@@ -1,0 +1,1 @@
+¥ 2webX0hr7build/resources/dojo/tests/widget/test_AnimatedPng.html

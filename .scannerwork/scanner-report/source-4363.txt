@@ -1,115 +1,73 @@
-<html>
-  <head>
-    <title>Dojo Tree Widget Test</title><style type="text/css">
-
-
-
-/* indent for all tree children excepts root */
-.TreeNode {
-    background-image : url(../../../src/widget/templates/images/TreeV3/i.gif);
-    background-position : top left;
-    background-repeat : repeat-y;
-    margin-left: 19px;
-}
-.TreeNode.TreeIsRoot {
-    margin-left: 0;
-}
-
-/* left vertical line (grid) for all nodes */
-.TreeNode.TreeIsLast {
-    background-image: url(../../../src/widget/templates/images/TreeV3/i_half.gif);
-    background-repeat: no-repeat;
-}
-
-
-.TreeExpandOpen .TreeExpand {
-    background-image: url(../../../src/widget/templates/images/TreeV3/expand_minus.gif);
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
     
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataSource.meta;
+
+import com.serotonin.mango.util.DateUtils;
+
+/**
+ * @author Matthew Lohbihler
+ */
+class WrapperContext {
+    private final long runtime;
+
+    WrapperContext(long runtime) {
+        this.runtime = runtime;
+    }
+
+    public long getRuntime() {
+        return runtime;
+    }
+
+    public long millisInPrev(int periodType) {
+        return millisInPrevious(periodType, 1);
+    }
+
+    public long millisInPrevious(int periodType) {
+        return millisInPrevious(periodType, 1);
+    }
+
+    public long millisInPrev(int periodType, int count) {
+        return millisInPrevious(periodType, count);
+    }
+
+    public long millisInPrevious(int periodType, int count) {
+        long to = DateUtils.truncate(runtime, periodType);
+        long from = DateUtils.minus(to, periodType, count);
+        return to - from;
+    }
+
+    public long millisInPast(int periodType) {
+        return millisInPast(periodType, 1);
+    }
+
+    public long millisInPast(int periodType, int count) {
+        long from = DateUtils.minus(runtime, periodType, count);
+        return runtime - from;
+    }
+
+    @Override
+    public String toString() {
+        return "{millisInPast(periodType, count), millisInPrev(periodType, count), "
+                + "millisInPrevious(periodType, count)}";
+    }
+
+    public String getHelp() {
+        return toString();
+    }
 }
-
-/* closed is higher priority than open */
-.TreeExpandClosed .TreeExpand {
-    background-image: url(../../../src/widget/templates/images/TreeV3/expand_plus.gif);
-    
-}
-
-/* highest priority */
-.TreeExpandLeaf .TreeExpand {
-    background-image: url(../../../src/widget/templates/images/TreeV3/expand_leaf.gif);
-    
-}
-
-
-.TreeContent {
-    min-height: 18px;
-    min-width: 18px;
-    margin-left:18px;
-    cursor: default;
-    /* can't make inline - multiline bugs */
-}
-
-.TreeContentIE {
-    height: 18px;
-}
-
-.TreeContentSafari {
-    height: 18px;
-}
-
-
-
-.TreeExpand {
-    width: 18px;
-    height: 18px;
-    float: left;
-    display: inline;
-    background-repeat : no-repeat;
-}
-
-
-    </style>
-  </head>
-  <body bgcolor="green">
-    <h3>
-       Markup tree with basic controller attached, multiline content and empty folder 
-    </h3>
-
-
-    <div class="TreeContainer">
-      <div class="TreeNode TreeExpandClosed TreeChildrenNo TreeIsLast TreeIsRoot">
-        <div class="TreeExpand">
-        </div>
-        <div class="TreeContent">
-          <span class="TreeLabel">Item 1</span>
-        </div> 
-      </div>
-    </div>
-
-<p/>
-
-
-    <div class="TreeContainer">
-      <div class="TreeNode TreeExpandClosed TreeChildrenYes TreeIsRoot">
-        <div class="TreeExpand">
-        </div>
-        <div class="TreeContent">
-          <span class="TreeLabel">Item 1</span>
-        </div> 
-      </div>
-      <div class="TreeNode TreeExpandClosed TreeChildrenYes TreeIsRoot">
-        <div class="TreeExpand">
-        </div>
-        <div class="TreeContent">
-          <span class="TreeLabel">Item 2<br>title long yeah</span>
-        </div>
-      </div>
-      <div class="TreeNode TreeChildrenNo TreeExpandClosed TreeIsRoot TreeIsLast">
-        <div class="TreeExpand">
-        </div>
-        <div class="TreeContent">
-          <span class="TreeLabel">Empty Folder</span>
-        </div>
-      </div>
-    </div>
-  </body>
-</html>

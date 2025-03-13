@@ -1,51 +1,52 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-<title>Dojo Tree Widget Test</title>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<script type="text/javascript">
-    var djConfig = {isDebug: true, debugAtAllCosts: true };
-</script>
-<script type="text/javascript" src="../../../dojo.js"></script>
-<script type="text/javascript">
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-    dojo.require("dojo.widget.*");
-    dojo.require("dojo.widget.TreeV3");
-    dojo.require("dojo.widget.TreeNodeV3");
-    dojo.require("dojo.widget.TreeBasicControllerV3");
-    dojo.hostenv.writeIncludes();
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataSource.galil;
 
-    function createByName() {
-        var tree = dojo.widget.byId('tree')
-        var data = {widgetName:'dojo:TreeNodeV3', title:'new node'}
-        dojo.widget.byId('controller').createChild(tree,0,data)
+import com.serotonin.mango.rt.dataImage.types.AlphanumericValue;
+import com.serotonin.mango.rt.dataImage.types.MangoValue;
+import com.serotonin.mango.vo.dataSource.galil.CommandPointTypeVO;
+
+/**
+ * @author Matthew Lohbihler
+ */
+public class CommandPointTypeRT extends PointTypeRT {
+    public CommandPointTypeRT(CommandPointTypeVO vo) {
+        super(vo);
     }
-</script>
-</head>
-<body>
-    
-<h3>Create a node by full widget name</h3>
 
-    
-<div dojoType="TreeBasicControllerV3" widgetId="controller"></div>  
+    @Override
+    public String getPollRequestImpl() {
+        return null;
+    }
 
-<div dojoType="TreeV3" listeners="controller" widgetId="tree">
-    <div dojoType="TreeNodeV3" title="Item 1" widgetId="Item 1">
-        <div dojoType="TreeNodeV3" title="Item 1.1" widgetId="Item 1.1"></div>
-        <div dojoType="TreeNodeV3" title="Item 1.2" widgetId="Item 1.2"></div>
-    </div>
+    @Override
+    public MangoValue parsePollResponse(String data, String pointName) {
+        return null;
+    }
 
-    <div dojoType="TreeNodeV3" title="Item 2<br/>title long yeah" widgetId="Item 2">
-        <div dojoType="TreeNodeV3" title="Item 2.1" widgetId="Item 2.1"></div>
-    </div>
+    @Override
+    protected String getSetRequestImpl(MangoValue value) {
+        return value.getStringValue();
+    }
 
-    <div dojoType="TreeNodeV3" title="Empty Folder" isFolder="true" widgetId="Item 3"></div>
-    <div dojoType="TreeNodeV3" title="Item 4" widgetId="Item 4"></div>
-</div>
-
-<input type="button" value="create widget by name" onclick="createByName()"/>
-
-
-</body>
-</html>
+    @Override
+    public MangoValue parseSetResponse(String data) {
+        return new AlphanumericValue(data);
+    }
+}

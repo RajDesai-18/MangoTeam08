@@ -1,1 +1,1 @@
-ª 2webXêhr*war/resources/dojo/tests/gfx/test_gfx.html
+ª 2jspXÕhr,build/WEB-INF/jsp/include/compoundEditor.jsp

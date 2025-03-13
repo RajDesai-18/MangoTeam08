@@ -1,1 +1,1 @@
-Ä 2webXMhr1war/resources/dojo/tests/graphics/test_color.html
+Ä 2jspX@hr"build/WEB-INF/jsp/mobile/login.jsp

@@ -1,1 +1,1 @@
-Ð 2javaXmhr@src/com/serotonin/mango/view/graphic/AnalogImageSetRenderer.java
+Ð 2jsXhr&build/resources/dojo/tests/epilogue.js

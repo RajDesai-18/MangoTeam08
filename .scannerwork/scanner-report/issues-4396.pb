@@ -1,9 +1,8 @@
-V
-WebS5254@Add "lang" and/or "xml:lang" attributes to this "<html>" element2 T
-WebS5725<Make sure not using resource integrity feature is safe here.2 IJ
-WebImgWithoutAltCheck%Add an "alt" attribute to this image.2// *J
-WebImgWithoutAltCheck%Add an "alt" attribute to this image.233 )f
-WebS6827PAnchors must have content and the content must be accessible by a screen reader.2>> Tf
-WebS6827PAnchors must have content and the content must be accessible by a screen reader.2qq RR
-
-javascriptS53323Using http protocol is insecure. Use https instead.2" B
+r
+javaS120ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.2 .[
+javaS1066/Merge this if statement with the enclosing one.2tt :
+¨"ss @©
+javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)299C Q@©
+javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2ZZA S@`
+javaS1124EReorder the modifiers to comply with the Java Language Specification.2,, @`
+javaS1124EReorder the modifiers to comply with the Java Language Specification.244 @

@@ -1,1 +1,1 @@
-§% 2jspX'hr%war/WEB-INF/snippet/flipbookChart.jsp
+§% 2javaX%hr9src/com/serotonin/mango/web/dwr/util/AdminAjaxFilter.java

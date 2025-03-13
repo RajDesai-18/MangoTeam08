@@ -1,0 +1,1 @@
+œ 2jsXyhr?build/resources/dojo/src/widget/Editor2Plugin/TableOperation.js

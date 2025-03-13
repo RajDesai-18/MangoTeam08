@@ -1,1 +1,1 @@
-© 2javaXñhr8src/com/serotonin/mango/util/mindprod/StripEntities.java
+© 2jsX0hr8build/resources/dojo/tests/data/displayFilteringTable.js

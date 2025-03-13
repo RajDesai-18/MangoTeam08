@@ -1,0 +1,1 @@
+á- 2webXhr9war/resources/dojo/src/widget/templates/FloatingPane.html

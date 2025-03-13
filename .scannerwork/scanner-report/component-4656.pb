@@ -1,1 +1,1 @@
-°$ 2jspXvhr5war/WEB-INF/jsp/dataSourceEdit/editSerialSettings.jsp
+°$ 2javaXphrNsrc/com/serotonin/mango/vo/dataSource/virtual/IncrementMultistateChangeVO.java

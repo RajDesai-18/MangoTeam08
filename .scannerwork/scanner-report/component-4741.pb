@@ -1,0 +1,1 @@
+…% 2javaXMhr?src/com/serotonin/mango/web/dwr/beans/OpenV4JDataPointBean.java

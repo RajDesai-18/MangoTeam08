@@ -1,2 +1,4 @@
-©
-javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2++/ ?@
+R
+phpS105EReplace all tab characters in this file by sequences of white-spaces.4
+phpS113'Add a new line at the end of this file.I
+phpS17573Change this opening tag to either "<?php" or "<?=".2 

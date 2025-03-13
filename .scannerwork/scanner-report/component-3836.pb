@@ -1,1 +1,1 @@
-ü 2webX$hr0war/resources/dojo/tests/data/old/test_data.html
+ü 2xmlXÞhrbuild/WEB-INF/dwr.xml

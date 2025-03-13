@@ -1,0 +1,1 @@
+Û% 2javaXOhr6src/com/serotonin/mango/web/taglib/SimplePointTag.java

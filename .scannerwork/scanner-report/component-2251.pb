@@ -1,1 +1,1 @@
-Ë 2javaX+hr=src/com/serotonin/mango/view/custom/CustomViewChartPoint.java
+Ë 2webXJhr5build/resources/dojo/tests/dnd/test_draghandle_2.html

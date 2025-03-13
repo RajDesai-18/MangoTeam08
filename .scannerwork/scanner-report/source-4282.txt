@@ -1,29 +1,56 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-	<head>
-		<title>Slideshow Widget Demo</title>
-		
-		<script type="text/javascript"> var djConfig = {isDebug: true}; </script>
-		<script type="text/javascript" src="../../dojo.js"></script>
-		<script language="JavaScript" type="text/javascript">
-			dojo.require("dojo.widget.*");
-			dojo.require("dojo.widget.SlideShow");
-		</script>
-		
-		<style>
-		html, body {
-			height: 100%; width: 100%;
-			overflow: hidden;
-		}
-		</style>
-	</head>
-	<body>
-		<img dojoType="SlideShow" 
-			imgUrls="images/1.jpg;images/2.jpg;images/3.jpg;images/4.jpg;images/5.jpg;images/6.jpg" 
-			transitionInterval="700"
-			delay="7000" 
-			src="images/1.jpg"
-			imgWidth="400" imgHeight="300" />
-	</body>
-</html>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.db.upgrade;
+
+import java.io.OutputStream;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+/**
+ * @author Matthew Lohbihler
+ */
+public class Upgrade1_6_1 extends DBUpgrade {
+    private final Log log = LogFactory.getLog(getClass());
+
+    @Override
+    public void upgrade() throws Exception {
+        OutputStream out = createUpdateLogOutputStream("1_6_1");
+
+        log.info("Running script 1");
+        runScript(script1, out);
+
+        out.flush();
+        out.close();
+    }
+
+    @Override
+    protected String getNewSchemaVersion() {
+        return "1.6.2";
+    }
+
+    private static String[] script1 = {
+            "alter table pointValues drop foreign key pointValuesFk1;",
+            "alter table pointValues add constraint pointValuesFk1 foreign key (dataPointId) references dataPoints(id) on delete cascade;",
+
+            "alter table mangoViews drop foreign key mangoViewsFk1;",
+            "alter table mangoViews add constraint mangoViewsFk1 foreign key (userId) references users(id) on delete cascade;",
+            "alter table mangoViewUsers drop foreign key mangoViewUsersFk1;",
+            "alter table mangoViewUsers add constraint mangoViewUsersFk1 foreign key (mangoViewId) references mangoViews(id) on delete cascade;" };
+}

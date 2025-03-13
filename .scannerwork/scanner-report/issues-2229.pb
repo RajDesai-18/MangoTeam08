@@ -1,7 +1,25 @@
-o
-javaS1104VMake DEFINITION a static final constant or non-public and provide accessors if needed.2%%! +I
-javaS14440Make this "public static DEFINITION" field final2%%! +r
-javaS115ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.2\\ $n
-javaS3008URename this field "DEFINITION" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.2%%! +›
-javaS1845YRename field "DEFINITION" to prevent any misunderstanding/clash with method "definition".2%%! +:'
-%µ>> $Conflicting identifier
+?
+
+javascriptS125Remove this commented out code.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @ƒ
+
+javascriptS2703dAdd the "let", "const" or "var" keyword to this declaration of "queryResultSet" to make it explicit.2 J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @\
+
+javascriptS1481=Remove the declaration of the unused 'tableBinding' variable.2 Y
+
+javascriptS1854:Remove this useless assignment to variable "tableBinding".2 J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @\
+
+javascriptS1481=Remove the declaration of the unused 'tableBinding' variable.2 Y
+
+javascriptS1854:Remove this useless assignment to variable "tableBinding".2 

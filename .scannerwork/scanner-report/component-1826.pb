@@ -1,0 +1,1 @@
+¢ 2jsXúhr/build/resources/dojo/src/widget/FloatingPane.js

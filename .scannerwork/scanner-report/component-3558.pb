@@ -1,1 +1,0 @@
-æ 2webXhrKwar/resources/dojo/src/widget/templates/Editor2/EditorToolbar_FontSize.html

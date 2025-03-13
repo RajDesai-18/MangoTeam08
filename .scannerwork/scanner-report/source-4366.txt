@@ -1,67 +1,44 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-<title>Dojo Tree Widget Test (dynamic node creation)</title>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<script type="text/javascript">
-	var djConfig = {isDebug: true, debugAtAllCosts: true };
-</script>
-<script type="text/javascript" src="../../../dojo.js"></script>
-<script type="text/javascript">
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-	dojo.require("dojo.widget.*");
-	dojo.require("dojo.widget.TreeV3");
-	dojo.require("dojo.widget.TreeNodeV3");
-	dojo.require("dojo.widget.TreeBasicControllerV3");
-	dojo.hostenv.writeIncludes();
-</script>
-<script type="text/javascript">
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataSource.modbus;
 
-	dojo.addOnLoad(function(){
+import com.serotonin.mango.rt.dataSource.PointLocatorRT;
+import com.serotonin.mango.vo.dataSource.modbus.ModbusPointLocatorVO;
+import com.serotonin.modbus4j.code.DataType;
 
-		var controller = dojo.widget.createWidget("TreeBasicControllerV3");		
-		var tree = dojo.widget.createWidget("TreeV3", {listeners:[controller.widgetId]});
-		
-		document.body.appendChild(tree.domNode);
+public class ModbusPointLocatorRT extends PointLocatorRT {
+    private final ModbusPointLocatorVO vo;
 
-		var rootNode = dojo.widget.createWidget("TreeNodeV3", {title: "Root Node", tree: tree.widgetId});
-		
-		tree.addChild(rootNode);
+    public ModbusPointLocatorRT(ModbusPointLocatorVO vo) {
+        this.vo = vo;
+    }
 
+    public int getRegisterCount() {
+        return DataType.getRegisterCount(vo.getModbusDataType());
+    }
 
-		var node1 = dojo.widget.createWidget("TreeNodeV3", {title: "Node 1", tree: tree.widgetId});
-		rootNode.addChild(node1);
+    @Override
+    public boolean isSettable() {
+        return vo.isSettable();
+    }
 
-
-		var node2 = dojo.widget.createWidget("TreeNodeV3", {title: "Node 1.2", tree: tree.widgetId});
-		node1.addChild(node2, null, "after");
-
-
-		rootNode.addChild(dojo.widget.createWidget("TreeNodeV3", {title: "Node 2", tree: tree.widgetId}));
-
-		var node3 = dojo.widget.createWidget("TreeNodeV3", {title: "Node 3<br>multiline", tree: tree.widgetId});
-		rootNode.addChild(node3);
-		var node3_1 = dojo.widget.createWidget("TreeNodeV3", {title: "Node 3.1", tree: tree.widgetId});
-		node3.addChild(node3_1);
-		node3_1.addChild(dojo.widget.createWidget("TreeNodeV3", {title: "Node 3.1.1", tree: tree.widgetId}))
-
-
-		// Add some nodes the first element (rather than the last element) just for testing
-		for(var i=1;i<5;i++) {
-			node1.addChild(dojo.widget.createWidget("TreeNodeV3", {title: "Node 1."+i, tree: tree.widgetId}));
-		}
-
-		tree.addChild(dojo.widget.createWidget("TreeNodeV3", {title: "Root Node 2", tree: tree.widgetId}));
-
-	});
-
-</script>
-</head>
-<body>
-
-<h4>Create tree programmatically</h4>
-
-
-</body>
-</html>
+    public ModbusPointLocatorVO getVO() {
+        return vo;
+    }
+}

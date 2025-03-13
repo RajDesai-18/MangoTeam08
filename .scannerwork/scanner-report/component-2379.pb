@@ -1,1 +1,1 @@
-Ë 2javaX×hr:src/com/serotonin/mango/vo/event/PointEventDetectorVO.java
+Ë 2jsXhr,build/resources/dojo/tests/jslink/program.js

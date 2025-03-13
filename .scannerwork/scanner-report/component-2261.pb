@@ -1,1 +1,1 @@
-Õ 2javaX’hr>src/com/serotonin/mango/view/graphic/DynamicImageRenderer.java
+Õ 2webX(hr;build/resources/dojo/tests/event/test_ie_runtime_usage.html

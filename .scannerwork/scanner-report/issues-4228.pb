@@ -1,2 +1,3 @@
-V
-WebS5254@Add "lang" and/or "xml:lang" attributes to this "<html>" element2 
+S
+javaS1118:Add a private constructor to hide the implicit public one.2 :
+javaS131"Add a default case to this switch.2"" 

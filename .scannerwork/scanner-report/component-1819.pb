@@ -1,0 +1,1 @@
+› 2jsX5hrEbuild/resources/dojo/src/widget/Editor2Plugin/SimpleSignalCommands.js

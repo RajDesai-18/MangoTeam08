@@ -1,1 +1,1 @@
-¾ 2javaXÝhr:src/com/serotonin/mango/view/component/PointComponent.java
+¾ 2jsXbhr9build/resources/dojo/tests/data/test_YahooStore_paging.js

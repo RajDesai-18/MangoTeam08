@@ -1,1 +1,1 @@
-¼ 2javaXEhr7src/com/serotonin/mango/rt/dataSource/snmp/Version.java
+¼ 2cssXhr:build/resources/dojo/src/widget/templates/ResizeHandle.css

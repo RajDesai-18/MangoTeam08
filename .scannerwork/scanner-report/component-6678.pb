@@ -1,0 +1,1 @@
+–4 2webX,hr<war/resources/dojo/tests/xdomain/test_forceXDomainLocal.html

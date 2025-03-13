@@ -1,4 +1,4 @@
-<%--
+/*
     Mango - Open Source M2M - http://mango.serotoninsoftware.com
     Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
     @author Matthew Lohbihler
@@ -14,288 +14,315 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see http://www.gnu.org/licenses/.
---%>
-<%@ include file="/WEB-INF/jsp/include/tech.jsp" %>
-<%@page import="com.serotonin.mango.Common"%>
-<c:set var="NEW_ID"><%= Common.NEW_ID %></c:set>
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.vo.dataSource.modbus;
 
-<tag:page dwr="CompoundEventsDwr" onload="init">
-  <script type="text/javascript">
-    function init() {
-        CompoundEventsDwr.getInitData(function(data) {
-            // List the compound events.
-            for (var i=0; i<data.compoundEvents.length; i++) {
-                appendCompoundEvent(data.compoundEvents[i].id);
-                updateCompoundEvent(data.compoundEvents[i]);
-            }
-            
-            // Create the tree of event detectors
-            var i, j;
-            var dp, et;
-            var pointNode;
-            
-            var pointRoot = dojo.widget.manager.getWidgetById('rootPoint');
-            for (i=0; i<data.dataPoints.length; i++) {
-                dp = data.dataPoints[i];
-                pointNode = dojo.widget.createWidget("TreeNode", {title: "<img src='images/icon_comp.png'/> "+ dp.name});
-                pointRoot.addChild(pointNode);
-                
-                for (j=0; j<dp.eventTypes.length; j++) {
-                    et = dp.eventTypes[j];
-                    createEventTypeNode("ped"+ et.typeRef2, et, pointNode);
-                }
-            }
-            pointRoot.expand();
-            
-            var scheduledRoot = dojo.widget.manager.getWidgetById('rootScheduled');
-            for (i=0; i<data.scheduledEvents.length; i++) {
-                et = data.scheduledEvents[i];
-                createEventTypeNode("sch"+ et.typeRef1, et, scheduledRoot);
-            }
-            scheduledRoot.expand();
-            
-            // Default the selection of the parameter was provided.
-            <c:if test="${!empty param.cedid}">
-              showCompoundEvent(${param.cedid});
-            </c:if>
-        });
-        
-        dojo.event.topic.subscribe("eventTypeTree/titleClick", new TreeClickHandler(), 'handle');
-    }
-    
-    var editingCompoundEvent;
-    
-    function createEventTypeNode(widgetId, eventType, parent) {
-        var node = dojo.widget.createWidget("TreeNode", {
-                title: "<img id='"+ widgetId +"Img'/> "+ eventType.description +" ("+ eventType.eventDetectorKey +")",
-                widgetId: widgetId,
-                object: eventType.eventDetectorKey
-        });
-        parent.addChild(node);
-        setAlarmLevelImg(eventType.alarmLevel, $(widgetId +"Img"));
-    }
-    
-    var TreeClickHandler = function() {
-        this.handle = function(message) {
-            var widget = message.source;
-            var wid = widget.widgetId;
-            if (wid.startsWith("ped") || wid.startsWith("sch"))
-                insertText(widget.object);
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.List;
+import java.util.Map;
+
+import com.serotonin.json.JsonException;
+import com.serotonin.json.JsonObject;
+import com.serotonin.json.JsonReader;
+import com.serotonin.json.JsonRemoteEntity;
+import com.serotonin.json.JsonRemoteProperty;
+import com.serotonin.json.JsonSerializable;
+import com.serotonin.mango.rt.dataSource.DataSourceRT;
+import com.serotonin.mango.rt.dataSource.modbus.ModbusSerialDataSource;
+import com.serotonin.mango.rt.event.type.AuditEventType;
+import com.serotonin.mango.util.ExportCodes;
+import com.serotonin.mango.util.LocalizableJsonException;
+import com.serotonin.modbus4j.serial.SerialMaster;
+import com.serotonin.util.SerializationHelper;
+import com.serotonin.util.StringUtils;
+import com.serotonin.web.dwr.DwrResponseI18n;
+import com.serotonin.web.i18n.LocalizableMessage;
+
+@JsonRemoteEntity
+public class ModbusSerialDataSourceVO extends ModbusDataSourceVO<ModbusSerialDataSourceVO> implements JsonSerializable {
+    public static final Type TYPE = Type.MODBUS_SERIAL;
+
+    public enum EncodingType {
+        RTU("dsEdit.modbusSerial.encoding.rtu"), //
+        @Deprecated
+        RTU_REVERSE_CRC("dsEdit.modbusSerial.encoding.rtuReverseCrc"), //
+        ASCII("dsEdit.modbusSerial.encoding.ascii");
+
+        private final String nameKey;
+
+        EncodingType(String nameKey) {
+            this.nameKey = nameKey;
+        }
+
+        public String getNameKey() {
+            return nameKey;
         }
     }
-    
-    function showCompoundEvent(cedId) {
-        if (editingCompoundEvent)
-            stopImageFader($("ced"+ editingCompoundEvent.id +"Img"));
-        CompoundEventsDwr.getCompoundEvent(cedId, function(ced) {
-            if (!editingCompoundEvent) {
-                show($("compoundEventDetails"));
-                show($("eventTypes"));
-            }
-            editingCompoundEvent = ced;
-            
-            $set("xid", ced.xid);
-            $set("name", ced.name);
-            $set("alarmLevel", ced.alarmLevel);
-            $set("rtn", ced.returnToNormal);
-            $set("condition", ced.condition);
-            $set("disabled", ced.disabled);
-            
-            setUserMessage();
-        });
-        startImageFader($("ced"+ cedId +"Img"));
-        
-        if (cedId == ${NEW_ID})
-            hide($("deleteCompoundEventImg"));
-        else
-            show($("deleteCompoundEventImg"));
+
+    private static ExportCodes CONCURRENCY_CODES = new ExportCodes();
+    static {
+        CONCURRENCY_CODES.addElement(SerialMaster.SYNC_TRANSPORT, "SYNC_TRANSPORT",
+                "dsEdit.modbusSerial.concurrency.transport");
+        CONCURRENCY_CODES.addElement(SerialMaster.SYNC_SLAVE, "SYNC_SLAVE", "dsEdit.modbusSerial.concurrency.slave");
+        CONCURRENCY_CODES.addElement(SerialMaster.SYNC_FUNCTION, "SYNC_FUNCTION",
+                "dsEdit.modbusSerial.concurrency.function");
+    };
+
+    @Override
+    public LocalizableMessage getConnectionDescription() {
+        return new LocalizableMessage("common.default", commPortId);
     }
-    
-    function saveCompoundEvent() {
-        setUserMessage();
-        hideContextualMessages("compoundEventDetails")
-        
-        CompoundEventsDwr.saveCompoundEvent(editingCompoundEvent.id, $get("xid"), $get("name"), $get("alarmLevel"),
-                $get("rtn"), $get("condition"), $get("disabled"), function(response) {
-            if (response.hasMessages) {
-                showDwrMessages(response.messages);
-                if (response.range)
-                    setSelectionRange($("condition"), response.data.from, response.data.to);
-            }
-            else {
-                if (editingCompoundEvent.id == ${NEW_ID}) {
-                    stopImageFader($("ced"+ editingCompoundEvent.id +"Img"));
-                    editingCompoundEvent.id = response.data.cedId;
-                    appendCompoundEvent(editingCompoundEvent.id);
-                    startImageFader($("ced"+ editingCompoundEvent.id +"Img"));
-                    setUserMessage("<fmt:message key="compoundDetectors.cedAdded"/>");
-                    show($("deleteCompoundEventImg"));
-                }
-                else
-                    setUserMessage("<fmt:message key="compoundDetectors.cedSaved"/>");
-                
-                if (response.data.warning)
-                    setUserMessage(response.data.warning);
-                    
-                CompoundEventsDwr.getCompoundEvent(editingCompoundEvent.id, updateCompoundEvent)
-            }
-        });
+
+    @Override
+    public Type getType() {
+        return TYPE;
     }
-    
-    function setUserMessage(message) {
-        if (message) {
-            show($("userMessage"));
-            $("userMessage").innerHTML = message;
+
+    @Override
+    public DataSourceRT createDataSourceRT() {
+        return new ModbusSerialDataSource(this);
+    }
+
+    @JsonRemoteProperty
+    private String commPortId;
+    @JsonRemoteProperty
+    private int baudRate = 9600;
+    @JsonRemoteProperty
+    private int flowControlIn = 0;
+    @JsonRemoteProperty
+    private int flowControlOut = 0;
+    @JsonRemoteProperty
+    private int dataBits = 8;
+    @JsonRemoteProperty
+    private int stopBits = 1;
+    @JsonRemoteProperty
+    private int parity = 0;
+    @JsonRemoteProperty
+    private EncodingType encoding;
+    @JsonRemoteProperty
+    private boolean echo = false;
+    private int concurrency = SerialMaster.SYNC_FUNCTION;
+
+    public String getEncodingStr() {
+        if (encoding == null)
+            return null;
+        return encoding.toString();
+    }
+
+    public void setEncodingStr(String encoding) {
+        if (encoding != null)
+            this.encoding = EncodingType.valueOf(encoding);
+    }
+
+    public int getBaudRate() {
+        return baudRate;
+    }
+
+    public void setBaudRate(int baudRate) {
+        this.baudRate = baudRate;
+    }
+
+    public String getCommPortId() {
+        return commPortId;
+    }
+
+    public void setCommPortId(String commPortId) {
+        this.commPortId = commPortId;
+    }
+
+    public int getDataBits() {
+        return dataBits;
+    }
+
+    public void setDataBits(int dataBits) {
+        this.dataBits = dataBits;
+    }
+
+    public boolean isEcho() {
+        return echo;
+    }
+
+    public void setEcho(boolean echo) {
+        this.echo = echo;
+    }
+
+    public int getFlowControlIn() {
+        return flowControlIn;
+    }
+
+    public void setFlowControlIn(int flowControlIn) {
+        this.flowControlIn = flowControlIn;
+    }
+
+    public int getFlowControlOut() {
+        return flowControlOut;
+    }
+
+    public void setFlowControlOut(int flowControlOut) {
+        this.flowControlOut = flowControlOut;
+    }
+
+    public int getParity() {
+        return parity;
+    }
+
+    public void setParity(int parity) {
+        this.parity = parity;
+    }
+
+    public int getStopBits() {
+        return stopBits;
+    }
+
+    public void setStopBits(int stopBits) {
+        this.stopBits = stopBits;
+    }
+
+    public EncodingType getEncoding() {
+        return encoding;
+    }
+
+    public void setEncoding(EncodingType encoding) {
+        this.encoding = encoding;
+    }
+
+    public int getConcurrency() {
+        return concurrency;
+    }
+
+    public void setConcurrency(int concurrency) {
+        this.concurrency = concurrency;
+    }
+
+    @Override
+    public void validate(DwrResponseI18n response) {
+        super.validate(response);
+        if (StringUtils.isEmpty(commPortId))
+            response.addContextualMessage("commPortId", "validate.required");
+        if (baudRate <= 0)
+            response.addContextualMessage("baudRate", "validate.invalidValue");
+        if (!(flowControlIn == 0 || flowControlIn == 1 || flowControlIn == 4))
+            response.addContextualMessage("flowControlIn", "validate.invalidValue");
+        if (!(flowControlOut == 0 || flowControlOut == 2 || flowControlOut == 8))
+            response.addContextualMessage("flowControlOut", "validate.invalidValue");
+        if (dataBits < 5 || dataBits > 8)
+            response.addContextualMessage("dataBits", "validate.invalidValue");
+        if (stopBits < 1 || stopBits > 3)
+            response.addContextualMessage("stopBits", "validate.invalidValue");
+        if (parity < 0 || parity > 4)
+            response.addContextualMessage("parityBits", "validate.invalidValue");
+        if (encoding == null)
+            response.addContextualMessage("encodingBits", "validate.required");
+
+        if (!CONCURRENCY_CODES.isValidId(concurrency))
+            response.addContextualMessage("concurrency", "validate.invalidValue");
+    }
+
+    @Override
+    protected void addPropertiesImpl(List<LocalizableMessage> list) {
+        super.addPropertiesImpl(list);
+        AuditEventType.addPropertyMessage(list, "dsEdit.modbusSerial.port", commPortId);
+        AuditEventType.addPropertyMessage(list, "dsEdit.modbusSerial.baud", baudRate);
+        AuditEventType.addPropertyMessage(list, "dsEdit.modbusSerial.flowControlIn", flowControlIn);
+        AuditEventType.addPropertyMessage(list, "dsEdit.modbusSerial.flowControlOut", flowControlOut);
+        AuditEventType.addPropertyMessage(list, "dsEdit.modbusSerial.dataBits", dataBits);
+        AuditEventType.addPropertyMessage(list, "dsEdit.modbusSerial.stopBits", stopBits);
+        AuditEventType.addPropertyMessage(list, "dsEdit.modbusSerial.parity", parity);
+        AuditEventType.addPropertyMessage(list, "dsEdit.modbusSerial.encoding", encoding);
+        AuditEventType.addPropertyMessage(list, "dsEdit.modbusSerial.echo", echo);
+        AuditEventType.addExportCodeMessage(list, "dsEdit.modbusSerial.concurrency", CONCURRENCY_CODES, concurrency);
+    }
+
+    @Override
+    protected void addPropertyChangesImpl(List<LocalizableMessage> list, ModbusSerialDataSourceVO from) {
+        super.addPropertyChangesImpl(list, from);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsEdit.modbusSerial.port", from.commPortId, commPortId);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsEdit.modbusSerial.baud", from.baudRate, baudRate);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsEdit.modbusSerial.flowControlIn", from.flowControlIn,
+                flowControlIn);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsEdit.modbusSerial.flowControlOut", from.flowControlOut,
+                flowControlOut);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsEdit.modbusSerial.dataBits", from.dataBits, dataBits);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsEdit.modbusSerial.stopBits", from.stopBits, stopBits);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsEdit.modbusSerial.parity", from.parity, parity);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsEdit.modbusSerial.encoding", from.encoding, encoding);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsEdit.modbusSerial.echo", from.echo, echo);
+        AuditEventType.maybeAddExportCodeChangeMessage(list, "dsEdit.modbusSerial.concurrency", CONCURRENCY_CODES,
+                from.concurrency, concurrency);
+    }
+
+    //
+    // /
+    // / Serialization
+    // /
+    //
+    private static final long serialVersionUID = -1;
+    private static final int version = 2;
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.writeInt(version);
+        SerializationHelper.writeSafeUTF(out, commPortId);
+        out.writeInt(baudRate);
+        out.writeInt(flowControlIn);
+        out.writeInt(flowControlOut);
+        out.writeInt(dataBits);
+        out.writeInt(stopBits);
+        out.writeInt(parity);
+        out.writeObject(encoding);
+        out.writeBoolean(echo);
+        out.writeInt(concurrency);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        int ver = in.readInt();
+
+        // Switch on the version of the class so that version changes can be elegantly handled.
+        if (ver == 1) {
+            commPortId = SerializationHelper.readSafeUTF(in);
+            baudRate = in.readInt();
+            flowControlIn = in.readInt();
+            flowControlOut = in.readInt();
+            dataBits = in.readInt();
+            stopBits = in.readInt();
+            parity = in.readInt();
+            encoding = (EncodingType) in.readObject();
+            echo = in.readBoolean();
+            concurrency = SerialMaster.SYNC_FUNCTION;
         }
-        else
-            hide($("userMessage"));
+        else if (ver == 2) {
+            commPortId = SerializationHelper.readSafeUTF(in);
+            baudRate = in.readInt();
+            flowControlIn = in.readInt();
+            flowControlOut = in.readInt();
+            dataBits = in.readInt();
+            stopBits = in.readInt();
+            parity = in.readInt();
+            encoding = (EncodingType) in.readObject();
+            echo = in.readBoolean();
+            concurrency = in.readInt();
+        }
     }
-    
-    function appendCompoundEvent(cedId) {
-        createFromTemplate("ced_TEMPLATE_", cedId, "compoundEventsTable");
+
+    @Override
+    public void jsonDeserialize(JsonReader reader, JsonObject json) throws JsonException {
+        super.jsonDeserialize(reader, json);
+
+        // Concurrency
+        String text = json.getString("concurrency");
+        if (text == null)
+            throw new LocalizableJsonException("emport.error.missing", "concurrency", CONCURRENCY_CODES.getCodeList());
+        concurrency = CONCURRENCY_CODES.getId(text);
+        if (!CONCURRENCY_CODES.isValidId(concurrency))
+            throw new LocalizableJsonException("emport.error.invalid", "concurrency", text,
+                    CONCURRENCY_CODES.getCodeList());
     }
-    
-    function updateCompoundEvent(ced) {
-        $("ced"+ ced.id +"Name").innerHTML = ced.name;
-        setCompoundEventImg(ced.disabled, $("ced"+ ced.id +"Img"));
+
+    @Override
+    public void jsonSerialize(Map<String, Object> map) {
+        super.jsonSerialize(map);
+        map.put("concurrency", CONCURRENCY_CODES.getCode(concurrency));
     }
-    
-    function deleteCompoundEvent() {
-        CompoundEventsDwr.deleteCompoundEvent(editingCompoundEvent.id, function() {
-            stopImageFader($("ced"+ editingCompoundEvent.id +"Img"));
-            $("compoundEventsTable").removeChild($("ced"+ editingCompoundEvent.id));
-            hide($("compoundEventDetails"));
-            hide($("eventTypes"));
-            editingCompoundEvent = null;
-        });
-    }
-    
-    function updateAlarmLevelImage(alarmLevel) {
-        setAlarmLevelImg(alarmLevel, $("alarmLevelImg"));
-    }
-    
-    function validate() {
-        setUserMessage();
-        CompoundEventsDwr.validateCondition($get("condition"), function(response) {
-            if (response.hasMessages) {
-                showDwrMessages(response.messages);
-                if (response.data.range)
-                    setSelectionRange($("condition"), response.data.from, response.data.to);
-            }
-            else
-                setUserMessage("<fmt:message key="compoundDetectors.cedValidated"/>");
-        });
-    }
-    
-    function insertText(text) {
-        insertIntoTextArea($("condition"), text);
-    }
-  </script>
-  
-  <table>
-    <tr>
-      <td rowspan="2" valign="top">
-        <div class="borderDiv">
-          <table width="100%">
-            <tr>
-              <td>
-                <span class="smallTitle"><fmt:message key="compoundDetectors.compoundEventDetectors"/></span>
-                <tag:help id="compoundEventDetectors"/>
-              </td>
-              <td align="right"><tag:img png="multi_bell_add" title="common.add" id="ced${NEW_ID}Img"
-                      onclick="showCompoundEvent(${NEW_ID})"/></td>
-            </tr>
-          </table>
-          <table id="compoundEventsTable">
-            <tbody id="ced_TEMPLATE_" onclick="showCompoundEvent(getMangoId(this))" class="ptr" style="display:none;">
-              <tr>
-                <td><tag:img id="ced_TEMPLATE_Img" png="multi_bell" title="compoundDetectors.compoundEventDetector"/></td>
-                <td class="link" id="ced_TEMPLATE_Name"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </td>
-  
-      <td valign="top" style="display:none;" id="compoundEventDetails">
-        <div class="borderDiv">
-          <table width="100%">
-            <tr>
-              <td><span class="smallTitle"><fmt:message key="compoundDetectors.details"/></span></td>
-              <td align="right">
-                <tag:img png="save" onclick="saveCompoundEvent();" title="common.save"/>
-                <tag:img id="deleteCompoundEventImg" png="delete" onclick="deleteCompoundEvent();" title="common.delete"/>
-              </td>
-            </tr>
-          </table>
-  
-          <table>
-            <tr>
-              <td class="formLabelRequired"><fmt:message key="common.xid"/></td>
-              <td class="formField"><input type="text" id="xid"/></td>
-            </tr>
-            
-            <tr>
-              <td class="formLabelRequired"><fmt:message key="compoundDetectors.name"/></td>
-              <td class="formField"><input type="text" id="name"/></td>
-            </tr>
-            
-            <tr>
-              <td class="formLabelRequired"><fmt:message key="common.alarmLevel"/></td>
-              <td class="formField">
-                <select id="alarmLevel" onchange="updateAlarmLevelImage(this.value)">
-                  <tag:alarmLevelOptions/>
-                </select>
-                <tag:img id="alarmLevelImg" png="flag_green" title="common.alarmLevel.none" style="display:none;"/>
-              </td>
-            </tr>
-            
-            <tr>
-              <td class="formLabelRequired"><fmt:message key="common.rtn"/></td>
-              <td class="formField"><input type="checkbox" id="rtn"/></td>
-            </tr>
-            
-            <tr>
-              <td class="formLabelRequired">
-                <fmt:message key="compoundDetectors.condition"/>
-                <tag:img png="accept" onclick="validate();" title="compoundDetectors.validate"/><br/>
-                <br/>
-                <a href="#" onclick="insertText(' && '); return false;"><fmt:message key="compoundDetectors.and"/></a><br/>
-                <a href="#" onclick="insertText(' || '); return false;"><fmt:message key="compoundDetectors.or"/></a><br/>
-                <a href="#" onclick="insertText('!'); return false;"><fmt:message key="compoundDetectors.not"/></a><br/>
-              </td>
-              <td class="formField"><textarea rows="10" cols="60" id="condition"></textarea></td>
-            </tr>
-            
-            <tr>
-              <td class="formLabelRequired"><fmt:message key="common.disabled"/></td>
-              <td class="formField"><input type="checkbox" id="disabled"/></td>
-            </tr>
-          </table>
-          
-          <table>
-            <tr>
-              <td colspan="2" id="userMessage" class="formError" style="display:none;"></td>
-            </tr>
-          </table>
-        </div>
-      </td>
-    </tr>
-    
-    <tr>
-      <td valign="top" style="display:none;" id="eventTypes">
-        <div class="borderDivPadded">
-          <span class="smallTitle"><fmt:message key="compoundDetectors.eventTypes"/></span>
-          <div dojoType="TreeBasicController" widgetId="controller"></div>
-          <div id="tree">
-            <div dojoType="Tree" widgetId="eventTypeTree" listeners="controller" toggle="wipe">
-              <div dojoType="TreeNode" title="<fmt:message key="compoundDetectors.pointEventDetector"/>" widgetId="rootPoint"></div>
-              <div dojoType="TreeNode" title="<fmt:message key="scheduledEvents.ses"/>" widgetId="rootScheduled"></div>
-            </div>
-          </div>
-        </div>
-      </td>
-    </tr>
-  </table>
-</tag:page>
+}

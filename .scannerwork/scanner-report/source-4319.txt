@@ -1,98 +1,44 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-<title>Dojo Tree Widget Test (dynamic node creation)</title>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<script type="text/javascript">
-	var djConfig = {isDebug: true, debugAtAllCosts: true };
-</script>
-<script type="text/javascript" src="../../../dojo.js"></script>
-<script type="text/javascript">
-	delete dojo["profile"];
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-	dojo.require("dojo.widget.*");
-	dojo.require("dojo.widget.TreeV3");
-	dojo.require("dojo.widget.TreeNodeV3");
-	dojo.require("dojo.widget.TreeBasicControllerV3");
-	dojo.require("dojo.profile");
-	dojo.hostenv.writeIncludes();
-</script>
-<script type="text/javascript">
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataSource.ebro;
 
-	
-	dojo.addOnLoad(function(){
-		var depth = 0;
-		
-		function addChildren(title) {
-			//dojo.debug("addChildren to "+nodeOrTree+" depth" + depth)
-			depth++;
-			
-			var children = [];
-			for (var i=1; i<=5; i++) {
-				var t = title+'.'+i;
-				var node = {title: t};
-				
-				if (depth<3) {
-					node.children = addChildren(t);
-				}
-				
-				children.push(node);				
-			}
-			//dojo.debug("out "+nodeOrTree);
-			
-			depth--;
-			
-			return children;			
-		}	
+import com.serotonin.modbus4j.ExceptionResult;
 
-		dojo.profile.start("createController");
-		var controller = dojo.widget.createWidget("TreeBasicControllerV3");
-		dojo.profile.end("createController");
-		
-		dojo.profile.start("createTree");
-		var tree = dojo.widget.createWidget("TreeV3", {listeners: [controller.widgetId]});	
-		dojo.profile.end("createTree");
-				
-		document.body.appendChild(tree.domNode);
+/**
+ * @author Matthew Lohbihler
+ */
+public class ExceptionResultException extends Exception {
+    private static final long serialVersionUID = 1L;
 
-	
-		dojo.profile.start("prepareNodes");		
-		var nodes = addChildren('node', tree);
-		dojo.profile.end("prepareNodes");
-			
-		dojo.profile.start("addNodes");
-		
-		tree.setChildren(nodes);
-		dojo.profile.end("addNodes");
-		
-		var nodeCount = 0;
-		dojo.lang.forEach(tree.getDescendants(), function() { nodeCount++  });
-		
-		dojo.debug("Nodes total: "+nodeCount);
-			
-		dojo.profile.dump(true);
-		
-	});
+    private final String key;
+    private final ExceptionResult exceptionResult;
 
-</script>
-</head>
-<body>
+    public ExceptionResultException(String key, ExceptionResult exceptionResult) {
+        this.key = key;
+        this.exceptionResult = exceptionResult;
+    }
 
-<h4>Test/profile fast nested nodes generation and adoptation</h4>
+    public String getKey() {
+        return key;
+    }
 
-<div style="display:none">	
-	<img src="../../../src/widget/templates/images/TreeV3/i.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/i_half.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/expand_minus.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/expand_plus.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/expand_leaf.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/i_long.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/document.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/open.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/closed.gif">
-</div>	
-
-
-</body>
-</html>
+    public ExceptionResult getExceptionResult() {
+        return exceptionResult;
+    }
+}

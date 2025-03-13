@@ -1,136 +1,81 @@
-	<html>
-<head>
+/*
+ *   Mango - Open Source M2M - http://mango.serotoninsoftware.com
+ *   Copyright (C) 2010 Arne Pl\u00f6se
+ *   @author Arne Pl\u00f6se
+ *
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataSource.mbus;
 
-<script type="text/javascript">
-	var djConfig = {isDebug: true, debugAtAllCosts: true };
-</script>
-<script type="text/javascript" src="../../../dojo.js"></script>
-<script type="text/javascript">
-	delete dojo["profile"];
-	dojo.require("dojo.profile");
+import net.sf.mbus4j.MBusAddressing;
+import net.sf.mbus4j.dataframes.MBusMedium;
+import net.sf.mbus4j.dataframes.datablocks.DataBlock;
+import net.sf.mbus4j.dataframes.datablocks.dif.DataFieldCode;
+import net.sf.mbus4j.dataframes.datablocks.dif.FunctionField;
+import net.sf.mbus4j.dataframes.datablocks.vif.Vife;
+import net.sf.mbus4j.master.ValueRequestPointLocator;
 
-	dojo.require("dojo.widget.*");
-	dojo.require("dojo.widget.TreeV3");
-	dojo.require("dojo.widget.TreeNodeV3");
-	dojo.require("dojo.widget.TreeBasicControllerV3");
-	dojo.require("dojo.widget.TreeDndControllerV3");
-	dojo.hostenv.writeIncludes();
-</script>
-<script type="text/javascript">
+import com.serotonin.mango.rt.dataImage.DataPointRT;
+import com.serotonin.mango.rt.dataSource.PointLocatorRT;
+import com.serotonin.mango.vo.dataSource.mbus.MBusPointLocatorVO;
 
-	var nodeCount = 0;
-	var nodeCountMax = 500;
-	dojo.addOnLoad(function(){
-		var depth = 0;
-		
+public class MBusPointLocatorRT extends PointLocatorRT {
+    private final MBusPointLocatorVO vo;
 
-		function addChildren(title) {
-			//dojo.debug("addChildren title "+title);
-			
-			depth++;
-			
-			var children = [];
-			for (var i=1; i<=5; i++) {				
+    public MBusPointLocatorRT(MBusPointLocatorVO vo) {
+        this.vo = vo;
+    }
 
-				var t = title+'.'+i;
-				var node = {title: t};
-				
-				children.push(node);		
-				nodeCount++	
-				if (nodeCount >= nodeCountMax) break;			
-			}
+    @Override
+    public boolean isSettable() {
+        return false;
+    }
 
-			var i=1;
-			dojo.lang.forEach(children, function(child) {
-				var t = title+'.'+i;
-				i++;
-		
-				// first node is always folder for tests
-				if (nodeCount<nodeCountMax && (
-					depth==1 && child === children[0] || depth<5 && Math.random()>0.3 )
-				  ) {
-					//dojo.debug("add child "+t);
-					child.children = addChildren(t);        		
-				}
-			});
-				
+    /**
+     * @return the vo
+     */
+    public MBusPointLocatorVO getVo() {
+        return vo;
+    }
 
-			//dojo.debug("out "+nodeOrTree);
-			
-			depth--;
-			
-			return children;			
-		}	
-
-		controller = dojo.widget.createWidget("TreeBasicControllerV3");
-		dndcontroller = dojo.widget.createWidget("TreeDndControllerV3", { controller: controller });
-		
-		dojo.profile.start("createTree");
-		tree = dojo.widget.createWidget("TreeV3", {
-			listeners: [controller.widgetId,dndcontroller.widgetId],
-			DndAcceptTypes: "firstTree",
-			widgetId: "firstTree",
-			DndMode:"between;onto"
-		});	
-		dojo.profile.end("createTree");
-				
-		document.body.appendChild(tree.domNode);
-
-	
-		dojo.profile.start("prepareNodes");		
-		var nodes = addChildren('node ', tree);
-		dojo.profile.end("prepareNodes");
-			
-		dojo.profile.start("addNodes");
-		
-		tree.setChildren(nodes);
-		dojo.profile.end("addNodes");
-		
-		dojo.debug("Nodes total: "+nodeCount);
-			
-	
-	});
-	
-	function expandAllStart() {	
-		dojo.profile.start("expandAll + timeouts");
-	}
-	
-	function expandAllEnd() {	
-		dojo.profile.end("expandAll + timeouts");
-		alert("expandAll finished");
-	}
-
-</script>
-</head>
-<body>
-
-<div style="display:none">
-	<!-- IE has a bug: it reloads all dynamically resolved images, no matter, is it
-	new Image() or CSS background. If you don't specify images like that,
-	it will reload them every time a node is expanded -->
-	<img src="../../../src/widget/templates/images/TreeV3/i.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/i_half.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/expand_minus.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/expand_plus.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/expand_leaf.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/i_long.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/document.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/open.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/closed.gif">
-</div>	
-
-
-<h4>Test drag'n'drop &amp; lazy creation &amp; batch expand stuff</h4>
-
-<input type="button" value="Expand first node to level 2" onClick="controller.expandToLevel(tree.children[0],2)"/>
-<input type="button" value="Expand tree to level 2" onClick="controller.expandToLevel(tree,2)"/>
-<input type="button" value="Expand all with callback at finish" onClick="expandAllStart();controller.expandAll(tree,expandAllEnd)"/>
-<br/>
-<input type="button" value="Collapse all nodes" onClick="controller.collapseAll(tree)"/>
-<br/>
-<input type="button" value="Clone first node and append to tree" onClick="tree.addChild(tree.children[0].clone(true))">
-<br/>
-
-<input type="button" value="dump profile" onClick="dojo.profile.dump(true)">
-</body>
-</html>
+    public ValueRequestPointLocator<DataPointRT> createValueRequestPointLocator(DataPointRT point) {
+        ValueRequestPointLocator<DataPointRT> result = new ValueRequestPointLocator<DataPointRT>();
+        result.setAddressing(MBusAddressing.fromLabel(vo.getAddressing()));
+        result.setAddress(vo.getAddress());
+        result.setDeviceUnit(vo.getDeviceUnit());
+        result.setDifCode(DataFieldCode.fromLabel(vo.getDifCode()));
+        result.setFunctionField(FunctionField.fromLabel(vo.getFunctionField()));
+        result.setIdentnumber(vo.getIdentNumber());
+        result.setManufacturer(vo.getManufacturer());
+        result.setMedium(MBusMedium.fromLabel(vo.getMedium()));
+        result.setReference(point);
+        result.setResponseFrameName(vo.getResponseFrame());
+        result.setStorageNumber(vo.getStorageNumber());
+        result.setTariff(vo.getTariff());
+        result.setVersion(vo.getVersion());
+        result.setVif(DataBlock.getVif(vo.getVifType(), vo.getVifLabel(), vo.getUnitOfMeasurement(), vo.getSiPrefix(),
+                vo.getExponent()));
+        if (vo.getVifeLabels().length == 0) {
+            result.setVifes(DataBlock.EMPTY_VIFE);
+        }
+        else {
+            Vife[] vifes = new Vife[vo.getVifeLabels().length];
+            for (int i = 0; i < vo.getVifeLabels().length; i++) {
+                vifes[i] = DataBlock.getVife(vo.getVifeTypes()[i], vo.getVifeLabels()[i]);
+            }
+            result.setVifes(vifes);
+        }
+        return result;
+    }
+}

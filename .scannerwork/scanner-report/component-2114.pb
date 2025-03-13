@@ -1,1 +1,1 @@
-Â 2javaXêhr>src/com/serotonin/mango/rt/dataSource/sql/SqlDataSourceRT.java
+Â 2cssX=hr4build/resources/dojo/src/widget/templates/Slider.css

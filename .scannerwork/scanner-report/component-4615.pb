@@ -1,0 +1,1 @@
+‡$ 2javaXóhrKsrc/com/serotonin/mango/vo/dataSource/http/HttpRetrieverPointLocatorVO.java

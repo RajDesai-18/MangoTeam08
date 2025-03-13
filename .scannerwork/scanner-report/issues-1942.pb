@@ -1,19 +1,27 @@
-´
-javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2
-ππ( :@´
-javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2
-ﬂﬂG c@´
-javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2
-ËË3 @@Q
-javaS26966Make the enclosing method "static" or remove this set.2
-ÆÆ ([
-javaS1155>Use isEmpty() to check whether the collection is empty or not.2
-ÏÏ '@Q
-javaS26966Make the enclosing method "static" or remove this set.2
-≠≠ Q
-javaS26966Make the enclosing method "static" or remove this set.2
-¯¯  Q
-javaS26966Make the enclosing method "static" or remove this set.2
-ññ Q
-javaS26966Make the enclosing method "static" or remove this set.2
-óó 
+E
+WebS1827/Remove this deprecated "cellSpacing" attribute.2 ?E
+WebS1827/Remove this deprecated "cellPadding" attribute.2 ??
+WebS1827)Remove this deprecated "width" attribute.2 ?;
+WebS5256%Add "<th>" headers to this "<table>".2 ?B
+WebS1827*Remove this deprecated "valign" attribute.2 G
+WebS1827/Remove this deprecated "cellSpacing" attribute.2 5G
+WebS1827/Remove this deprecated "cellPadding" attribute.2 5=
+WebS5256%Add "<th>" headers to this "<table>".2 5A
+WebS1827)Remove this deprecated "align" attribute.2%% !B
+WebS1827*Remove this deprecated "valign" attribute.2%% !G
+WebS1827/Remove this deprecated "cellSpacing" attribute.2&& 5G
+WebS1827/Remove this deprecated "cellPadding" attribute.2&& 5=
+WebS5256%Add "<th>" headers to this "<table>".2&& 5B
+WebS1827*Remove this deprecated "nowrap" attribute.2;; B
+WebS1827*Remove this deprecated "nowrap" attribute.2AA E
+WebS1827/Remove this deprecated "cellSpacing" attribute.2II ?E
+WebS1827/Remove this deprecated "cellPadding" attribute.2II ??
+WebS1827)Remove this deprecated "width" attribute.2II ?;
+WebS5256%Add "<th>" headers to this "<table>".2II ?B
+WebS1827*Remove this deprecated "nowrap" attribute.2KK A
+WebS1827)Remove this deprecated "width" attribute.2MM B
+WebS1827*Remove this deprecated "nowrap" attribute.2MM B
+WebS1827*Remove this deprecated "nowrap" attribute.2QQ A
+WebS1827)Remove this deprecated "width" attribute.2SS B
+WebS1827*Remove this deprecated "nowrap" attribute.2SS ;
+WebS5256%Add "<th>" headers to this "<table>".2WW 

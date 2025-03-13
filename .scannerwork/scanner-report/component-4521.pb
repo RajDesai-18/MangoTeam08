@@ -1,0 +1,1 @@
+©# 2javaX;hr9src/com/serotonin/mango/view/component/CompoundChild.java

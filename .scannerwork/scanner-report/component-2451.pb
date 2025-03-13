@@ -1,1 +1,1 @@
-“ 2javaXMhr?src/com/serotonin/mango/web/dwr/beans/OpenV4JDataPointBean.java
+“ 2jsXÈhr&build/resources/dojo/tests/test_dom.js

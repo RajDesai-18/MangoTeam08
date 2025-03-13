@@ -1,1 +1,1 @@
-• 2javaXóhrKsrc/com/serotonin/mango/vo/dataSource/http/HttpRetrieverPointLocatorVO.java
+• 2jsXhr8build/resources/dojo/tests/i18n/nls/zh-cn/salutations.js

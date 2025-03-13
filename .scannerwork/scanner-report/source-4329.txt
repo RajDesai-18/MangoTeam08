@@ -1,85 +1,62 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-<title>Dojo Tree Widget Test (dynamic node creation)</title>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<script type="text/javascript">
-	var djConfig = {isDebug: true, debugAtAllCosts: true };
-</script>
-<script type="text/javascript" src="../../../dojo.js"></script>
-<script type="text/javascript">
-	delete dojo["profile"];
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-	dojo.require("dojo.widget.*");
-	dojo.require("dojo.widget.TreeV3");
-	dojo.require("dojo.widget.TreeNodeV3");
-	dojo.require("dojo.widget.TreeBasicControllerV3");
-	dojo.require("dojo.profile");
-	dojo.hostenv.writeIncludes();
-</script>
-<script type="text/javascript">
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataSource.galil;
 
-	
-	dojo.addOnLoad(function(){
-		var depth = 0;
-		
-		function addChildren(title,nodeOrTree) {
-			//dojo.debug("addChildren to "+nodeOrTree+" depth" + depth)
-			depth++;
-			
-			var children = [];
-			for (var i=1; i<=10; i++) {
-				var t = title+'.'+i
-				dojo.profile.start("createWidget");
-				var node = dojo.widget.TreeNodeV3.prototype.createSimple({title: t, tree: tree})
-				// slow generic method (1.5-3x diff)
-				//var node = dojo.widget.createWidget("TreeNodeV3", {title: t, tree:tree.widgetId});
-				dojo.profile.end("createWidget");
-				
-				if (depth<3) {
-					addChildren(t, node);
-				}
-				
-				children.push(node);				
-			}
-			nodeOrTree.setChildren(children)
-			//dojo.debug("out "+nodeOrTree);
-			
-			depth--;
-			
-		}	
+import com.serotonin.mango.rt.dataImage.types.BinaryValue;
+import com.serotonin.mango.rt.dataImage.types.MangoValue;
+import com.serotonin.mango.vo.dataSource.galil.OutputPointTypeVO;
+import com.serotonin.web.i18n.LocalizableException;
+import com.serotonin.web.i18n.LocalizableMessage;
 
-		dojo.profile.start("createController");
-		var controller = dojo.widget.createWidget("TreeBasicControllerV3");
-		dojo.profile.end("createController");
-		
-		dojo.profile.start("createTree");
-		var tree = dojo.widget.createWidget("TreeV3", {listeners: [controller.widgetId]});	
-		dojo.profile.end("createTree");
-				
-		document.body.appendChild(tree.domNode);
+/**
+ * @author Matthew Lohbihler
+ */
+public class OutputPointTypeRT extends PointTypeRT {
+    private final OutputPointTypeVO vo;
 
-	
-		dojo.profile.start("createNodes");		
-		addChildren('node', tree)		
-		dojo.profile.end("createNodes");
-		
-		var nodeCount = 0;
-		dojo.lang.forEach(tree.getDescendants(), function() { nodeCount++  });
-		
-		dojo.debug("Nodes total: "+nodeCount);
-			
-		dojo.profile.dump(true);
-		
-	});
+    public OutputPointTypeRT(OutputPointTypeVO vo) {
+        super(vo);
+        this.vo = vo;
+    }
 
-</script>
-</head>
-<body>
+    @Override
+    public String getPollRequestImpl() {
+        return "MG @OUT[" + vo.getOutputId() + "]";
+    }
 
-<h4>Test/profile fast nested nodes generation and adoptation</h4>
+    @Override
+    public MangoValue parsePollResponse(String data, String pointName) throws LocalizableException {
+        return super.parseValue(data, vo.getDataTypeId(), pointName);
+    }
 
+    @Override
+    protected String getSetRequestImpl(MangoValue value) {
+        boolean b = ((BinaryValue) value).getBooleanValue();
+        if (b)
+            return "SB " + vo.getOutputId();
+        return "CB " + vo.getOutputId();
+    }
 
-</body>
-</html>
+    @Override
+    public MangoValue parseSetResponse(String data) throws LocalizableException {
+        if (!"".equals(data))
+            throw new LocalizableException(new LocalizableMessage("event.galil.unexpected", data));
+        return null;
+    }
+}

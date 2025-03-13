@@ -1,3 +1,4 @@
-©
-javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2&&7 ?@©
-javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2II* 2@
+}
+
+javascriptS2703^Add the "let", "const" or "var" keyword to this declaration of "djConfig" to make it explicit.2 -
+cssS4667Unexpected empty source2 

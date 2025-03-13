@@ -1,129 +1,102 @@
-	<html>
-<head>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<script type="text/javascript">
-	var djConfig = {isDebug: true, debugAtAllCosts: true };
-</script>
-<script type="text/javascript" src="../../../dojo.js"></script>
-<script type="text/javascript">
-	delete dojo["profile"];
-	dojo.require("dojo.profile");
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-	dojo.require("dojo.widget.*");
-	dojo.require("dojo.widget.TreeV3");
-	dojo.require("dojo.widget.TreeNodeV3");
-	dojo.require("dojo.widget.TreeBasicControllerV3");
-	dojo.require("dojo.widget.TreeDndControllerV3");
-	dojo.require("dojo.widget.TreeContextMenuV3");
-	dojo.require("dojo.widget.TreeDemo");
-	dojo.hostenv.writeIncludes();
-</script>
-<script type="text/javascript">
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataSource.meta;
 
-	var nodeCount = 0;
-	var nodeCountMax = 500;
-	dojo.addOnLoad(function(){
-		var depth = 0;
-		
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
-		function addChildren(title) {
-			//dojo.debug("addChildren title "+title);
-			
-			depth++;
-			
-			var children = [];
-			for (var i=1; i<=5; i++) {				
+import com.serotonin.mango.rt.dataImage.IDataPoint;
+import com.serotonin.mango.rt.dataImage.PointValueTime;
+import com.serotonin.mango.rt.dataImage.types.MangoValue;
 
-				var t = title+'.'+i;
-				var node = {title: t};
-				
-				children.push(node);		
-				nodeCount++	
-				if (nodeCount >= nodeCountMax) break;			
-			}
+/**
+ * @author Matthew Lohbihler
+ */
+abstract public class AbstractPointWrapper {
+    protected IDataPoint point;
+    protected WrapperContext context;
 
-			var i=1;
-			dojo.lang.forEach(children, function(child) {
-				var t = title+'.'+i;
-				i++;
-		
-				// first node is always folder for tests
-				if (nodeCount<nodeCountMax && (
-					depth==1 && child === children[0] || depth<5 && Math.random()>0.3 )
-				  ) {
-					//dojo.debug("add child "+t);
-					child.children = addChildren(t);	
-				}
-			});
-				
+    AbstractPointWrapper(IDataPoint point, WrapperContext context) {
+        this.point = point;
+        this.context = context;
+    }
 
-			//dojo.debug("out "+nodeOrTree);
-			
-			depth--;
-			
-			return children;			
-		}	
+    protected MangoValue getValueImpl() {
+        PointValueTime pvt = point.getPointValue();
+        if (pvt == null)
+            return null;
+        return pvt.getValue();
+    }
 
-		controller = dojo.widget.createWidget("TreeBasicControllerV3");
-		dndcontroller = dojo.widget.createWidget("TreeDndControllerV3", { controller: controller });
-		
-		dojo.profile.start("createTree");
-		tree = dojo.widget.createWidget("TreeV3", {
-			listeners: [controller.widgetId,dndcontroller.widgetId,"contextMenu"],
-			DndAcceptTypes: "firstTree",
-			widgetId: "firstTree",
-			DndMode:"between;onto"
-		});	
-		dojo.profile.end("createTree");
-				
-		document.body.appendChild(tree.domNode);
+    public long getTime() {
+        PointValueTime pvt = point.getPointValue();
+        if (pvt == null)
+            return -1;
+        return pvt.getTime();
+    }
 
-	
-		dojo.profile.start("prepareNodes");		
-		var nodes = addChildren('node', tree);
-		dojo.profile.end("prepareNodes");
-			
-		dojo.profile.start("addNodes");
-		
-		tree.setChildren(nodes);
-		dojo.profile.end("addNodes");
-		
-		dojo.debug("Nodes total: "+nodeCount);
-			
-	
-		dojo.addOnLoad(function() { dojo.widget.TreeDemo.bindDemoMenu(controller) });
+    public int getMillis() {
+        return getCalendar().get(Calendar.MILLISECOND);
+    }
 
-	});
+    public int getSecond() {
+        return getCalendar().get(Calendar.SECOND);
+    }
 
-</script>
-</head>
-<body>
+    public int getMinute() {
+        return getCalendar().get(Calendar.MINUTE);
+    }
 
+    public int getHour() {
+        return getCalendar().get(Calendar.HOUR_OF_DAY);
+    }
 
-<div dojoType="TreeContextMenuV3" toggle="explode" contextMenuForWindow="false" widgetId="contextMenu">
-	<div dojoType="TreeMenuItemV3" treeActions="addChild" iconSrc="../images/createsmall.gif" widgetId="treeContextMenuCreate" caption="Create"></div>
-	<div dojoType="TreeMenuItemV3" treeActions="remove" iconSrc="../images/removesmall.gif" caption="Remove" widgetId="treeContextMenuDestroy"></div>
-	<div dojoType="TreeMenuItemV3" treeActions="move" iconSrc="../images/downsmall.png" caption="Up" widgetId="treeContextMenuUp"></div>
-	<div dojoType="TreeMenuItemV3" treeActions="move" iconSrc="../images/upsmall.png" caption="Down" widgetId="treeContextMenuDown"></div>
-</div>
+    public int getDay() {
+        return getCalendar().get(Calendar.DATE);
+    }
 
+    public int getDayOfWeek() {
+        return getCalendar().get(Calendar.DAY_OF_WEEK);
+    }
 
-<div style="display:none">
-	<!-- IE has a bug: it reloads all dynamically resolved images, no matter, is it
-	new Image() or CSS background. If you don't specify images like that,
-	it will reload them every time a node is expanded -->
-	<img src="../../../src/widget/templates/images/TreeV3/i.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/i_half.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/expand_minus.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/expand_plus.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/expand_leaf.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/i_long.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/document.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/open.gif">
-	<img src="../../../src/widget/templates/images/TreeV3/closed.gif">
-</div>	
+    public int getDayOfYear() {
+        return getCalendar().get(Calendar.DAY_OF_YEAR);
+    }
 
+    public int getMonth() {
+        return getCalendar().get(Calendar.MONTH) + 1;
+    }
 
+    public int getYear() {
+        return getCalendar().get(Calendar.YEAR);
+    }
 
-</body>
-</html>
+    private GregorianCalendar getCalendar() {
+        long time = getTime();
+        if (time == -1)
+            return null;
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTimeInMillis(time);
+        return gc;
+    }
+
+    public String getHelp() {
+        return toString();
+    }
+}

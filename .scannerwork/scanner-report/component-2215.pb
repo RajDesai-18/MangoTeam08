@@ -1,1 +1,1 @@
-§ 2javaX,hr:src/com/serotonin/mango/util/LocalizableJsonException.java
+§ 2webXhr:build/resources/dojo/tests/data/core/test_RemoteStore.html

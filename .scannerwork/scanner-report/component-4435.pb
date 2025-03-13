@@ -1,0 +1,1 @@
+Ó" 2javaX1hrEsrc/com/serotonin/mango/rt/event/detectors/BinaryStateDetectorRT.java

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+/*
     Mango - Open Source M2M - http://mango.serotoninsoftware.com
     Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
     @author Matthew Lohbihler
@@ -15,339 +14,206 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see http://www.gnu.org/licenses/.
- -->
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.view.component;
 
-<doxManifest>
-  <item id="httpRetrieverDS">
-    <relation id="httpRetrieverPP"/>
-  </item>
-  
-  <item id="httpRetrieverPP">
-    <relation id="httpRetrieverDS"/>
-  </item>
-  
-  <item id="chartRenderers"/>
-  
-  <item id="cronPatterns">
-    <relation id="scheduledEvents"/>
-    <relation id="reportTemplates"/>
-  </item>
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-  <item id="reportInstances">
-    <relation id="otherSettings"/>
-    <relation id="reportTemplates"/>
-  </item>
-  
-  <item id="modbusPP">
-    <relation id="modbusIpDS"/>
-    <relation id="modbusSerialDS"/>
-  </item>
+import com.serotonin.db.IntValuePair;
+import com.serotonin.json.JsonArray;
+import com.serotonin.json.JsonException;
+import com.serotonin.json.JsonObject;
+import com.serotonin.json.JsonReader;
+import com.serotonin.json.JsonRemoteEntity;
+import com.serotonin.json.JsonRemoteProperty;
+import com.serotonin.json.JsonValue;
+import com.serotonin.mango.DataTypes;
+import com.serotonin.mango.rt.dataImage.PointValueTime;
+import com.serotonin.mango.rt.dataImage.types.MultistateValue;
+import com.serotonin.mango.util.LocalizableJsonException;
+import com.serotonin.mango.view.ImplDefinition;
+import com.serotonin.web.dwr.DwrResponseI18n;
+import com.serotonin.web.i18n.LocalizableMessage;
 
-  <item id="scheduledEvents">
-    <relation id="compoundEventDetectors"/>
-    <relation id="cronPatterns"/>
-    <relation id="eventDetectors"/>
-  </item>
-  
-  <item id="bacnetIpDS"/>
-  
-  <item id="modbusSerialDS">
-    <relation id="modbusIpDS"/>
-    <relation id="modbusPP"/>
-  </item>
-  
-  <item id="pop3PP">
-    <relation id="pop3DS"/>
-  </item>
-  
-  <item id="nmeaListenerPP">
-    <relation id="nmeaListenerDS"/>
-  </item>
-  
-  <item id="galilPP">
-    <relation id="galilDS"/>
-  </item>
-  
-  <item id="userAdministration"/>
+/**
+ * @author Matthew Lohbihler
+ */
+@JsonRemoteEntity
+public class MultistateGraphicComponent extends ImageSetComponent {
+    public static ImplDefinition DEFINITION = new ImplDefinition("multistateGraphic", "MULTISTATE_GRAPHIC",
+            "graphic.multistateGraphic", new int[] { DataTypes.MULTISTATE });
 
-  <item id="generalPublisherProperties"/>
-  
-  <item id="editingGraphicalViews">
-    <relation id="graphicalViews"/>
-    <relation id="viewSharing"/>
-  </item>
+    private Map<Integer, Integer> stateImageMap = new HashMap<Integer, Integer>();
+    @JsonRemoteProperty
+    private int defaultImage;
 
-  <item id="pointHierarchy">
-    <relation id="watchListPoints"/>
-  </item>
-  
-  <item id="spinwavePP"/>
+    public int getDefaultImage() {
+        return defaultImage;
+    }
 
-  <item id="eventHandlers"/>
-  
-  <item id="httpReceiverDS">
-    <relation id="datetimeFormats"/>
-    <relation id="httpSenderPublishing"/>
-    <relation id="httpReceiverPP"/>
-  </item>
+    public void setDefaultImage(int defaultImage) {
+        this.defaultImage = defaultImage;
+    }
 
-  <item id="emailSettings"/>
-  
-  <item id="galilDS">
-    <relation id="galilPP"/>
-  </item>
-  
-  <item id="sqlPP">
-    <relation id="sqlDS"/>
-  </item>
+    @Override
+    public ImplDefinition definition() {
+        return DEFINITION;
+    }
 
-  <item id="watchListCharts">
-    <relation id="watchListPoints"/>
-    <relation id="watchList"/>
-  </item>
-  
-  <item id="metaDS">
-    <relation id="metaPP"/>
-  </item>
-  
-  <item id="metaPP">
-    <relation id="metaDS"/>
-  </item>
+    @Override
+    public String getImage(PointValueTime pointValue) {
+        Integer state = null;
+        if (pointValue != null && pointValue.getValue() instanceof MultistateValue)
+            state = pointValue.getIntegerValue();
 
-  <item id="watchList">
-    <relation id="graphicalViews"/>
-    <relation id="watchListCharts"/>
-    <relation id="watchListPoints"/>
-    <relation id="watchListSharing"/>
-  </item>
-  
-  <item id="watchListSharing">
-    <relation id="watchList"/>
-  </item>
-  
-  <item id="virtualPP">
-    <relation id="virtualDS"/>
-  </item>
+        Integer imageId = null;
+        if (state != null)
+            imageId = stateImageMap.get(state);
 
-  <item id="reportTemplates">
-    <relation id="cronPatterns"/>
-    <relation id="reportInstances"/>
-    <relation id="colours"/>
-  </item>
-  
-  <item id="1wirePP"/>
+        if (imageId == null)
+            imageId = defaultImage;
 
-  <item id="bacnetIpPP"/>
-  
-  <item id="pointViewSettingsEditor"/>
-  
-  <item id="httpSettings"/>
+        if (imageId != null) {
+            int id = imageId;
 
-  <item id="directQuerying"/>
-  
-  <item id="virtualDS">
-    <relation id="virtualPP"/>
-  </item>
-  
-  <item id="nmeaListenerDS">
-    <relation id="nmeaListenerPP"/>
-  </item>
-  
-  <item id="welcomeToMango"/>
+            if (id >= 0 && id < imageSet.getImageCount())
+                return imageSet.getImageFilename(id);
+        }
 
-  <item id="1wireDS"/>
-  
-  <item id="snmpPP"/>
+        return null;
+    }
 
-  <item id="regex"/>
-  
-  <item id="sqlDS">
-    <relation id="sqlPP"/>
-  </item>
-  
-  <item id="pointValueLogging"/>
-  
-  <item id="publisherList"/>
+    public List<IntValuePair> getImageStateList() {
+        List<IntValuePair> result = new ArrayList<IntValuePair>();
+        for (Integer state : stateImageMap.keySet()) {
+            Integer imageId = stateImageMap.get(state);
 
-  <item id="httpSenderPublishing">
-    <relation id="datetimeFormats"/>
-  </item>
-  
-  <item id="modbusIpDS">
-    <relation id="modbusSerialDS"/>
-    <relation id="modbusPP"/>
-  </item>
-  
-  <item id="watchListPoints">
-    <relation id="watchListCharts"/>
-    <relation id="pointHierarchy"/>
-    <relation id="watchList"/>
-  </item>
+            IntValuePair stateList = null;
+            for (IntValuePair ivp : result) {
+                if (ivp.getKey() == imageId) {
+                    stateList = ivp;
+                    break;
+                }
+            }
 
-  <item id="datetimeFormats">
-    <relation id="httpReceiverDS"/>
-    <relation id="httpSenderPublishing"/>
-    <relation id="textRenderers"/>
-  </item>
-  
-  <item id="dataPointEditing">
-    <relation id="colours"/>
-  </item>
-  
-  <item id="numberFormats">
-    <relation id="textRenderers"/>
-  </item>
-  
-  <item id="dataSourceList"/>
+            if (stateList == null) {
+                stateList = new IntValuePair(imageId, state.toString());
+                result.add(stateList);
+            }
+            else
+                stateList.setValue(stateList.getValue() + ',' + state.toString());
+        }
+        return result;
+    }
 
-  <item id="eventDetectors">
-    <relation id="scheduledEvents"/>
-    <relation id="compoundEventDetectors"/>
-  </item>
-  
-  <item id="pointValueLogPurging"/>
-  
-  <item id="mailingLists"/>
-  
-  <item id="compoundEventDetectors">
-    <relation id="scheduledEvents"/>
-    <relation id="eventDetectors"/>
-  </item>
+    public void setImageStateList(List<IntValuePair> imageStateList) {
+        stateImageMap.clear();
+        for (IntValuePair ivp : imageStateList) {
+            String[] states = ivp.getValue().split(",");
+            for (String stateStr : states) {
+                try {
+                    int state = Integer.parseInt(stateStr.trim());
+                    stateImageMap.put(state, ivp.getKey());
+                }
+                catch (NumberFormatException e) {
+                    // Ignore
+                }
+            }
+        }
+    }
 
-  <item id="textRenderers">
-    <relation id="numberFormats"/>
-    <relation id="datetimeFormats"/>
-  </item>
-  
-  <item id="systemInformation"/>
-  
-  <item id="pop3DS">
-    <relation id="pop3PP"/>
-  </item>
+    @Override
+    public void validate(DwrResponseI18n response) {
+        super.validate(response);
 
-  <item id="otherSettings">
-    <relation id="reportInstances"/>
-  </item>
-  
-  <item id="snmpDS"/>
+        for (Integer index : stateImageMap.values()) {
+            if (index < 0)
+                response.addMessage("stateImageMappings", new LocalizableMessage("validate.cannotBeNegative"));
+        }
+        if (defaultImage < 0)
+            response.addMessage("defaultImageIndex", new LocalizableMessage("validate.cannotBeNegative"));
 
-  <item id="graphicalViews">
-    <relation id="editingGraphicalViews"/>
-    <relation id="watchList"/>
-  </item>
-  
-  <item id="spinwaveDS"/>
-  
-  <item id="httpReceiverPP">
-    <relation id="httpReceiverDS"/>
-  </item>
-  
-  <item id="languageSettings"/>
-  
-  <item id="viewSharing">
-    <relation id="editingGraphicalViews"/>
-  </item>
-  
-  <item id="systemAlarmLevels"/>
-  
-  <item id="auditAlarmLevels"/>
-  
-  <item id="httpImageDS">
-    <relation id="httpImagePP"/>
-  </item>
-  
-  <item id="httpImagePP">
-    <relation id="httpImageDS"/>
-  </item>
-  
-  <item id="emport"/>
-  
-  <item id="pointLinks">
-    <relation id="metaPP"/>
-  </item>
-  
-  <item id="vmstatDS">
-    <relation id="vmstatPP"/>
-  </item>
-  
-  <item id="vmstatPP">
-    <relation id="vmstatDS"/>
-  </item>
-  
-  <item id="viconicsDS">
-    <relation id="viconicsPP"/>
-  </item>
-  
-  <item id="viconicsPP">
-    <relation id="viconicsDS"/>
-  </item>
-  
-  <item id="dnp3IpDS">
-    <relation id="dnp3SerialDS"/>
-    <relation id="dnp3PP"/>
-  </item>
-  
-  <item id="dnp3SerialDS">
-    <relation id="dnp3IpDS"/>
-    <relation id="dnp3PP"/>
-  </item>
-  
-  <item id="dnp3PP">
-    <relation id="dnp3SerialDS"/>
-    <relation id="dnp3IpDS"/>
-  </item>
-  
-  <item id="pachubeDS">
-    <relation id="pachubePP"/>
-    <relation id="pachubePublishing"/>
-  </item>
-  
-  <item id="pachubePP">
-    <relation id="pachubeDS"/>
-  </item>
-  
-  <item id="pachubePublishing">
-    <relation id="pachubeDS"/>
-  </item>
-  
-  <item id="persistentDS">
-    <relation id="persistentPP"/>
-    <relation id="persistentPublishing"/>
-  </item>
-  
-  <item id="persistentPP">
-    <relation id="persistentDS"/>
-  </item>
-  
-  <item id="persistentPublishing">
-    <relation id="persistentDS"/>
-  </item>
-  
-  <item id="maintenanceEvents">
-    <relation id="cronPatterns"/>
-    <relation id="eventDetectors"/>
-  </item>
-  
-  <item id="colourSettings">
-    <relation id="colours"/>
-  </item>
-  
-  <item id="colours"/>
-  
-  <item id="jmxDS">
-    <relation id="jmxPP"/>
-  </item>
-  
-  <item id="jmxPP">
-    <relation id="jmxDS"/>
-  </item>
-  
-  <item id="internalDS">
-    <relation id="internalPP"/>
-  </item>
-  
-  <item id="internalPP">
-    <relation id="internalDS"/>
-  </item>
-</doxManifest>
+        if (imageSet != null) {
+            for (Integer index : stateImageMap.values()) {
+                if (index >= imageSet.getImageCount())
+                    response
+                            .addMessage("stateImageMappings", new LocalizableMessage(
+                                    "emport.error.component.imageIndex", index, imageSet.getId(), imageSet
+                                            .getImageCount() - 1));
+            }
+            if (defaultImage >= imageSet.getImageCount())
+                response.addMessage("defaultImageIndex", new LocalizableMessage("emport.error.component.imageIndex",
+                        defaultImage, imageSet.getId(), imageSet.getImageCount() - 1));
+        }
+    }
+
+    //
+    // /
+    // / Serialization
+    // /
+    //
+    private static final long serialVersionUID = -1;
+    private static final int version = 1;
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.writeInt(version);
+
+        out.writeObject(stateImageMap);
+        out.writeInt(defaultImage);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        int ver = in.readInt();
+
+        // Switch on the version of the class so that version changes can be elegantly handled.
+        if (ver == 1) {
+            stateImageMap = (Map<Integer, Integer>) in.readObject();
+            defaultImage = in.readInt();
+        }
+    }
+
+    @Override
+    public void jsonDeserialize(JsonReader reader, JsonObject json) throws JsonException {
+        super.jsonDeserialize(reader, json);
+
+        JsonArray jsonStateList = json.getJsonArray("stateImageMappings");
+        if (jsonStateList != null) {
+            stateImageMap.clear();
+
+            for (JsonValue jv : jsonStateList.getElements()) {
+                JsonObject jsonMapping = jv.toJsonObject();
+                Integer state = jsonMapping.getInt("state");
+                if (state == null)
+                    throw new LocalizableJsonException("emport.error.missingValue", "state");
+
+                Integer index = jsonMapping.getInt("imageIndex");
+                if (index == null)
+                    throw new LocalizableJsonException("emport.error.missingValue", "index");
+
+                stateImageMap.put(state, index);
+            }
+        }
+    }
+
+    @Override
+    public void jsonSerialize(Map<String, Object> map) {
+        super.jsonSerialize(map);
+
+        List<Map<String, Object>> jsonStateList = new ArrayList<Map<String, Object>>();
+        map.put("stateImageMappings", jsonStateList);
+        for (Map.Entry<Integer, Integer> mapping : stateImageMap.entrySet()) {
+            Map<String, Object> jsonMapping = new HashMap<String, Object>();
+            jsonMapping.put("state", mapping.getKey());
+            jsonMapping.put("imageIndex", mapping.getValue());
+            jsonStateList.add(jsonMapping);
+        }
+    }
+}

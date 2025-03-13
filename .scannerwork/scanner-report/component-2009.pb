@@ -1,1 +1,0 @@
-Ù 2javaX-hr4src/com/serotonin/mango/rt/dataImage/IDataPoint.java

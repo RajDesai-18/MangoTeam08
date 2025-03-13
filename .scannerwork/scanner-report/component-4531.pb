@@ -1,0 +1,1 @@
+³# 2javaXWhr@src/com/serotonin/mango/view/component/SimpleImageComponent.java

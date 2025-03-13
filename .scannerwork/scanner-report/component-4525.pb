@@ -1,0 +1,1 @@
+­# 2javaX½hr?src/com/serotonin/mango/view/component/ImageChartComponent.java

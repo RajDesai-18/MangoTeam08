@@ -1,1 +1,1 @@
-∑% 2xmlXˆhr(war/WEB-INF/springDispatcher-servlet.xml
+∑% 2javaXèhrJsrc/com/serotonin/mango/web/mvc/controller/DataPointDetailsController.java

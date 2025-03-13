@@ -1,1 +1,0 @@
-Ç 2javaXçhr=src/com/serotonin/mango/vo/event/CompoundEventDetectorVO.java

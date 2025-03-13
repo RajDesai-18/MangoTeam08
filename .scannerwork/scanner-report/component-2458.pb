@@ -1,1 +1,1 @@
-š 2javaX¤hr=src/com/serotonin/mango/web/dwr/beans/SqlStatementTester.java
+š 2webXVhr3build/resources/dojo/tests/test_html_selection.html

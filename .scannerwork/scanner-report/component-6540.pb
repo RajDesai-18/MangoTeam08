@@ -1,0 +1,1 @@
+Œ3 2xmlXhr7war/resources/dojo/tests/widget/test_HslColorPicker.xml

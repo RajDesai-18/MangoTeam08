@@ -1,1 +1,1 @@
-¥ 2webX†hr*war/resources/dojo/tests/lfx/test_lfx.html
+¥ 2jspX'hr'build/WEB-INF/snippet/flipbookChart.jsp

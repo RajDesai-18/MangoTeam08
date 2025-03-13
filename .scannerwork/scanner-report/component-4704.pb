@@ -1,1 +1,1 @@
-à$ 2jspXhr"war/WEB-INF/jsp/webcamLiveFeed.jsp
+à$ 2javaXihr6src/com/serotonin/mango/vo/report/ReportPointInfo.java

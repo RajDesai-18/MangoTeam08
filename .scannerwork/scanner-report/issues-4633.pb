@@ -1,19 +1,5 @@
-D
-WebS1827*Remove this deprecated "valign" attribute.2
-¬¬ ?
-WebS5256%Add "<th>" headers to this "<table>".2
-®® C
-WebS1827)Remove this deprecated "align" attribute.2
-µµ
- )I
-WebS1827/Remove this deprecated "cellspacing" attribute.2
-¿¿ #?
-WebS5256%Add "<th>" headers to this "<table>".2
-¿¿ #?
-WebS5256%Add "<th>" headers to this "<table>".2
-ÓÓ C
-WebS1827)Remove this deprecated "align" attribute.2
-êê
- )€
-Web(MouseEventWithoutKeyboardEquivalentCheckCAdd a 'onKeyPress|onKeyDown|onKeyUp' attribute to this <input> tag.2
-³³ \
+r
+javaS120ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.2 1r
+javaS115ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.2ss *`
+javaS1124EReorder the modifiers to comply with the Java Language Specification.222 @d
+javaS1301KReplace this "switch" statement by "if" statements to increase readability.2~~ 

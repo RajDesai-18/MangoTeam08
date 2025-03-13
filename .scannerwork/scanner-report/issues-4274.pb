@@ -1,6 +1,2 @@
-_
-WebDoctypePresenceCheck:Insert a <!DOCTYPE> declaration to before this <html> tag.2		 Cy
-
-javascriptS2703ZAdd the "let", "const" or "var" keyword to this declaration of "tabs" to make it explicit.2.. {
-
-javascriptS2703\Add the "let", "const" or "var" keyword to this declaration of "remote" to make it explicit.2// 
+e
+javaS101MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.2 

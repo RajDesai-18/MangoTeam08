@@ -1,1 +1,1 @@
-Ç 2webX;hr/war/resources/dojo/tests/html/test_csshack.html
+Ç 2jspX­hr-build/WEB-INF/jsp/pointEdit/chartRenderer.jsp

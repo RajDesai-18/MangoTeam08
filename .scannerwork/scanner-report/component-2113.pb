@@ -1,1 +1,1 @@
-Á 2javaX+hrJsrc/com/serotonin/mango/rt/dataSource/spinwave/SpinwavePointLocatorRT.java
+Á 2webXhr8build/resources/dojo/src/widget/templates/ShowSlide.html

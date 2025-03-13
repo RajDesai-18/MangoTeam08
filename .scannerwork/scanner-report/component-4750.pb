@@ -1,0 +1,1 @@
+Ž% 2javaXLhr=src/com/serotonin/mango/web/dwr/beans/ViewComponentState.java

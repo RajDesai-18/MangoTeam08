@@ -1,2 +1,4 @@
-r
-javaS120ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.2 1
+J
+WebImgWithoutAltCheck%Add an "alt" attribute to this image.2
+ IJ
+WebImgWithoutAltCheck%Add an "alt" attribute to this image.2 H

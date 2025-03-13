@@ -1,6 +1,2 @@
-V
-WebS5254@Add "lang" and/or "xml:lang" attributes to this "<html>" element2 E
-WebPageWithoutTitleCheckAdd a <title> tag to this page.2 }
-Web(MouseEventWithoutKeyboardEquivalentCheckBAdd a 'onKeyPress|onKeyDown|onKeyUp' attribute to this <span> tag.233	 }
-
-javascriptS2703^Add the "let", "const" or "var" keyword to this declaration of "djConfig" to make it explicit.2" *
+e
+javaS101MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.2== 

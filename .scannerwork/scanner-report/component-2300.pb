@@ -1,1 +1,1 @@
-ü 2javaX=hr-src/com/serotonin/mango/vo/CommPortProxy.java
+ü 2webX6hr1build/resources/dojo/tests/html/test_metrics.html

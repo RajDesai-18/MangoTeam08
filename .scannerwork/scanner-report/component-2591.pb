@@ -1,0 +1,1 @@
+Ÿ 2webX«hr2build/resources/dojo/tests/widget/scriptScope.html

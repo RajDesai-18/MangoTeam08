@@ -1,1 +1,1 @@
-ù 2webXhr)war/resources/dojo/tests/event/empty.html
+ù 2jspXôhr2build/WEB-INF/jsp/dataSourceEdit/editHttpImage.jsp

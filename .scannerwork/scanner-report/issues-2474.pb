@@ -1,5 +1,258 @@
-©
-javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2ff+ 3@©
-javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2ll3 C@´
-javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2
-ÜÜ4 D@
+J
+
+javascriptS3504)Unexpected var, use let or const instead.2 
+@J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2 
+@J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @Q
+
+javascriptS14812Remove the declaration of the unused 'a' variable.2 N
+
+javascriptS1854/Remove this useless assignment to variable "a".2 J
+
+javascriptS3504)Unexpected var, use let or const instead.2!! @Y
+
+javascriptS1481:Remove the declaration of the unused 'elapsedMS' variable.2!! V
+
+javascriptS18547Remove this useless assignment to variable "elapsedMS".2!! ?
+
+javascriptS125Remove this commented out code.2"" X@J
+
+javascriptS3504)Unexpected var, use let or const instead.2&& @J
+
+javascriptS3504)Unexpected var, use let or const instead.2'' @J
+
+javascriptS3504)Unexpected var, use let or const instead.2)) @J
+
+javascriptS3504)Unexpected var, use let or const instead.2** @J
+
+javascriptS3504)Unexpected var, use let or const instead.2,, @J
+
+javascriptS3504)Unexpected var, use let or const instead.2-- @J
+
+javascriptS3504)Unexpected var, use let or const instead.2// @J
+
+javascriptS3504)Unexpected var, use let or const instead.200 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2:: 	@J
+
+javascriptS3504)Unexpected var, use let or const instead.2<< @J
+
+javascriptS3504)Unexpected var, use let or const instead.2@@ @I
+
+javascriptS1533(Remove this use of "String" constructor.2EE :@J
+
+javascriptS3504)Unexpected var, use let or const instead.2HH @J
+
+javascriptS3504)Unexpected var, use let or const instead.2NN @J
+
+javascriptS3504)Unexpected var, use let or const instead.2OO 	@J
+
+javascriptS3504)Unexpected var, use let or const instead.2PP @Z
+
+javascriptS1481;Remove the declaration of the unused 'dateString' variable.2PP W
+
+javascriptS18548Remove this useless assignment to variable "dateString".2PP J
+
+javascriptS3504)Unexpected var, use let or const instead.2QQ @J
+
+javascriptS3504)Unexpected var, use let or const instead.2RR @J
+
+javascriptS3504)Unexpected var, use let or const instead.2YY @J
+
+javascriptS3504)Unexpected var, use let or const instead.2^^ @J
+
+javascriptS3504)Unexpected var, use let or const instead.2__ @H
+
+javascriptS3504)Unexpected var, use let or const instead.2aa 
+J
+
+javascriptS3504)Unexpected var, use let or const instead.2|| @J
+
+javascriptS3504)Unexpected var, use let or const instead.2}} @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ÅÅ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ÇÇ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ââ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ää @â
+
+javascriptS2234hArguments 'uuidTwo' and 'uuidOne' have the same names but not the same order as the function parameters.2
+ää) 9L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+õõ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+úú @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ùù @\
+
+javascriptS1481;Remove the declaration of the unused 'dateString' variable.2
+ùù Y
+
+javascriptS18548Remove this useless assignment to variable "dateString".2
+ùù L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ûû @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ßß @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+®® @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+≠≠ 	@V
+
+javascriptS14815Remove the declaration of the unused 'uuid' variable.2
+≠≠ 	L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ÆÆ @X
+
+javascriptS14817Remove the declaration of the unused 'string' variable.2
+ÆÆ L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ØØ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+±± @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+≤≤ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+≥≥ 
+@L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+¥¥ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+µµ @K
+
+javascriptS1533(Remove this use of "String" constructor.2
+µµ 3@L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+∂∂ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+∑∑ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+∏∏ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ππ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+∫∫ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ªª 
+@L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ΩΩ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ææ 
+@L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+øø @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+√√ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ÊÊ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ÌÌ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ÓÓ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ÔÔ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+˛˛ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+áá @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+àà @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ââ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ää @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+êê @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ôô @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+öö 	@L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+õõ @A
+
+javascriptS125Remove this commented out code.2
+úú J@J
+
+javascriptS6557'Use 'String#startsWith' method instead.2
+ûû/ L@L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+§§ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+•• @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+™™ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+´´ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+¨¨ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+≠≠ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ÆÆ @L
+
+javascriptS3504)Unexpected var, use let or const instead.2
+ØØ @?
+
+javascriptS125Remove this commented out code.2∏Ö @

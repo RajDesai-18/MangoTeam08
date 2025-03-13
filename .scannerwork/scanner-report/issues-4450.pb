@@ -1,0 +1,7 @@
+~
+javaS1214CMove constants defined in this interfaces to another class or enum.2   :
+â"!! :
+â""" ~
+javaS1214CMove constants defined in this interfaces to another class or enum.2%% 4:
+â"&& :
+â"'' 

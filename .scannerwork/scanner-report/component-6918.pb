@@ -1,0 +1,1 @@
+†6 2jspXÖhr$war/WEB-INF/jsp/dataPointDetails.jsp

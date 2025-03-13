@@ -1,8 +1,5 @@
-G
-WebS1827/Remove this deprecated "cellpadding" attribute.2 )G
-WebS1827/Remove this deprecated "cellspacing" attribute.2 )=
-WebS5256%Add "<th>" headers to this "<table>".2 )A
-WebS1827)Remove this deprecated "width" attribute.2 =
-WebS5256%Add "<th>" headers to this "<table>".2 A
-WebS1827)Remove this deprecated "align" attribute.2 =
-WebS5256%Add "<th>" headers to this "<table>".2!! 
+©
+javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2228 E@©
+javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2445 C@´
+javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2
+ûû. 6@

@@ -1,93 +1,57 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd"> 
-<html>
-<title>Drag non-tree source to tree</title>
-</html>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<body>
-<script type="text/javascript">
-    var djConfig = {isDebug: true, debugAtAllCosts: true };
-</script>
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-<script type="text/javascript" src="../../../dojo.js"></script>
-<script type="text/javascript">
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataSource.galil;
 
-    dojo.require("dojo.dnd.*");
-    dojo.require("dojo.event.*");
-    dojo.require("dojo.widget.*");
-    dojo.require("dojo.widget.TreeV3");
-    dojo.require("dojo.widget.TreeNodeV3");
-    dojo.require("dojo.widget.TreeBasicControllerV3");
-    dojo.require("dojo.widget.TreeDndControllerV3");
-    dojo.hostenv.writeIncludes();
+import com.serotonin.messaging.IncomingResponseMessage;
+import com.serotonin.messaging.OutgoingRequestMessage;
+import com.serotonin.messaging.WaitingRoomKey;
+import com.serotonin.messaging.WaitingRoomKeyFactory;
 
-    /**
-    * will generate tree node unless iWillBecomeNothing is set
-    */
-    function makeTransformer(elem) {
-        return function() {
-            if (dojo.html.hasAttribute(elem,"iWillBecomeNothing")) {
-                return null;
-            } else {            
-                return {title:elem.innerHTML}
-            }
-        };
+/**
+ * @author Matthew Lohbihler
+ */
+public class GalilWaitingRoomKeyFactory implements WaitingRoomKeyFactory {
+    @Override
+    public WaitingRoomKey createWaitingRoomKey(OutgoingRequestMessage request) {
+        return new GalilWaitingRoomKey();
     }
 
-    dojo.addOnLoad(function() {
-        var dl = dojo.byId("dragList1");
-        var lis = dl.getElementsByTagName("li");
-        for(var x=0; x<lis.length; x++){
-            var elem = lis[x]
-            var source = new dojo.dnd.HtmlDragSource(elem, "li1");
-            
-            // makeTransformer is separate function on purpose (no closure)
-            // getTreeNode will be called on drop
-            // its result will be inserted
-            source.getTreeNode = makeTransformer(elem);
-            
-            // this will happen with source object after it is dropped                  
-            source.onDrop = function() { 
-                dojo.html.removeNode(this.domNode) 
-            }
+    @Override
+    public WaitingRoomKey createWaitingRoomKey(IncomingResponseMessage response) {
+        return new GalilWaitingRoomKey();
+    }
+
+    static class GalilWaitingRoomKey implements WaitingRoomKey {
+        @Override
+        public int hashCode() {
+            return 31;
         }
 
-    });
-
-</script>
-
-<h3>Drag list member to tree</h3>
-
-<ul id="dragList1">
-    <li>list 1 item 1 
-        <a href="http://www.google.com">Google</a>
-        <input value="type in me">
-        <input type="button" value="ClickMe">
-        <input type="checkbox">
-        <input type="radio" name="radio" value="1" checked> 
-        <button>Inline Button</button>
-    </li>
-    <li>list 1 item 2</li>
-    <li>list 1 item 3</li>
-    <li iWillBecomeNothing="true">I will become nothing in Tree</li>
-</ul>
-
-
-<div dojoType="TreeBasicControllerV3" widgetId="controller"></div>  
-<div dojoType="TreeDndControllerV3" controller="controller" widgetId="dndcontroller"></div> 
-
-<div dojoType="TreeV3" listeners="controller;dndcontroller" DndMode="ONTO;BETWEEN"  DNDacceptTypes="li1">
-    <div dojoType="TreeNodeV3" title="Item 1" widgetId="Item 1">
-        <div dojoType="TreeNodeV3" title="Item 1.1" widgetId="Item 1.1"></div>
-        <div dojoType="TreeNodeV3" title="Item 1.2" widgetId="Item 1.2"></div>
-    </div>
-
-    <div dojoType="TreeNodeV3" title="Item 2<br/>title long yeah" widgetId="Item 2">
-        <div dojoType="TreeNodeV3" title="Item 2.1" widgetId="Item 2.1"></div>
-    </div>
-
-    <div dojoType="TreeNodeV3" title="Empty Folder" isFolder="true" widgetId="Item 3"></div>
-    <div dojoType="TreeNodeV3" title="Item 4" widgetId="Item 4"></div>
-</div>
-</body>
-</html>
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            return true;
+        }
+    }
+}

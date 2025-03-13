@@ -1,1 +1,1 @@
-× 2jsXhr*war/resources/dojo/tests/test_bootstrap.js
+× 2xmlXÈhrbuild/WEB-INF/web.xml

@@ -1,1 +1,1 @@
-Ð 2javaXzhr=src/com/serotonin/mango/web/mvc/controller/SqlController.java
+Ð 2webXhr5build/resources/dojo/tests/widget/dialogContents.html

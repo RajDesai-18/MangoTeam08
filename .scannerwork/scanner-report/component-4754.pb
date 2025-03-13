@@ -1,0 +1,1 @@
+’% 2javaXÌhr8src/com/serotonin/mango/web/dwr/DataPointDetailsDwr.java

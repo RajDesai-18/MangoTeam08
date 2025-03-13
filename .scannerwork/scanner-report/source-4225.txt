@@ -1,106 +1,228 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
-<html>
-<head>
-<title>Dojo Custom Widget Test</title>
-	<link rel="stylesheet" type="text/css" href="css/demos.css" />
-<script type="text/javascript">
-	//var djConfig = {isDebug: true };
-	var djConfig = {isDebug: true, debugAtAllCosts: true };
+package br.org.scadabr.vo.dataSource.opc;
 
-	// Use the above line to see files with their filenames in the the debugger.
-	// Normally you see eval or anonymous as the 'filename' which makes debugging harder!
-	// Comment the above code out to go back to normal dojo loading functionality.
-	
-	// debugAtAllCosts Implementation: files are loaded using XMLHttp first and
-	// the text is recursively scanned for dojo.require dependencies. This is then
-	// used to create an ordered list of script includes which actually load the
-	// code into the runtime environment. Neat huh?
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.List;
+import java.util.Map;
 
-	// To debug, you may find it easier to build your own package with full source code.
+import br.org.scadabr.rt.dataSource.opc.OPCDataSourceRT;
 
-	// The debugAtAllCosts feature helps when using FireBug or Venkman with FireFox.
-	
-	// In IE you may get an exception on load if you are loading the page 
-	// directly from your file system:
-	//		A Runtime error has occured.
-	//		Do you wish to debug?
-	//		Line: 1
-	//		Error: Invalid character
-	// This is because dojo has put in a script tag for a src file that doesnt exist e.g. src="..\..\src\__packages__.js"
-	// Just click OK, and get on with it.
-</script>
+import com.serotonin.json.JsonException;
+import com.serotonin.json.JsonObject;
+import com.serotonin.json.JsonReader;
+import com.serotonin.json.JsonRemoteEntity;
+import com.serotonin.json.JsonRemoteProperty;
+import com.serotonin.mango.Common;
+import com.serotonin.mango.rt.dataSource.DataSourceRT;
+import com.serotonin.mango.rt.event.type.AuditEventType;
+import com.serotonin.mango.util.ExportCodes;
+import com.serotonin.mango.vo.dataSource.DataSourceVO;
+import com.serotonin.mango.vo.dataSource.PointLocatorVO;
+import com.serotonin.mango.vo.event.EventTypeVO;
+import com.serotonin.util.SerializationHelper;
+import com.serotonin.util.StringUtils;
+import com.serotonin.web.dwr.DwrResponseI18n;
+import com.serotonin.web.i18n.LocalizableMessage;
 
-<script type="text/javascript" src="../../dojo.js"></script>
-<script type="text/javascript" src="../../../src/ns.js"></script>
+@JsonRemoteEntity
+public class OPCDataSourceVO extends DataSourceVO<OPCDataSourceVO> {
+    public static final Type TYPE = Type.OPC;
 
-<script type="text/javascript">
-	dojo.require("dojo.widget.Button");
-	dojo.require("dojo.widget.Menu2");
-	dojo.require("dojo.widget.Manager");
-	// Use true as a parameter if you are going to call dojo.hostenv.writeIncludes() 
-	// a second time.
-	dojo.hostenv.writeIncludes(true);
-// You must close the script tag here so the scripts get loaded (due to how document.write works!).
-</script>
+    @Override
+    protected void addEventTypes(List<EventTypeVO> eventTypes) {
+        eventTypes.add(createEventType(OPCDataSourceRT.POINT_READ_EXCEPTION_EVENT, new LocalizableMessage(
+                "event.ds.pointRead")));
+        eventTypes.add(createEventType(OPCDataSourceRT.DATA_SOURCE_EXCEPTION_EVENT, new LocalizableMessage(
+                "event.ds.dataSource")));
+        eventTypes.add(createEventType(OPCDataSourceRT.POINT_WRITE_EXCEPTION_EVENT, new LocalizableMessage(
+                "event.ds.dataSource")));
+    }
 
-<script>
-	// Load user custom button
+    private static final ExportCodes EVENT_CODES = new ExportCodes();
+    static {
+        EVENT_CODES.addElement(OPCDataSourceRT.DATA_SOURCE_EXCEPTION_EVENT, "DATA_SOURCE_EXCEPTION");
+        EVENT_CODES.addElement(OPCDataSourceRT.POINT_READ_EXCEPTION_EVENT, "POINT_READ_EXCEPTION");
+        EVENT_CODES.addElement(OPCDataSourceRT.POINT_WRITE_EXCEPTION_EVENT, "POINT_WRITE_EXCEPTION");
+    }
 
-	// 1. set directory for acme package (which contains widgets)
-	// The path is relative to the dojo/ directory, so typically
-	// it's something like "../acme"
-	dojo.registerModulePath('acme', 'tests/widget/acme');
-	
-	// 2. load the user defined button
-	dojo.require("acme.Button");
+    @Override
+    public DataSourceRT createDataSourceRT() {
+        return new OPCDataSourceRT(this);
+    }
 
-	function widgetClick() {
-		dojo.debug('widget [' + this.widgetId + '] was clicked');
-	}
-	
-	dojo.hostenv.writeIncludes();
-</script>
+    @Override
+    public PointLocatorVO createPointLocator() {
+        return new OPCPointLocatorVO();
+    }
 
+    @Override
+    public LocalizableMessage getConnectionDescription() {
+        return new LocalizableMessage("common.noMessage");
+    }
 
-<style>
-	/* group multiple buttons in a row */
-	.box {
-		display: block;
-		text-align: center;
-	}
-	.box .dojoButton {
-		float: left;
-		margin-right: 10px;
-	}
-	.dojoButton .dojoButtonContents {
-		font-size: medium;
-	}
+    @Override
+    public ExportCodes getEventCodes() {
+        return EVENT_CODES;
+    }
 
-	.dc {
-		font-size: x-large;
-		padding-top: 10px;
-		padding-bottom: 10px;
-  	}
-</style>
-</head>
+    @Override
+    public DataSourceVO.Type getType() {
+        return TYPE;
+    }
 
-<body>
+    private int updatePeriodType = Common.TimePeriods.SECONDS;
+    @JsonRemoteProperty
+    private int updatePeriods = 1;
+    @JsonRemoteProperty
+    private String host = "localhost";
+    @JsonRemoteProperty
+    private String domain = "localhost";
+    @JsonRemoteProperty
+    private String user = "";
+    @JsonRemoteProperty
+    private String password = "";
+    @JsonRemoteProperty
+    private String server = "";
 
-<h1>Example Of Using debugAtAllCosts w/Custom Widget</h1>
+    @Override
+    public void validate(DwrResponseI18n response) {
+        super.validate(response);
+        if (StringUtils.isEmpty(host))
+            response.addContextualMessage("host", "validate.required");
+        // if (StringUtils.isEmpty(domain))
+        // response.addContextualMessage("domain", "validate.required");
+        if (StringUtils.isEmpty(user))
+            response.addContextualMessage("user", "validate.required");
+        if (StringUtils.isEmpty(password))
+            response.addContextualMessage("password", "validate.required");
+        if (StringUtils.isEmpty(server))
+            response.addContextualMessage("server", "validate.required");
+        if (updatePeriods <= 0)
+            response.addContextualMessage("updatePeriods", "validate.greaterThanZero");
+    }
 
-<div class="box">
-	<button dojoType="acme:Button" onclick='dojo.debug("short");'>
-		<div class="dc">short</div>
-	</button>
-	<button dojoType="acme:Button" onclick='dojo.debug("longer");'>
-		<div class="dc">bit longer</div>
-	</button>
-	<button dojoType="acme:Button" onclick='dojo.debug("longer yet");'>
-		<div class="dc">ridiculously long</div>
-	</button>
-	<div style="clear: both;"></div>
-</div>
-<p>See comments in the page source code for details on how to debug custom widgets.</p>
+    @Override
+    protected void addPropertiesImpl(List<LocalizableMessage> list) {
+        AuditEventType.addPeriodMessage(list, "dsEdit.updatePeriod", updatePeriodType, updatePeriods);
+        AuditEventType.addPropertyMessage(list, "dsEdit.opc.host", host);
+        AuditEventType.addPropertyMessage(list, "dsEdit.opc.domain", domain);
+        AuditEventType.addPropertyMessage(list, "dsEdit.opc.user", user);
+        AuditEventType.addPropertyMessage(list, "dsEdit.opc.password", password);
+        AuditEventType.addPropertyMessage(list, "dsEdit.opc.server", server);
+    }
 
-</body>
-</html>
+    @Override
+    protected void addPropertyChangesImpl(List<LocalizableMessage> list, OPCDataSourceVO from) {
+        AuditEventType.maybeAddPeriodChangeMessage(list, "dsEdit.updatePeriod", from.updatePeriodType,
+                from.updatePeriods, updatePeriodType, updatePeriods);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsEdit.opc.host", from.host, host);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsEdit.opc.domain", from.domain, domain);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsEdit.opc.user", from.user, user);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsEdit.opc.password", from.password, password);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsEdit.opc.server", from.server, server);
+    }
+
+    public int getUpdatePeriodType() {
+        return updatePeriodType;
+    }
+
+    public void setUpdatePeriodType(int updatePeriodType) {
+        this.updatePeriodType = updatePeriodType;
+    }
+
+    public int getUpdatePeriods() {
+        return updatePeriods;
+    }
+
+    public void setUpdatePeriods(int updatePeriods) {
+        this.updatePeriods = updatePeriods;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getServer() {
+        return server;
+    }
+
+    public void setServer(String server) {
+        this.server = server;
+    }
+
+    //
+    // /
+    // / Serialization
+    // /
+    //
+    private static final long serialVersionUID = -1;
+    private static final int version = 1;
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.writeInt(version);
+        SerializationHelper.writeSafeUTF(out, host);
+        SerializationHelper.writeSafeUTF(out, domain);
+        SerializationHelper.writeSafeUTF(out, user);
+        SerializationHelper.writeSafeUTF(out, password);
+        SerializationHelper.writeSafeUTF(out, server);
+        out.writeInt(updatePeriodType);
+        out.writeInt(updatePeriods);
+
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException {
+        int ver = in.readInt();
+        if (ver == 1) {
+            host = SerializationHelper.readSafeUTF(in);
+            domain = SerializationHelper.readSafeUTF(in);
+            user = SerializationHelper.readSafeUTF(in);
+            password = SerializationHelper.readSafeUTF(in);
+            server = SerializationHelper.readSafeUTF(in);
+            updatePeriodType = in.readInt();
+            updatePeriods = in.readInt();
+        }
+    }
+
+    @Override
+    public void jsonDeserialize(JsonReader reader, JsonObject json) throws JsonException {
+        super.jsonDeserialize(reader, json);
+        Integer value = deserializeUpdatePeriodType(json);
+        if (value != null)
+            updatePeriodType = value;
+    }
+
+    @Override
+    public void jsonSerialize(Map<String, Object> map) {
+        super.jsonSerialize(map);
+        serializeUpdatePeriodType(map, updatePeriodType);
+    }
+}

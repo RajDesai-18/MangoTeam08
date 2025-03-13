@@ -1,6 +1,4 @@
-V
-WebS5254@Add "lang" and/or "xml:lang" attributes to this "<html>" element2 v
-
-javascriptS2703WAdd the "let", "const" or "var" keyword to this declaration of "i" to make it explicit.2 ~
-
-javascriptS2703_Add the "let", "const" or "var" keyword to this declaration of "eventName" to make it explicit.2$$ 
+r
+javaS120ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.2 .s
+javaS1450XRemove the "transport" field and declare it as a local variable in the relevant methods.288 %@X
+javaS4719=Replace Charset.forName() call with StandardCharsets.US_ASCII2--+ F@

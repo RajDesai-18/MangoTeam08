@@ -1,0 +1,1 @@
+Ö- 2webXhrAwar/resources/dojo/src/widget/templates/Editor2/EditorDialog.html

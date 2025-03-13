@@ -1,0 +1,1 @@
+¿6 2jspXVhr-war/WEB-INF/jsp/pointEdit/pointProperties.jsp

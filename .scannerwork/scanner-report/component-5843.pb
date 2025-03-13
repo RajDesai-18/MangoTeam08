@@ -1,0 +1,1 @@
+Ó- 2webXrhrGwar/resources/dojo/src/widget/templates/Editor2/Dialog/insertimage.html

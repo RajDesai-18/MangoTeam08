@@ -1,1 +1,1 @@
-®% 2jspXhr%war/WEB-INF/snippet/scriptContent.jsp
+®% 2javaX~hr7src/com/serotonin/mango/web/email/SubjectDirective.java

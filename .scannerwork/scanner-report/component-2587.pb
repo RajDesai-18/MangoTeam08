@@ -1,0 +1,1 @@
+› 2webXLhrCbuild/resources/dojo/tests/widget/namespaces/test_more_widgets.html

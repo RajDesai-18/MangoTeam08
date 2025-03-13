@@ -1,1 +1,1 @@
-  2javaXÌhr8src/com/serotonin/mango/web/dwr/DataPointDetailsDwr.java
+  2webX¾hr2build/resources/dojo/tests/test_placeOnScreen.html

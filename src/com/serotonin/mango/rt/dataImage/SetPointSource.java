@@ -26,17 +26,31 @@ package com.serotonin.mango.rt.dataImage;
  * 
  * @author Matthew Lohbihler
  */
+
+// Code Smell 2: Speculative Generality - (Dispensables)
+// Search for "SetPointSource.Type.USER" in the whole directory to see where this is used.
 public interface SetPointSource {
-    public interface Types {
-        int USER = 1;
-        int EVENT_HANDLER = 2;
-        int ANONYMOUS = 3;
-        int POINT_LINK = 4;
+
+    enum Type {
+        USER(1),
+        EVENT_HANDLER(2),
+        ANONYMOUS(3),
+        POINT_LINK(4);
+
+        private final int value;
+
+        Type(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 
-    public int getSetPointSourceType();
+    Type getSetPointSourceType();
 
-    public int getSetPointSourceId();
+    int getSetPointSourceId();
 
-    public void raiseRecursionFailureEvent();
+    void raiseRecursionFailureEvent();
 }

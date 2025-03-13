@@ -1,1 +1,0 @@
-ô 2javaX4hr>src/com/serotonin/mango/rt/dataSource/galil/GalilResponse.java

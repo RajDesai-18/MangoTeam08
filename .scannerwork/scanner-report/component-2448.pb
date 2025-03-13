@@ -1,1 +1,1 @@
-ê 2javaXAhr@src/com/serotonin/mango/web/dwr/beans/MBusResponseFrameBean.java
+ê 2xmlXhr(build/resources/dojo/tests/test_dojo.xsl

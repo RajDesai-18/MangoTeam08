@@ -1,1 +1,1 @@
-© 2webXuhr,war/resources/dojo/tests/lfx/test_wipes.html
+© 2jspXhr+build/WEB-INF/snippet/imageValueContent.jsp

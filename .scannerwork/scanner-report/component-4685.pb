@@ -1,1 +1,1 @@
-Í$ 2jspXVhr-war/WEB-INF/jsp/pointEdit/pointProperties.jsp
+Í$ 2javaX‰hr6src/com/serotonin/mango/vo/permission/Permissions.java

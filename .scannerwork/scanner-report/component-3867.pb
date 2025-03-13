@@ -1,1 +1,1 @@
-õ 2webXNhr-war/resources/dojo/tests/dnd/test_simple.html
+õ 2jspXÅhr.build/WEB-INF/jsp/dataSourceEdit/editEBI25.jsp

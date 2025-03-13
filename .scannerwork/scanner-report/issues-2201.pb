@@ -1,3 +1,38 @@
-©
-javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2  K a@©
-javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2CC 2@
+J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2 
+@J
+
+javascriptS3504)Unexpected var, use let or const instead.2 
+@J
+
+javascriptS3504)Unexpected var, use let or const instead.2 
+@J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2"" 
+@J
+
+javascriptS3504)Unexpected var, use let or const instead.2'' 
+@J
+
+javascriptS3504)Unexpected var, use let or const instead.2(( @J
+
+javascriptS3504)Unexpected var, use let or const instead.2-- 
+@J
+
+javascriptS3504)Unexpected var, use let or const instead.211 
+@J
+
+javascriptS3504)Unexpected var, use let or const instead.255 
+@J
+
+javascriptS3504)Unexpected var, use let or const instead.277 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2;; 
+@J
+
+javascriptS3504)Unexpected var, use let or const instead.2<< @

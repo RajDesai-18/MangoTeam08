@@ -1,60 +1,121 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-<title>Dojo Tree Widget Test (dynamic node creation)</title>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<script type="text/javascript">
-	var djConfig = {isDebug: true, debugAtAllCosts: true };
-</script>
-<script type="text/javascript" src="../../../dojo.js"></script>
-<script type="text/javascript">
-	dojo.require("dojo.lang.*");
-	dojo.require("dojo.widget.*");
-	dojo.require("dojo.widget.Tree");
-	dojo.hostenv.writeIncludes();
-</script>
-<script type="text/javascript">
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-	dojo.addOnLoad(function(){
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataImage.types;
 
-		var tree = dojo.widget.createWidget("Tree", {toggle: "wipe", expandLevel: 2});
-		document.body.appendChild(tree.domNode);
+import com.serotonin.mango.DataTypes;
 
-		var rootNode = dojo.widget.createWidget("TreeNode", {title: "Root Node"});
-		tree.addChild(rootNode);
+/**
+ * @author Matthew Lohbihler
+ */
+public class MultistateValue extends MangoValue implements Comparable<MultistateValue> {
+    public static MultistateValue parseMultistate(String s) {
+        if (s == null)
+            return new MultistateValue(0);
+        try {
+            return new MultistateValue(Integer.parseInt(s));
+        }
+        catch (NumberFormatException e) {
+            // no op
+        }
+        return new MultistateValue(0);
+    }
 
-		var node1 = dojo.widget.createWidget("TreeNode", {title: "Node 1"});
-		rootNode.addChild(node1);
+    private final int value;
 
+    public MultistateValue(int value) {
+        this.value = value;
+    }
 
-		var node2 = dojo.widget.createWidget("TreeNode", {title: "Node 2"});
-		node1.addChild(node2);
+    @Override
+    public boolean hasDoubleRepresentation() {
+        return true;
+    }
 
+    @Override
+    public double getDoubleValue() {
+        return value;
+    }
 
-		rootNode.addChild(dojo.widget.createWidget("TreeNode", {title: "Node 2"}));
-		var node3 = dojo.widget.createWidget("TreeNode", {title: "Node 3"});
-		rootNode.addChild(node3);
-		var node3_1 = dojo.widget.createWidget("TreeNode", {title: "Node 3.1"});
-		node3.addChild(node3_1);
-		node3_1.addChild(dojo.widget.createWidget("TreeNode", {title: "Node 3.1.1"}))
+    @Override
+    public String getStringValue() {
+        return null;
+    }
 
+    @Override
+    public boolean getBooleanValue() {
+        throw new RuntimeException("MultistateValue has no boolean value.");
+    }
 
-		// Add some nodes the first element (rather than the last element) just for testing
-		for(var i=1;i<5;i++) {
-			node1.addChild(dojo.widget.createWidget("TreeNode", {title: "Node 1."+i}));
-		}
+    @Override
+    public Object getObjectValue() {
+        return value;
+    }
 
-		tree.addChild(dojo.widget.createWidget("TreeNode", {title: "Root Node 2"}));
+    @Override
+    public int getIntegerValue() {
+        return value;
+    }
 
-	});
+    @Override
+    public Number numberValue() {
+        return value;
+    }
 
-</script>
-</head>
-<body>
+    @Override
+    public int getDataType() {
+        return DataTypes.MULTISTATE;
+    }
 
-<h4>Create tree programmatically</h4>
+    @Override
+    public String toString() {
+        return Integer.toString(value);
+    }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + value;
+        return result;
+    }
 
-</body>
-</html>
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final MultistateValue other = (MultistateValue) obj;
+        if (value != other.value)
+            return false;
+        return true;
+    }
+
+    @Override
+    public int compareTo(MultistateValue that) {
+        return (value < that.value ? -1 : (value == that.value ? 0 : 1));
+    }
+
+    @Override
+    public <T extends MangoValue> int compareTo(T that) {
+        return compareTo((MultistateValue) that);
+    }
+}

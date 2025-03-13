@@ -1,1 +1,0 @@
-ù 2javaXAhrHsrc/com/serotonin/mango/rt/dataSource/galil/TellPositionPointTypeRT.java

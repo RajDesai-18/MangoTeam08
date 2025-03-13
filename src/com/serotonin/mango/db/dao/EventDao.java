@@ -42,6 +42,11 @@ import com.serotonin.db.spring.ExtendedJdbcTemplate;
 import com.serotonin.db.spring.GenericRowMapper;
 import com.serotonin.db.spring.GenericTransactionCallback;
 import com.serotonin.mango.Common;
+import com.serotonin.mango.db.dao.EventDao.EventHandlerRowMapper;
+import com.serotonin.mango.db.dao.EventDao.EventInstanceRowMapper;
+import com.serotonin.mango.db.dao.EventDao.PendingEventCacheEntry;
+import com.serotonin.mango.db.dao.EventDao.UserEventInstanceRowMapper;
+import com.serotonin.mango.db.dao.EventDao.UserPendingEventRetriever;
 import com.serotonin.mango.rt.event.EventInstance;
 import com.serotonin.mango.rt.event.type.AuditEventType;
 import com.serotonin.mango.rt.event.type.CompoundDetectorEventType;
@@ -357,122 +362,114 @@ public class EventDao extends BaseDao {
         return ejt.queryForInt("select count(*) from events");
     }
 
+//  Code Smell 3: Shotgun Surgery - (Change Preventer)
     public List<EventInstance> search(int eventId, int eventSourceType, String status, int alarmLevel,
             final String[] keywords, int userId, final ResourceBundle bundle, final int from, final int to,
             final Date date) {
-        List<String> where = new ArrayList<String>();
-        List<Object> params = new ArrayList<Object>();
+    
+    List<Object> params = new ArrayList<>();
+    StringBuilder sql = new StringBuilder(EVENT_SELECT_WITH_USER_DATA);
+    
+    sql.append("where ue.userId=?");
+    params.add(userId);
 
-        StringBuilder sql = new StringBuilder();
-        sql.append(EVENT_SELECT_WITH_USER_DATA);
-        sql.append("where ue.userId=?");
-        params.add(userId);
+    addFilterCondition("e.id=?", eventId, params, sql);
+    addFilterCondition("e.typeId=?", eventSourceType, params, sql);
+    addStatusCondition(status, params, sql);
+    addFilterCondition("e.alarmLevel=?", alarmLevel, params, sql);
 
-        if (eventId != 0) {
-            where.add("e.id=?");
-            params.add(eventId);
+    sql.append(" order by e.activeTs desc");
+
+    return executeSearchQuery(sql.toString(), params, keywords, bundle, from, to, date);
+    
+    }
+
+    private void addFilterCondition(String condition, int value, List<Object> params, StringBuilder sql) {
+        if (value != 0 && value != -1) {
+            sql.append(" and ").append(condition);
+            params.add(value);
         }
-
-        if (eventSourceType != -1) {
-            where.add("e.typeId=?");
-            params.add(eventSourceType);
-        }
-
+    }
+    
+    private void addStatusCondition(String status, List<Object> params, StringBuilder sql) {
         if (EventsDwr.STATUS_ACTIVE.equals(status)) {
-            where.add("e.rtnApplicable=? and e.rtnTs is null");
+            sql.append(" and e.rtnApplicable=? and e.rtnTs is null");
             params.add(boolToChar(true));
-        }
-        else if (EventsDwr.STATUS_RTN.equals(status)) {
-            where.add("e.rtnApplicable=? and e.rtnTs is not null");
+        } else if (EventsDwr.STATUS_RTN.equals(status)) {
+            sql.append(" and e.rtnApplicable=? and e.rtnTs is not null");
             params.add(boolToChar(true));
-        }
-        else if (EventsDwr.STATUS_NORTN.equals(status)) {
-            where.add("e.rtnApplicable=?");
+        } else if (EventsDwr.STATUS_NORTN.equals(status)) {
+            sql.append(" and e.rtnApplicable=?");
             params.add(boolToChar(false));
         }
+    }
+    
+    private List<EventInstance> executeSearchQuery(String sql, List<Object> params, final String[] keywords,
+            final ResourceBundle bundle, final int from, final int to, final Date date) {
 
-        if (alarmLevel != -1) {
-            where.add("e.alarmLevel=?");
-            params.add(alarmLevel);
-        }
-
-        if (!where.isEmpty()) {
-            for (String s : where) {
-                sql.append(" and ");
-                sql.append(s);
-            }
-        }
-        sql.append(" order by e.activeTs desc");
-
-        final List<EventInstance> results = new ArrayList<EventInstance>(to - from);
+        final List<EventInstance> results = new ArrayList<>(to - from);
         final UserEventInstanceRowMapper rowMapper = new UserEventInstanceRowMapper();
-
         final int[] data = new int[2];
 
-        ejt.query(sql.toString(), params.toArray(), new ResultSetExtractor() {
-            @Override
-            public Object extractData(ResultSet rs) throws SQLException, DataAccessException {
-                int row = 0;
-                long dateTs = date == null ? -1 : date.getTime();
-                int startRow = -1;
+        ejt.query(sql, params.toArray(), (ResultSet rs) -> {
+            int row = 0;
+            long dateTs = date == null ? -1 : date.getTime();
+            int startRow = -1;
 
-                while (rs.next()) {
-                    EventInstance e = rowMapper.mapRow(rs, 0);
-                    attachRelationalInfo(e);
-                    boolean add = true;
+            while (rs.next()) {
+                EventInstance e = rowMapper.mapRow(rs, 0);
+                attachRelationalInfo(e);
 
-                    if (keywords != null) {
-                        // Do the text search. If the instance has a match, put it in the result. Otherwise ignore.
-                        StringBuilder text = new StringBuilder();
-                        text.append(e.getMessage().getLocalizedMessage(bundle));
-                        for (UserComment comment : e.getEventComments())
-                            text.append(' ').append(comment.getComment());
+                boolean add = true; // Default to adding the event
 
-                        String[] values = text.toString().split("\\s+");
-
-                        for (String keyword : keywords) {
-                            if (keyword.startsWith("-")) {
-                                if (StringUtils.globWhiteListMatchIgnoreCase(values, keyword.substring(1))) {
-                                    add = false;
-                                    break;
-                                }
-                            }
-                            else {
-                                if (!StringUtils.globWhiteListMatchIgnoreCase(values, keyword)) {
-                                    add = false;
-                                    break;
-                                }
-                            }
-                        }
+                if (keywords != null) {
+                    // Perform the filtering directly here
+                    StringBuilder text = new StringBuilder();
+                    text.append(e.getMessage().getLocalizedMessage(bundle));
+                    for (UserComment comment : e.getEventComments()) {
+                        text.append(' ').append(comment.getComment());
                     }
 
-                    if (add) {
-                        if (date != null) {
-                            if (e.getActiveTimestamp() <= dateTs && results.size() < to - from) {
-                                if (startRow == -1)
-                                    startRow = row;
-                                results.add(e);
+                    String[] values = text.toString().split("\\s+");
+
+                    for (String keyword : keywords) {
+                        if (keyword.startsWith("-")) {
+                            if (StringUtils.globWhiteListMatchIgnoreCase(values, keyword.substring(1))) {
+                                add = false;
+                                break;
+                            }
+                        } else {
+                            if (!StringUtils.globWhiteListMatchIgnoreCase(values, keyword)) {
+                                add = false;
+                                break;
                             }
                         }
-                        else if (row >= from && row < to)
-                            results.add(e);
-
-                        row++;
                     }
                 }
 
-                data[0] = row;
-                data[1] = startRow;
-
-                return null;
+                if (add) {
+                    if (date != null && e.getActiveTimestamp() <= dateTs && results.size() < to - from) {
+                        if (startRow == -1) {
+                            startRow = row;
+                        }
+                        results.add(e);
+                    } else if (row >= from && row < to) {
+                        results.add(e);
+                    }
+                    row++;
+                }
             }
+            data[0] = row;
+            data[1] = startRow;
+            return null;
         });
 
         searchRowCount = data[0];
         startRow = data[1];
-
         return results;
     }
+
+
 
     private int searchRowCount;
     private int startRow;

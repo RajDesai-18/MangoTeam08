@@ -1,1 +1,1 @@
-ž% 2jsX5hr&war/WEB-INF/scripts/scriptFunctions.js
+ž% 2javaX´hr,src/com/serotonin/mango/web/dwr/MiscDwr.java

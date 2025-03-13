@@ -1,1 +1,1 @@
-Ê$ 2jspX¹hr,war/WEB-INF/jsp/pointEdit/eventDetectors.jsp
+Ê$ 2javaXqhr5src/com/serotonin/mango/vo/mailingList/UserEntry.java

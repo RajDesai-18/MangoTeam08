@@ -1,1 +1,1 @@
-ª 2webXmhr-war/resources/dojo/tests/lfx/test_wipes2.html
+ª 2jspXhr-build/WEB-INF/snippet/imageValueThumbnail.jsp

@@ -1,1 +1,1 @@
-  2jsXbhr*war/resources/dojo/tests/lang/test_lang.js
+  2jspXhr+build/WEB-INF/snippet/changeContentText.jsp

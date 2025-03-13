@@ -1,1 +1,1 @@
-ù 2webXÛhr9war/resources/dojo/tests/lang/test_declare_benchmark.html
+ù 2jspX7hr&build/WEB-INF/snippet/basicContent.jsp

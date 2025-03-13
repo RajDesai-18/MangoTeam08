@@ -1,0 +1,1 @@
+æ 2xmlX,hr'build/resources/dojo/tests/xml/site.xml

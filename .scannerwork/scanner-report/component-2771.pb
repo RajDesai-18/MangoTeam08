@@ -1,0 +1,1 @@
+Ó 2webXhr,build/resources/dojo/tests/xdomain/doc0.html

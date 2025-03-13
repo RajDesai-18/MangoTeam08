@@ -1,2 +1,5 @@
-l
-javaS2975SRemove this "clone" implementation; use a copy constructor or copy factory instead.299  %
+J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @

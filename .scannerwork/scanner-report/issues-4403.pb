@@ -1,3 +1,2 @@
-J
-
-javascriptS3504)Unexpected var, use let or const instead.2 @
+r
+javaS120ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.2 2

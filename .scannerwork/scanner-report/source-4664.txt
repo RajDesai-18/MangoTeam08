@@ -1,4 +1,4 @@
-<%--
+/*
     Mango - Open Source M2M - http://mango.serotoninsoftware.com
     Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
     @author Matthew Lohbihler
@@ -14,187 +14,155 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see http://www.gnu.org/licenses/.
---%>
-<%@ include file="/WEB-INF/jsp/include/tech.jsp" %>
-<tag:page dwr="DataSourceListDwr" onload="init">
-  <script>
-    function init() {
-        DataSourceListDwr.init(function(response) {
-            if (response.data.types) {
-                dwr.util.addOptions("dataSourceTypes", response.data.types, "key", "value");
-                show("dataSourceTypesContent");
-            }
-        });
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.vo.dataSource.vmstat;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.List;
+import java.util.Map;
+
+import com.serotonin.json.JsonException;
+import com.serotonin.json.JsonObject;
+import com.serotonin.json.JsonReader;
+import com.serotonin.json.JsonRemoteEntity;
+import com.serotonin.json.JsonSerializable;
+import com.serotonin.mango.DataTypes;
+import com.serotonin.mango.rt.dataSource.PointLocatorRT;
+import com.serotonin.mango.rt.dataSource.vmstat.VMStatPointLocatorRT;
+import com.serotonin.mango.rt.event.type.AuditEventType;
+import com.serotonin.mango.util.ExportCodes;
+import com.serotonin.mango.util.LocalizableJsonException;
+import com.serotonin.mango.vo.dataSource.AbstractPointLocatorVO;
+import com.serotonin.web.dwr.DwrResponseI18n;
+import com.serotonin.web.i18n.LocalizableMessage;
+
+/**
+ * @author Matthew Lohbihler
+ */
+@JsonRemoteEntity
+public class VMStatPointLocatorVO extends AbstractPointLocatorVO implements JsonSerializable {
+    public interface Attributes {
+        int PROCS_R = 1;
+        int PROCS_B = 2;
+        int MEMORY_SWPD = 3;
+        int MEMORY_FREE = 4;
+        int MEMORY_BUFF = 5;
+        int MEMORY_CACHE = 6;
+        int SWAP_SI = 7;
+        int SWAP_SO = 8;
+        int IO_BI = 9;
+        int IO_BO = 10;
+        int SYSTEM_IN = 11;
+        int SYSTEM_CS = 12;
+        int CPU_US = 13;
+        int CPU_SY = 14;
+        int CPU_ID = 15;
+        int CPU_WA = 16;
+        int CPU_ST = 17;
     }
-    
-    function toggleDataSource(dataSourceId) {
-        var imgNode = $("dsImg"+ dataSourceId);
-        if (!hasImageFader(imgNode)) {
-            DataSourceListDwr.toggleDataSource(dataSourceId, function(result) {
-                updateStatusImg($("dsImg"+ result.id), result.enabled, true);
-            });
-            startImageFader(imgNode);
-        }
+
+    public static ExportCodes ATTRIBUTE_CODES = new ExportCodes();
+    static {
+        ATTRIBUTE_CODES.addElement(Attributes.PROCS_R, "PROCS_R", "dsEdit.vmstat.attr.procsR");
+        ATTRIBUTE_CODES.addElement(Attributes.PROCS_B, "PROCS_B", "dsEdit.vmstat.attr.procsB");
+        ATTRIBUTE_CODES.addElement(Attributes.MEMORY_SWPD, "MEMORY_SWPD", "dsEdit.vmstat.attr.memorySwpd");
+        ATTRIBUTE_CODES.addElement(Attributes.MEMORY_FREE, "MEMORY_FREE", "dsEdit.vmstat.attr.memoryFree");
+        ATTRIBUTE_CODES.addElement(Attributes.MEMORY_BUFF, "MEMORY_BUFF", "dsEdit.vmstat.attr.memoryBuff");
+        ATTRIBUTE_CODES.addElement(Attributes.MEMORY_CACHE, "MEMORY_CACHE", "dsEdit.vmstat.attr.memoryCache");
+        ATTRIBUTE_CODES.addElement(Attributes.SWAP_SI, "SWAP_SI", "dsEdit.vmstat.attr.swapSi");
+        ATTRIBUTE_CODES.addElement(Attributes.SWAP_SO, "SWAP_SO", "dsEdit.vmstat.attr.swapSo");
+        ATTRIBUTE_CODES.addElement(Attributes.IO_BI, "IO_BI", "dsEdit.vmstat.attr.ioBi");
+        ATTRIBUTE_CODES.addElement(Attributes.IO_BO, "IO_BO", "dsEdit.vmstat.attr.ioBo");
+        ATTRIBUTE_CODES.addElement(Attributes.SYSTEM_IN, "SYSTEM_IN", "dsEdit.vmstat.attr.systemIn");
+        ATTRIBUTE_CODES.addElement(Attributes.SYSTEM_CS, "SYSTEM_CS", "dsEdit.vmstat.attr.systemCs");
+        ATTRIBUTE_CODES.addElement(Attributes.CPU_US, "CPU_US", "dsEdit.vmstat.attr.cpuUs");
+        ATTRIBUTE_CODES.addElement(Attributes.CPU_SY, "CPU_SY", "dsEdit.vmstat.attr.cpuSy");
+        ATTRIBUTE_CODES.addElement(Attributes.CPU_ID, "CPU_ID", "dsEdit.vmstat.attr.cpuId");
+        ATTRIBUTE_CODES.addElement(Attributes.CPU_WA, "CPU_WA", "dsEdit.vmstat.attr.cpuWa");
+        ATTRIBUTE_CODES.addElement(Attributes.CPU_ST, "CPU_ST", "dsEdit.vmstat.attr.cpuSt");
+    };
+
+    private int attributeId = Attributes.CPU_ID;
+
+    public boolean isSettable() {
+        return false;
     }
-    
-    function toggleDataPoint(dataPointId) {
-        var imgNode = $("dpImg"+ dataPointId);
-        if (!hasImageFader(imgNode)) {
-            DataSourceListDwr.toggleDataPoint(dataPointId, function(result) {
-                updateStatusImg($("dpImg"+ result.data.id), result.data.enabled, false);
-            });
-            startImageFader(imgNode);
-        }
+
+    public PointLocatorRT createRuntime() {
+        return new VMStatPointLocatorRT(this);
     }
-    
-    function updateStatusImg(imgNode, enabled, ds) {
-        stopImageFader(imgNode);
-        if (ds)
-            setDataSourceStatusImg(enabled, imgNode);
-        else
-            setDataPointStatusImg(enabled, imgNode);
+
+    public LocalizableMessage getConfigurationDescription() {
+        if (ATTRIBUTE_CODES.isValidId(attributeId))
+            return new LocalizableMessage(ATTRIBUTE_CODES.getKey(attributeId));
+        return new LocalizableMessage("common.unknown");
     }
-    
-    function deleteDataSource(dataSourceId) {
-        if (confirm("<fmt:message key="dsList.dsDeleteConfirm"/>")) {
-            startImageFader("deleteDataSourceImg"+ dataSourceId);
-            DataSourceListDwr.deleteDataSource(dataSourceId, function(dataSourceId) {
-                stopImageFader("deleteDataSourceImg"+ dataSourceId);
-                // Delete the data source row
-                var row = $("dataSourceRow"+ dataSourceId);
-                row.parentNode.removeChild(row);
-                // Delete the points section.
-                row = $("points"+ dataSourceId);
-                row.parentNode.removeChild(row);
-            });
-        }
+
+    public int getDataTypeId() {
+        return DataTypes.NUMERIC;
     }
-    
-    function copyDataSource(fromDataSourceId) {
-        startImageFader("copyDataSourceImg"+ fromDataSourceId);
-        DataSourceListDwr.copyDataSource(fromDataSourceId, function(toDataSourceId) {
-            window.location = "data_source_edit.shtm?dsid="+ toDataSourceId;
-        });
+
+    public int getAttributeId() {
+        return attributeId;
     }
-    
-    function deleteDataPoint(pointId) {
-        if (confirm("<fmt:message key="dsList.pointDeleteConfirm"/>")) {
-            DataSourceListDwr.deleteDataPoint(pointId, function(pointId) {
-                var row = $("pointRow"+ pointId);
-                row.parentNode.removeChild(row);
-            });
-        }
+
+    public void setAttributeId(int attributeId) {
+        this.attributeId = attributeId;
     }
-    
-    function addDataSource() {
-        window.location = "data_source_edit.shtm?typeId="+ $get("dataSourceTypes");
+
+    public void validate(DwrResponseI18n response) {
+        if (!ATTRIBUTE_CODES.isValidId(attributeId))
+            response.addContextualMessage("attributeId", "validate.invalidValue");
     }
-  </script>
-  
-  <table cellspacing="0" cellpadding="0">
-    <tr>
-      <td>
-        <tag:img png="icon_ds" title="dsList.dataSources"/>
-        <span class="smallTitle"><fmt:message key="dsList.dataSources"/></span>
-        <tag:help id="dataSourceList"/>
-      </td>
-      <td align="right" id="dataSourceTypesContent" style="display:none">
-        <select id="dataSourceTypes"></select>
-        <tag:img png="icon_ds_add" title="common.add" onclick="addDataSource()"/>
-      </td>
-    </tr>
-    
-    <tr>
-      <td colspan="2">
-        <table cellspacing="0" cellpadding="0" border="0">
-          <tr>
-            <td colspan="2">
-              <table cellspacing="1" cellpadding="0" border="0">
-                <tr class="rowHeader">
-                  <td><sst:listSort labelKey="dsList.name" field="name" paging="${paging}"/></td>
-                  <td><sst:listSort labelKey="dsList.type" field="type" paging="${paging}"/></td>
-                  <td><sst:listSort labelKey="dsList.connection" field="conn" paging="${paging}"/></td>
-                  <td><sst:listSort labelKey="dsList.status" field="enabled" paging="${paging}"/></td>
-                  <td></td>
-                </tr>
-                
-                <c:set var="hideText"><fmt:message key="dsList.hide"/></c:set>
-                <c:set var="showText"><fmt:message key="dsList.show"/></c:set>
-                <c:forEach items="${paging.data}" var="listParent" begin="${paging.offset}" end="${paging.endIndex}">
-                  <tr class="row" id="dataSourceRow${listParent.parent.id}">
-                    <td><b>${listParent.parent.name}</b></td>
-                    <td><fmt:message key="${listParent.parent.type.key}"/></td>
-                    <td><sst:i18n message="${listParent.parent.connectionDescription}"/></td>
-                    <td align="center">
-                      <c:choose>
-                        <c:when test="${listParent.parent.enabled}">
-                          <tag:img png="database_go" title="common.enabledToggle" id="dsImg${listParent.parent.id}"
-                                  onclick="toggleDataSource(${listParent.parent.id})"/>
-                        </c:when>
-                        <c:otherwise>
-                          <tag:img png="database_stop" title="common.disabledToggle" id="dsImg${listParent.parent.id}"
-                                  onclick="toggleDataSource(${listParent.parent.id})"/>
-                        </c:otherwise>
-                      </c:choose>
-                    </td>
-                    <td>
-                      <a href="data_source_edit.shtm?dsid=${listParent.parent.id}"><tag:img png="icon_ds_edit"
-                              title="common.edit"/></a>
-                      <tag:img png="arrow_out" title="dsList.show" onclick="togglePanelVisibility2(this, 'points${listParent.parent.id}', '${hideText}', '${showText}');"/>
-                      <tag:img png="icon_ds_delete" title="common.delete" id="deleteDataSourceImg${listParent.parent.id}" 
-                              onclick="deleteDataSource(${listParent.parent.id})"/>
-                      <tag:img png="icon_ds_add" title="common.copy" id="copyDataSourceImg${listParent.parent.id}" 
-                              onclick="copyDataSource(${listParent.parent.id})"/>
-                    </td>
-                  </tr>
-                  
-                  <tr id="points${listParent.parent.id}" class="rowAlt2" style="display:none">
-                    <td colspan="5" style="padding:0px 0px 0px 30px;background-color:#FFFFFF;">
-                      <table cellspacing="1" cellpadding="0" border="0">
-                        <tr class="rowHeader">
-                          <td><fmt:message key="dsList.pointName"/></td>
-                          <td><fmt:message key="dsList.description"/></td>
-                          <td><fmt:message key="dsList.status"/></td>
-                          <td></td>
-                        </tr>
-                        <c:forEach items="${listParent.list}" var="point">
-                          <tr id="pointRow${point.id}">
-                            <td>${point.name}</td>
-                            <td><sst:i18n message="${point.dataTypeMessage}"/> / <sst:i18n message="${point.configurationDescription}"/></td>
-                            <td align="center">
-                              <c:choose>
-                                <c:when test="${point.enabled}">
-                                  <tag:img png="brick_go" title="common.enabledToggle" id="dpImg${point.id}"
-                                          onclick="toggleDataPoint(${point.id})"/>
-                                </c:when>
-                                <c:otherwise>
-                                  <tag:img png="brick_stop" title="common.disabledToggle" id="dpImg${point.id}"
-                                          onclick="toggleDataPoint(${point.id})"/>
-                                </c:otherwise>
-                              </c:choose>
-                            </td>
-                            <td><tag:img png="icon_comp" title="events.pointDetails"
-                                    onclick="window.location='data_point_details.shtm?dpid=${point.id}'"/></td>
-                            <td><tag:img png="icon_comp_edit" title="pointEdit.props.props"
-                                    onclick="window.location='data_point_edit.shtm?dpid=${point.id}'"/></td>
-                          </tr>
-                        </c:forEach>
-                      </table>
-                    </td>
-                  </tr>
-                </c:forEach>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td><sst:pageNumber paging="${paging}" pageLabelKey="pagination.page" ofLabelKey="pagination.of"
-                    rowsLabelKey="pagination.rows" noRowsLabelKey="pagination.noRows"/></td>
-            <td align="right"><sst:pagination paging="${paging}" previousLabelKey="pagination.previous"
-                    nextLabelKey="pagination.next"/></td>
-          </tr>
-        </table>  
-      </td>
-    </tr>
-  </table>
-</tag:page>
+
+    @Override
+    public void addProperties(List<LocalizableMessage> list) {
+        AuditEventType.addExportCodeMessage(list, "dsEdit.vmstat.attribute", ATTRIBUTE_CODES, attributeId);
+    }
+
+    @Override
+    public void addPropertyChanges(List<LocalizableMessage> list, Object o) {
+        VMStatPointLocatorVO from = (VMStatPointLocatorVO) o;
+        AuditEventType.maybeAddExportCodeChangeMessage(list, "dsEdit.vmstat.attribute", ATTRIBUTE_CODES,
+                from.attributeId, attributeId);
+    }
+
+    //
+    //
+    // Serialization
+    //
+    private static final long serialVersionUID = -1;
+    private static final int version = 1;
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.writeInt(version);
+        out.writeInt(attributeId);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException {
+        int ver = in.readInt();
+
+        // Switch on the version of the class so that version changes can be elegantly handled.
+        if (ver == 1)
+            attributeId = in.readInt();
+    }
+
+    @Override
+    public void jsonDeserialize(JsonReader reader, JsonObject json) throws JsonException {
+        String text = json.getString("attributeId");
+        if (text == null)
+            throw new LocalizableJsonException("emport.error.missing", "attributeId", ATTRIBUTE_CODES.getCodeList());
+        attributeId = ATTRIBUTE_CODES.getId(text);
+        if (!ATTRIBUTE_CODES.isValidId(attributeId))
+            throw new LocalizableJsonException("emport.error.invalid", "attributeId", text,
+                    ATTRIBUTE_CODES.getCodeList());
+    }
+
+    @Override
+    public void jsonSerialize(Map<String, Object> map) {
+        map.put("attributeId", ATTRIBUTE_CODES.getCode(attributeId));
+    }
+}

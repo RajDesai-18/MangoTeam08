@@ -1,4 +1,15 @@
-£
-javaS4144`Update this method so that its implementation is not identical to "getMaintenanceId" on line 26.2)) :(
-&þ original implementationZ
-javaS1126AReplace this if-then-else statement by a single return statement.2CC 
+J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2** @J
+
+javascriptS3504)Unexpected var, use let or const instead.299 	@J
+
+javascriptS3504)Unexpected var, use let or const instead.2:: @J
+
+javascriptS3504)Unexpected var, use let or const instead.2BB 	@J
+
+javascriptS3504)Unexpected var, use let or const instead.2CC @J
+
+javascriptS3504)Unexpected var, use let or const instead.2aa 	@

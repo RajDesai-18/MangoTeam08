@@ -1,1 +1,1 @@
-Î$ 2jspXºhr*war/WEB-INF/jsp/pointEdit/textRenderer.jsp
+Î$ 2javaXPhr>src/com/serotonin/mango/vo/publish/httpSender/HttpPointVO.java

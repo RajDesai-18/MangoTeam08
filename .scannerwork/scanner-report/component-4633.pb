@@ -1,1 +1,1 @@
-™$ 2jspXÃhr/war/WEB-INF/jsp/dataSourceEdit/editBacnetIp.jsp
+™$ 2javaXµhrHsrc/com/serotonin/mango/vo/dataSource/openv4j/OpenV4JPointLocatorVO.java

@@ -1,1 +1,0 @@
-ó 2webXªhrFwar/resources/dojo/tests/io/iframeproxy/test_BrowserIO_ifp.method.html

@@ -1,65 +1,64 @@
+package com.serotonin.mango.rt.dataSource.meta;
 
-<html>
-<head>
+import java.util.HashMap;
 
-<script type="text/javascript">
-	var djConfig = {isDebug: true, debugAtAllCosts: true };
-</script>
-<script type="text/javascript" src="../../../dojo.js"></script>
-<script type="text/javascript">
+import com.serotonin.db.IntValuePair;
+import com.serotonin.mango.db.dao.DataPointDao;
+import com.serotonin.mango.db.dao.PointValueDao;
+import com.serotonin.mango.rt.dataImage.DataPointRT;
+import com.serotonin.mango.rt.dataImage.HistoricalDataPoint;
+import com.serotonin.mango.rt.dataImage.IDataPoint;
+import com.serotonin.mango.rt.dataImage.PointValueTime;
+import com.serotonin.mango.vo.DataPointVO;
+import com.serotonin.mango.vo.dataSource.meta.MetaPointLocatorVO;
+import com.serotonin.timer.SimulationTimer;
+import com.serotonin.web.i18n.LocalizableMessage;
 
-	dojo.require("dojo.widget.*");
-	dojo.require("dojo.widget.TreeV3");
-	dojo.require("dojo.widget.TreeNodeV3");
-	dojo.require("dojo.widget.TreeLoadingControllerV3");
-	dojo.hostenv.writeIncludes();
+public class HistoricalMetaPointLocatorRT extends MetaPointLocatorRT {
+    private long updates;
 
-	function printOk() {
-		dojo.debug("OK");
-		for(var i=0;i<arguments.length;i++) {
-			dojo.debug(arguments[i]);
-		}
+    public HistoricalMetaPointLocatorRT(MetaPointLocatorVO vo) {
+        super(vo);
+    }
 
-	}
-	function printErr(err) {
-		dojo.debug("Error");
-		dojo.debugShallow(err);
-	}
+    public void initialize(SimulationTimer timer, DataPointRT dataPoint) {
+        this.timer = timer;
+        this.dataPoint = dataPoint;
+        initialized = true;
+        initializeTimerTask();
 
-	
-	function expandAllEnd() {	
-		dojo.profile.end("expandAll + timeouts");
-		alert("expandAll finished");
-	}
+        context = new HashMap<String, IDataPoint>();
+        DataPointDao dataPointDao = new DataPointDao();
+        PointValueDao pointValueDao = new PointValueDao();
+        for (IntValuePair contextEntry : vo.getContext()) {
+            DataPointVO cvo = dataPointDao.getDataPoint(contextEntry.getKey());
+            HistoricalDataPoint point = new HistoricalDataPoint(cvo.getId(), cvo.getPointLocator().getDataTypeId(),
+                    timer, pointValueDao);
+            context.put(contextEntry.getValue(), point);
+        }
+    }
 
-	function testExpandToLevel(level) {
-		var d = dojo.widget.byId('controller').expandToLevel(dojo.widget.byId('tree'),level);
-		d.addCallback(function() { alert('done') });
-	}
-</script>
+    @Override
+    public void terminate() {
+        synchronized (LOCK) {
+            // Cancel scheduled job
+            if (timerTask != null)
+                timerTask.cancel();
+        }
+    }
 
+    public long getUpdates() {
+        return updates;
+    }
 
-</head>
-<body>
+    @Override
+    protected void updatePoint(PointValueTime pvt) {
+        super.updatePoint(pvt);
+        updates++;
+    }
 
-<h3>Dynamically loads nodes from server</h3>
-
-<input type="button" value="Expand to level 3" onClick="testExpandToLevel(2)"/>
-
-
-<br/>
-
-<div dojoType="TreeLoadingControllerV3" widgetId="controller" RpcUrl="rpc.php"></div>
-
-
-<div dojoType="TreeV3" widgetId="tree" listeners="controller">
-    <div dojoType="TreeNodeV3" title="Node 2" id="1">
-        <div dojoType="TreeNodeV3" title="Node 2.1"></div>
-        <div dojoType="TreeNodeV3" isFolder="true" title="Node 2.2"></div>
-    </div>
-    <div dojoType="TreeNodeV3" title="Node 3" isFolder="true" id="3">
-    </div>	
-
-</div>
-
-</html>
+    @Override
+    protected void handleError(long runtime, LocalizableMessage message) {
+        throw new MetaPointExecutionException(message);
+    }
+}

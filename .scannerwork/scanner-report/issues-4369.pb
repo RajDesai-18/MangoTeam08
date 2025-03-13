@@ -1,2 +1,2 @@
-R
-phpS105EReplace all tab characters in this file by sequences of white-spaces.
+r
+javaS120ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.2 .

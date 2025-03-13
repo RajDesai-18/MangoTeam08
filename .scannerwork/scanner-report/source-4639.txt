@@ -1,4 +1,4 @@
-<%--
+/*
     Mango - Open Source M2M - http://mango.serotoninsoftware.com
     Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
     @author Matthew Lohbihler
@@ -14,140 +14,203 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see http://www.gnu.org/licenses/.
---%>
-<%@include file="/WEB-INF/jsp/include/tech.jsp"%>
-<%@page import="com.serotonin.mango.vo.dataSource.http.HttpImagePointLocatorVO"%>
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.vo.dataSource.pop3;
 
-<script type="text/javascript">
-  function saveDataSourceImpl() {
-      DataSourceEditDwr.saveHttpImageDataSource($get("dataSourceName"), $get("dataSourceXid"), $get("updatePeriods"),
-              $get("updatePeriodType"), saveDataSourceCB);
-  }
-  
-  function editPointCBImpl(locator) {
-      $set("url", locator.url);
-      $set("timeoutSeconds", locator.timeoutSeconds);
-      $set("retries", locator.retries);
-      $set("scaleType", locator.scaleType);
-      $set("scalePercent", locator.scalePercent);
-      $set("scaleWidth", locator.scaleWidth);
-      $set("scaleHeight", locator.scaleHeight);
-      $set("readLimit", locator.readLimit);
-      $set("webcamLiveFeedCode", locator.webcamLiveFeedCode);
-      
-      scaleTypeChanged();
-  }
-  
-  function savePointImpl(locator) {
-      delete locator.settable;
-      delete locator.dataTypeId;
-      
-      locator.url = $get("url");
-      locator.timeoutSeconds = $get("timeoutSeconds");
-      locator.retries = $get("retries");
-      locator.scaleType = $get("scaleType");
-      locator.scalePercent = $get("scalePercent");
-      locator.scaleWidth = $get("scaleWidth");
-      locator.scaleHeight = $get("scaleHeight");
-      locator.readLimit = $get("readLimit");
-      locator.webcamLiveFeedCode = $get("webcamLiveFeedCode");
-      
-      DataSourceEditDwr.saveHttpImagePointLocator(currentPoint.id, $get("xid"), $get("name"), locator, savePointCB);
-  }
-  
-  function scaleTypeChanged() {
-      var type = $get("scaleType");
-      if (type == <c:out value="<%= HttpImagePointLocatorVO.SCALE_TYPE_NONE %>"/>) {
-          hide("scalePercentRow");
-          hide("scaleWidthRow");
-          hide("scaleHeightRow");
-      }
-      else if (type == <c:out value="<%= HttpImagePointLocatorVO.SCALE_TYPE_PERCENT %>"/>) {
-          show("scalePercentRow");
-          hide("scaleWidthRow");
-          hide("scaleHeightRow");
-      }
-      else if (type == <c:out value="<%= HttpImagePointLocatorVO.SCALE_TYPE_BOX %>"/>) {
-          hide("scalePercentRow");
-          show("scaleWidthRow");
-          show("scaleHeightRow");
-      }
-  }
-</script>
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.List;
+import java.util.Map;
 
-<c:set var="dsDesc"><fmt:message key="dsEdit.httpImage.desc"/></c:set>
-<c:set var="dsHelpId" value="httpImageDS"/>
-<%@ include file="/WEB-INF/jsp/dataSourceEdit/dsHead.jspf" %>
-  <tr>
-    <td class="formLabelRequired"><fmt:message key="dsEdit.updatePeriod"/></td>
-    <td class="formField">
-      <input type="text" id="updatePeriods" value="${dataSource.updatePeriods}" class="formShort"/>
-      <sst:select id="updatePeriodType" value="${dataSource.updatePeriodType}">
-        <tag:timePeriodOptions sst="true" s="true" min="true" h="true"/>
-      </sst:select>
-    </td>
-  </tr>
-<%@ include file="/WEB-INF/jsp/dataSourceEdit/dsEventsFoot.jspf" %>
+import com.serotonin.json.JsonException;
+import com.serotonin.json.JsonObject;
+import com.serotonin.json.JsonReader;
+import com.serotonin.json.JsonRemoteEntity;
+import com.serotonin.json.JsonRemoteProperty;
+import com.serotonin.mango.Common;
+import com.serotonin.mango.rt.dataSource.DataSourceRT;
+import com.serotonin.mango.rt.dataSource.pop3.Pop3DataSourceRT;
+import com.serotonin.mango.rt.event.type.AuditEventType;
+import com.serotonin.mango.util.ExportCodes;
+import com.serotonin.mango.vo.dataSource.DataSourceVO;
+import com.serotonin.mango.vo.event.EventTypeVO;
+import com.serotonin.util.SerializationHelper;
+import com.serotonin.util.StringUtils;
+import com.serotonin.web.dwr.DwrResponseI18n;
+import com.serotonin.web.i18n.LocalizableMessage;
 
-<tag:pointList pointHelpId="httpImagePP">
-  <tr>
-    <td class="formLabelRequired"><fmt:message key="dsEdit.httpImage.url"/></td>
-    <td class="formField">
-      <input id="url" type="text" class="formLong"/>
-      <tag:img png="bullet_go" onclick="window.open($get('url'), 'httpImageTarget')" title="dsEdit.httpImage.openUrl"/>
-    </td>
-  </tr>
-  
-  <tr>
-    <td class="formLabelRequired"><fmt:message key="dsEdit.httpImage.timeout"/></td>
-    <td class="formField"><input id="timeoutSeconds" type="text"/></td>
-  </tr>
-  
-  <tr>
-    <td class="formLabelRequired"><fmt:message key="dsEdit.httpImage.retries"/></td>
-    <td class="formField"><input id="retries" type="text"/></td>
-  </tr>
+/**
+ * @author Matthew Lohbihler
+ */
+@JsonRemoteEntity
+public class Pop3DataSourceVO extends DataSourceVO<Pop3DataSourceVO> {
+    public static final Type TYPE = Type.POP3;
 
-  <tr>
-    <td class="formLabelRequired"><fmt:message key="dsEdit.httpImage.scalingType"/></td>
-    <td class="formField">
-      <select id="scaleType" onchange="scaleTypeChanged()">
-        <option value="<c:out value="<%= HttpImagePointLocatorVO.SCALE_TYPE_NONE %>"/>"><fmt:message key="dsEdit.httpImage.scalingType.none"/></option>
-        <option value="<c:out value="<%= HttpImagePointLocatorVO.SCALE_TYPE_PERCENT %>"/>"><fmt:message key="dsEdit.httpImage.scalingType.percent"/></option>
-        <option value="<c:out value="<%= HttpImagePointLocatorVO.SCALE_TYPE_BOX %>"/>"><fmt:message key="dsEdit.httpImage.scalingType.box"/></option>
-      </select>
-    </td>
-  </tr>
-  
-  <tbody id="scalePercentRow">
-    <tr>
-      <td class="formLabelRequired"><fmt:message key="dsEdit.httpImage.scalePercent"/></td>
-      <td class="formField"><input id="scalePercent" type="text"/></td>
-    </tr>
-  </tbody>
-  
-  <tbody id="scaleWidthRow">
-    <tr>
-      <td class="formLabelRequired"><fmt:message key="dsEdit.httpImage.scaleWidth"/></td>
-      <td class="formField"><input id="scaleWidth" type="text"/></td>
-    </tr>
-  </tbody>
-  
-  <tbody id="scaleHeightRow">
-    <tr>
-      <td class="formLabelRequired"><fmt:message key="dsEdit.httpImage.scaleHeight"/></td>
-      <td class="formField"><input id="scaleHeight" type="text"/></td>
-    </tr>
-  </tbody>
-  
-  <tr>
-    <td class="formLabelRequired"><fmt:message key="dsEdit.httpImage.readLimit"/></td>
-    <td class="formField"><input id="readLimit" type="text"/></td>
-  </tr>
-  
-  <tr>
-    <td class="formLabelRequired"><fmt:message key="dsEdit.httpImage.liveFeed"/></td>
-    <td class="formField"><textarea id="webcamLiveFeedCode" rows="10" cols="37"></textarea></td>
-  </tr>
-</tag:pointList>
+    @Override
+    protected void addEventTypes(List<EventTypeVO> ets) {
+        ets.add(createEventType(Pop3DataSourceRT.INBOX_EXCEPTION_EVENT, new LocalizableMessage("event.ds.emailInbox")));
+        ets.add(createEventType(Pop3DataSourceRT.MESSAGE_READ_EXCEPTION_EVENT, new LocalizableMessage(
+                "event.ds.emailRead")));
+        ets.add(createEventType(Pop3DataSourceRT.PARSE_EXCEPTION_EVENT, new LocalizableMessage("event.ds.emailParse")));
+    }
+
+    private static final ExportCodes EVENT_CODES = new ExportCodes();
+    static {
+        EVENT_CODES.addElement(Pop3DataSourceRT.INBOX_EXCEPTION_EVENT, "INBOX_EXCEPTION");
+        EVENT_CODES.addElement(Pop3DataSourceRT.MESSAGE_READ_EXCEPTION_EVENT, "MESSAGE_READ_EXCEPTION");
+        EVENT_CODES.addElement(Pop3DataSourceRT.PARSE_EXCEPTION_EVENT, "PARSE_EXCEPTION");
+    }
+
+    @Override
+    public ExportCodes getEventCodes() {
+        return EVENT_CODES;
+    }
+
+    @Override
+    public LocalizableMessage getConnectionDescription() {
+        return new LocalizableMessage("common.default", username);
+    }
+
+    @Override
+    public Type getType() {
+        return TYPE;
+    }
+
+    @Override
+    public DataSourceRT createDataSourceRT() {
+        return new Pop3DataSourceRT(this);
+    }
+
+    @Override
+    public Pop3PointLocatorVO createPointLocator() {
+        return new Pop3PointLocatorVO();
+    }
+
+    @JsonRemoteProperty
+    private String pop3Server;
+    @JsonRemoteProperty
+    private String username;
+    @JsonRemoteProperty
+    private String password;
+    private int updatePeriodType = Common.TimePeriods.MINUTES;
+    @JsonRemoteProperty
+    private int updatePeriods = 5;
+
+    public String getPop3Server() {
+        return pop3Server;
+    }
+
+    public void setPop3Server(String pop3Server) {
+        this.pop3Server = pop3Server;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getUpdatePeriodType() {
+        return updatePeriodType;
+    }
+
+    public void setUpdatePeriodType(int updatePeriodType) {
+        this.updatePeriodType = updatePeriodType;
+    }
+
+    public int getUpdatePeriods() {
+        return updatePeriods;
+    }
+
+    public void setUpdatePeriods(int updatePeriods) {
+        this.updatePeriods = updatePeriods;
+    }
+
+    @Override
+    public void validate(DwrResponseI18n response) {
+        super.validate(response);
+        if (StringUtils.isEmpty(pop3Server))
+            response.addContextualMessage("pop3Server", "validate.required");
+        if (StringUtils.isEmpty(username))
+            response.addContextualMessage("username", "validate.required");
+        if (StringUtils.isEmpty(password))
+            response.addContextualMessage("password", "validate.required");
+        if (!Common.TIME_PERIOD_CODES.isValidId(updatePeriodType))
+            response.addContextualMessage("updatePeriodType", "validate.invalidValue");
+        if (updatePeriods <= 0)
+            response.addContextualMessage("updatePeriods", "validate.greaterThanZero");
+    }
+
+    @Override
+    protected void addPropertiesImpl(List<LocalizableMessage> list) {
+        AuditEventType.addPeriodMessage(list, "dsEdit.pop3.checkPeriod", updatePeriodType, updatePeriods);
+        AuditEventType.addPropertyMessage(list, "dsEdit.pop3.server", pop3Server);
+        AuditEventType.addPropertyMessage(list, "dsEdit.pop3.username", username);
+        AuditEventType.addPropertyMessage(list, "dsEdit.pop3.password", password);
+    }
+
+    @Override
+    protected void addPropertyChangesImpl(List<LocalizableMessage> list, Pop3DataSourceVO from) {
+        AuditEventType.maybeAddPeriodChangeMessage(list, "dsEdit.pop3.checkPeriod", from.updatePeriodType,
+                from.updatePeriods, updatePeriodType, updatePeriods);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsEdit.pop3.server", from.pop3Server, pop3Server);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsEdit.pop3.username", from.username, username);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsEdit.pop3.password", from.password, password);
+    }
+
+    //
+    // /
+    // / Serialization
+    // /
+    //
+    private static final long serialVersionUID = -1;
+    private static final int version = 1;
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.writeInt(version);
+        SerializationHelper.writeSafeUTF(out, pop3Server);
+        SerializationHelper.writeSafeUTF(out, username);
+        SerializationHelper.writeSafeUTF(out, password);
+        out.writeInt(updatePeriodType);
+        out.writeInt(updatePeriods);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException {
+        int ver = in.readInt();
+
+        // Switch on the version of the class so that version changes can be elegantly handled.
+        if (ver == 1) {
+            pop3Server = SerializationHelper.readSafeUTF(in);
+            username = SerializationHelper.readSafeUTF(in);
+            password = SerializationHelper.readSafeUTF(in);
+            updatePeriodType = in.readInt();
+            updatePeriods = in.readInt();
+        }
+    }
+
+    @Override
+    public void jsonDeserialize(JsonReader reader, JsonObject json) throws JsonException {
+        super.jsonDeserialize(reader, json);
+        Integer value = deserializeUpdatePeriodType(json);
+        if (value != null)
+            updatePeriodType = value;
+    }
+
+    @Override
+    public void jsonSerialize(Map<String, Object> map) {
+        super.jsonSerialize(map);
+        serializeUpdatePeriodType(map, updatePeriodType);
+    }
+}

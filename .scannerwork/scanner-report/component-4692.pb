@@ -1,1 +1,1 @@
-Ô$ 2jspXØhr-war/WEB-INF/jsp/publisherEdit/editPachube.jsp
+Ô$ 2javaX^hr8src/com/serotonin/mango/vo/publish/PublishedPointVO.java

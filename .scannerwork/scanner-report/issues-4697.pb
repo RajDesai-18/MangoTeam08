@@ -1,77 +1,3 @@
-?
-WebS5256%Add "<th>" headers to this "<table>".2
-±± 	D
-WebS1827*Remove this deprecated "valign" attribute.2
-≥≥ C
-WebS1827)Remove this deprecated "width" attribute.2
-µµ
- ?
-WebS5256%Add "<th>" headers to this "<table>".2
-µµ
- C
-WebS1827)Remove this deprecated "align" attribute.2
-ªª  ?
-WebS5256%Add "<th>" headers to this "<table>".2
-øø
- +j
-WebS6847RNon-interactive elements should not be assigned mouse or keyboard event listeners.2¿¿ uÄ
-Web(MouseEventWithoutKeyboardEquivalentCheckCAdd a 'onKeyPress|onKeyDown|onKeyUp' attribute to this <tbody> tag.2
-¿¿ uD
-WebS1827*Remove this deprecated "valign" attribute.2
-   HC
-WebS1827)Remove this deprecated "width" attribute.2
-ÃÃ
- ?
-WebS5256%Add "<th>" headers to this "<table>".2
-ÃÃ
- C
-WebS1827)Remove this deprecated "align" attribute.2
-œœ  ?
-WebS5256%Add "<th>" headers to this "<table>".2
-÷÷
- Ä
-Web(MouseEventWithoutKeyboardEquivalentCheckCAdd a 'onKeyPress|onKeyDown|onKeyUp' attribute to this <input> tag.2
-¸¸$ g?
-WebS5256%Add "<th>" headers to this "<table>".2
-ÇÇ ,C
-WebS1827)Remove this deprecated "align" attribute.2
-ÑÑ <C
-WebS1827)Remove this deprecated "align" attribute.2
-ÜÜ =C
-WebS1827)Remove this deprecated "align" attribute.2
-àà '?
-WebS5256%Add "<th>" headers to this "<table>".2
-óó ,C
-WebS1827)Remove this deprecated "align" attribute.2
-ôô <C
-WebS1827)Remove this deprecated "align" attribute.2
-õõ 'C
-WebS1827)Remove this deprecated "align" attribute.2
-ùù '?
-WebS5256%Add "<th>" headers to this "<table>".2
-ππ ,C
-WebS1827)Remove this deprecated "align" attribute.2
-∫∫ )?
-WebS5256%Add "<th>" headers to this "<table>".2
-√√ .C
-WebS1827)Remove this deprecated "align" attribute.2
-≈≈ >C
-WebS1827)Remove this deprecated "align" attribute.2
-«« ?C
-WebS1827)Remove this deprecated "align" attribute.2
-…… '?
-WebS5256%Add "<th>" headers to this "<table>".2
-◊◊ .C
-WebS1827)Remove this deprecated "align" attribute.2
-ŸŸ >C
-WebS1827)Remove this deprecated "align" attribute.2
-€€ 'C
-WebS1827)Remove this deprecated "align" attribute.2
-›› '?
-WebS5256%Add "<th>" headers to this "<table>".2
-˘˘ .C
-WebS1827)Remove this deprecated "align" attribute.2
-˙˙ )?
-WebS5256%Add "<th>" headers to this "<table>".2
-ÜÜ
- 
+©
+javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2..( /@©
+javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2668 L@

@@ -1,1 +1,1 @@
- 2javaXihr<src/com/serotonin/mango/vo/dataSource/galil/PointTypeVO.java
+ 2jsXhr5build/resources/dojo/tests/i18n/nls/pl/salutations.js

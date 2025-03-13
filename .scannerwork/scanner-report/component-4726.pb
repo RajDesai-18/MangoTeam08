@@ -1,0 +1,1 @@
+ö$ 2javaXhhr@src/com/serotonin/mango/web/dwr/beans/EBI25InterfaceUpdater.java

@@ -1,1 +1,1 @@
-È 2javaX+hrCsrc/com/serotonin/mango/rt/dataSource/virtual/BrownianChangeRT.java
+È 2cssX#hr5build/resources/dojo/src/widget/templates/Spinner.css

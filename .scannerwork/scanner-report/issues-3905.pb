@@ -1,13 +1,14 @@
-_
-WebDoctypePresenceCheck:Insert a <!DOCTYPE> declaration to before this <html> tag.2 aV
-WebS5254@Add "lang" and/or "xml:lang" attributes to this "<html>" element2 aJ
-WebAvoidCommentedOutCodeCheckRemove this commented out code.2 LJ
-WebAvoidCommentedOutCodeCheckRemove this commented out code.2		 KJ
-WebAvoidCommentedOutCodeCheckRemove this commented out code.2
-
- JJ
-WebAvoidCommentedOutCodeCheckRemove this commented out code.2 J}
-
-javascriptS2703^Add the "let", "const" or "var" keyword to this declaration of "djConfig" to make it explicit.2 '}
-
-javascriptS2703`Add the "let", "const" or "var" keyword to this declaration of "makeShapes" to make it explicit.2 
+G
+WebS1827/Remove this deprecated "cellspacing" attribute.266 4G
+WebS1827/Remove this deprecated "cellpadding" attribute.266 4=
+WebS5256%Add "<th>" headers to this "<table>".266 4h
+WebS6847RNon-interactive elements should not be assigned mouse or keyboard event listeners.299 ?}
+Web(MouseEventWithoutKeyboardEquivalentCheckBAdd a 'onKeyPress|onKeyDown|onKeyUp' attribute to this <form> tag.299 ?=
+WebS5256%Add "<th>" headers to this "<table>".2::
+ A
+WebS1827)Remove this deprecated "align" attribute.2ZZ -B
+WebS1827*Remove this deprecated "valign" attribute.2dd =
+WebS5256%Add "<th>" headers to this "<table>".2ee B
+WebS1827*Remove this deprecated "valign" attribute.2gg J
+WebImgWithoutAltCheck%Add an "alt" attribute to this image.2gg NB
+WebS1827*Remove this deprecated "valign" attribute.2kk )

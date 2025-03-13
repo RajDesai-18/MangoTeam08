@@ -1,1 +1,1 @@
-Ã 2javaXehr>src/com/serotonin/mango/view/component/ThumbnailComponent.java
+Ã 2webX4hr0build/resources/dojo/tests/debug/test_debug.html

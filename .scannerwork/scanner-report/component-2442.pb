@@ -1,1 +1,1 @@
-Š 2javaXkhr;src/com/serotonin/mango/web/dwr/beans/HttpSenderTester.java
+Š 2webXhr.build/resources/dojo/tests/test_bootstrap.html

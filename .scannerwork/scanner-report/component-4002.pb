@@ -1,1 +1,1 @@
-¢ 2jsXÏhr*war/resources/dojo/tests/lang/test_type.js
+¢ 2jspX!hr-build/WEB-INF/snippet/compoundInfoContent.jsp

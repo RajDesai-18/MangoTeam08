@@ -1,4 +1,4 @@
-½Ö‡¸×2MangoDB(:R
+œûŠö×2	MangoDB_1(:R
 
 kubernetesD
 $a03e7cd4-d7d5-4f46-9826-1a1e65cc7bfb	Sonar way
@@ -55,27 +55,31 @@ $b9a5c972-328e-4aa6-b91a-d509f585b069	Sonar wayazureresourcemanager ÀÉìæÖ2:B
 $c83a1620-6178-43ca-8456-7677ced366db	Sonar wayts ÀÉìæÖ2B
 python
 python×ĞìæÖ2B
+cayc
+caycØĞìæÖ2B
+jacoco
+jacocoØĞìæÖ2B
+iac
+iacØĞìæÖ2B!
+
+javascript
+
+javascriptØĞìæÖ2B!
+
+cnesreport
+
+cnesreportê˜Á×2B
 java
 javaØĞìæÖ2B
 web
 webØĞìæÖ2B
-cayc
-caycØĞìæÖ2B
 flex
 flexØĞìæÖ2B
 xml
-xmlØĞìæÖ2B
-jacoco
-jacocoØĞìæÖ2B
+xmlØĞìæÖ2B
 php
-phpØĞìæÖ2B
-iac
-iacØĞìæÖ2B
+phpØĞìæÖ2B
 text
 textÙĞìæÖ2B7
 javasymbolicexecution
-javasymbolicexecutionÙĞìæÖ2B!
-
-javascript
-
-javascriptØĞìæÖ2j(9ea9fb0079e19471452ffbc3317db5c931d7c904‚1.0
+javasymbolicexecutionÙĞìæÖ2j(d08d7255f0360d857d93991cac74b7ee331214e3‚1.0

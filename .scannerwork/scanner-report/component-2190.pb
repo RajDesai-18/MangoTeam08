@@ -1,1 +1,1 @@
-Ž 2javaXåhr?src/com/serotonin/mango/rt/publish/httpSender/HttpSenderRT.java
+Ž 2jsXhr+build/resources/dojo/src/xml/__package__.js

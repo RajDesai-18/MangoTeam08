@@ -1,0 +1,1 @@
+í 2jsXhr)build/resources/dojo/tests/__package__.js

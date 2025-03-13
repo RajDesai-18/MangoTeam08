@@ -1,0 +1,1 @@
+À6 2jspXºhr*war/WEB-INF/jsp/pointEdit/textRenderer.jsp

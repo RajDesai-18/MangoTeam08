@@ -1,1 +1,1 @@
-õ 2javaXèhrBsrc/com/serotonin/mango/vo/dataSource/mbus/MBusPointLocatorVO.java
+õ 2webX;hr2build/resources/dojo/tests/i18n/test_strings2.html

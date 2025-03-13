@@ -1,1 +1,0 @@
-ë 2jsXhr(war/resources/dojo/tests/io/data-json.js

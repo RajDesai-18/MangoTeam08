@@ -1,1 +1,1 @@
-”$ 2jspXùhr0war/WEB-INF/jsp/publisherEdit/editHttpSender.jsp
+”$ 2javaXÈhrEsrc/com/serotonin/mango/vo/publish/persistent/PersistentSenderVO.java

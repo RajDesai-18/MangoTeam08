@@ -1,0 +1,1 @@
+Ã 2xmlXFhrbuild/WEB-INF/classes/log4j.xml

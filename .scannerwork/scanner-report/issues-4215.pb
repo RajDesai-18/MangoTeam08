@@ -1,11 +1,6 @@
-_
-WebDoctypePresenceCheck:Insert a <!DOCTYPE> declaration to before this <html> tag.2 V
-WebS5254@Add "lang" and/or "xml:lang" attributes to this "<html>" element2 A
-WebS1827)Remove this deprecated "width" attribute.2 A
-WebS1827)Remove this deprecated "width" attribute.2em C
-WebS1827)Remove this deprecated "width" attribute.2
- ¨ ?
-
-javascriptS125Remove this commented out code.2
-
- "@
+r
+javaS120ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.2 )f
+javaS116NRename this field "LOG" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.2 K
+javaS11352Complete the task associated to this TODO comment.2ƒƒ $p
+javaS4507UMake sure this debug feature is deactivated before delivering the code in production.2
+¨¨ 

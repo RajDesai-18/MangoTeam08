@@ -1,1 +1,1 @@
-Ÿ 2javaX;hr2src/com/serotonin/mango/web/dwr/CustomViewDwr.java
+Ÿ 2jsXhr%build/resources/dojo/tests/test_ns.js

@@ -1,0 +1,1 @@
+’ 2webXyhr+build/resources/dojo/demos/widget/Mail.html

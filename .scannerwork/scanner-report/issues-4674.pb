@@ -1,7 +1,4 @@
-=
-WebS5256%Add "<th>" headers to this "<table>".2WW 	A
-WebS1827)Remove this deprecated "align" attribute.2\\ ;
-WebS5256%Add "<th>" headers to this "<table>".2dd B
-WebS1827*Remove this deprecated "valign" attribute.2ff  A
-WebS1827)Remove this deprecated "width" attribute.2ff  B
-WebS1827*Remove this deprecated "valign" attribute.2gg 
+©
+javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2Z r@S
+javaS1118:Add a private constructor to hide the implicit public one.2 *`
+javaS1124EReorder the modifiers to comply with the Java Language Specification.2 @

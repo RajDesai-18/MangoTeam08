@@ -1,4 +1,4 @@
-<%--
+/*
     Mango - Open Source M2M - http://mango.serotoninsoftware.com
     Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
     @author Matthew Lohbihler
@@ -14,197 +14,341 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see http://www.gnu.org/licenses/.
---%>
-<%@ include file="/WEB-INF/jsp/include/tech.jsp" %>
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.vo.publish;
 
-<%@page import="com.serotonin.mango.vo.publish.persistent.PersistentSenderVO"%><script type="text/javascript">
-  var allPoints = new Array();  
-  var selectedPoints = new Array();  
-  
-  dojo.addOnLoad(function() { 
-      PublisherEditDwr.initSender(function(response) {
-          var i;
-          var list = response.data.allPoints;
-          for (var i=0; i<list.length; i++)
-              allPoints[allPoints.length] = {
-                      id: list[i].id, name: list[i].extendedName, enabled: list[i].enabled, type: list[i].dataTypeMessage};
-              
-          list = response.data.publisher.points;
-          for (i=0; i<list.length; i++)
-              addToSelectedArray(list[i].dataPointId);
-          refreshSelectedPoints();
-      });
-  });
-  
-  function selectPoint() {
-      var pointId = $get("availablePoints");
-      addToSelectedArray(pointId);
-      refreshSelectedPoints();
-  }
-  
-  function addToSelectedArray(pointId) {
-      var data = getElement(allPoints, pointId);
-      
-      if (data) {
-          // Missing names imply that the point was deleted, so ignore.
-          selectedPoints[selectedPoints.length] = {
-              id : pointId,
-              pointName : data.name,
-              enabled : data.enabled,
-              pointType : data.type
-          };
-      }
-  }
-  
-  function removeFromSelectedPoints(pointId) {
-      removeElement(selectedPoints, pointId);
-      refreshSelectedPoints();
-  }
-  
-  function refreshSelectedPoints() {
-      dwr.util.removeAllRows("selectedPoints");
-      if (selectedPoints.length == 0)
-          show("selectedPointsEmpty");
-      else {
-          hide("selectedPointsEmpty");
-          dwr.util.addRows("selectedPoints", selectedPoints,
-              [
-                  function(data) { return data.pointName; },
-                  function(data) { return "<img src='images/"+ (data.enabled ? "brick_go" : "brick_stop") +".png'/>"; },
-                  function(data) { return data.pointType; },
-                  function(data) { 
-                          return "<img src='images/bullet_delete.png' class='ptr' "+
-                                  "onclick='removeFromSelectedPoints("+ data.id +")'/>";
-                  }
-              ],
-              {
-                  rowCreator: function(options) {
-                      var tr = document.createElement("tr");
-                      tr.className = "row"+ (options.rowIndex % 2 == 0 ? "" : "Alt");
-                      return tr;
-                  },
-                  cellCreator: function(options) {
-                      var td = document.createElement("td");
-                      if (options.cellNum == 1 || options.cellNum == 3)
-                          td.align = "center";
-                      return td;
-                  } 
-              });
-      }
-      refreshAvailablePoints();
-  }
-  
-  function refreshAvailablePoints() {
-      dwr.util.removeAllOptions("availablePoints");
-      var availPoints = new Array();
-      for (var i=0; i<allPoints.length; i++) {
-          var found = false;
-          for (var j=0; j<selectedPoints.length; j++) {
-              if (selectedPoints[j].id == allPoints[i].id) {
-                  found = true;
-                  break;
-              }
-          }
-          
-          if (!found)
-              availPoints[availPoints.length] = allPoints[i];
-      }
-      dwr.util.addOptions("availablePoints", availPoints, "id", "name");
-  }
-  
-  function savePublisherImpl(name, xid, enabled, cacheWarningSize, changesOnly, sendSnapshot, snapshotSendPeriods,
-          snapshotSendPeriodType) {
-      // Clear messages.
-      hide("hostMsg");
-      hide("portMsg");
-      hide("pointsMsg");
-      
-      var points = new Array();
-      for (var i=0; i<selectedPoints.length; i++)
-          points[points.length] = {dataPointId: selectedPoints[i].id};
-      
-      PublisherEditDwr.savePersistentSender(name, xid, enabled, points, $get("host"), $get("port"),
-              $get("authorizationKey"), $get("xidPrefix"), $get("syncType"), cacheWarningSize, changesOnly,
-              sendSnapshot, snapshotSendPeriods, snapshotSendPeriodType, savePublisherCB);
-  }
-</script>
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-<table cellpadding="0" cellspacing="0">
-  <tr>
-    <td valign="top">
-      <div class="borderDiv marR marB">
-        <table>
-          <tr>
-            <td colspan="2" class="smallTitle"><fmt:message key="publisherEdit.persistent.props"/> <tag:help id="persistentPublishing"/></td>
-          </tr>
-          
-          <tr>
-            <td class="formLabelRequired"><fmt:message key="publisherEdit.persistent.host"/></td>
-            <td class="formField">
-              <input type="text" id="host" value="${publisher.host}" class="formLong"/>
-              <div id="hostMsg" class="formError" style="display:none;"></div>
-            </td>
-          </tr>
-          
-          <tr>
-          
-            <td class="formLabelRequired"><fmt:message key="publisherEdit.persistent.port"/></td>
-            <td class="formField">
-              <input type="text" id="port" value="${publisher.port}"/>
-              <div id="portMsg" class="formError" style="display:none;"></div>
-            </td>
-          </tr>
-          
-          <tr>
-            <td class="formLabelRequired"><fmt:message key="publisherEdit.persistent.authorizationKey"/></td>
-            <td class="formField"><input type="text" id="authorizationKey" value="${publisher.authorizationKey}"/></td>
-          </tr>
-          
-          <tr>
-            <td class="formLabelRequired"><fmt:message key="publisherEdit.persistent.xidPrefix"/></td>
-            <td class="formField"><input type="text" id="xidPrefix" value="${publisher.xidPrefix}"/></td>
-          </tr>
-          
-          <tr>
-            <td class="formLabelRequired"><fmt:message key="publisherEdit.persistent.sync"/></td>
-            <td class="formField">
-              <sst:select id="syncType" value="${publisher.syncType}">
-                <sst:option value="<%= Integer.toString(PersistentSenderVO.SYNC_TYPE_NONE) %>"><fmt:message key="publisherEdit.persistent.sync.none"/></sst:option>
-                <sst:option value="<%= Integer.toString(PersistentSenderVO.SYNC_TYPE_DAILY) %>"><fmt:message key="publisherEdit.persistent.sync.daily"/></sst:option>
-                <sst:option value="<%= Integer.toString(PersistentSenderVO.SYNC_TYPE_WEEKLY) %>"><fmt:message key="publisherEdit.persistent.sync.weekly"/></sst:option>
-                <sst:option value="<%= Integer.toString(PersistentSenderVO.SYNC_TYPE_MONTHLY) %>"><fmt:message key="publisherEdit.persistent.sync.monthly"/></sst:option>
-              </sst:select>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </td>
-  </tr>
-</table>
+import com.serotonin.json.JsonArray;
+import com.serotonin.json.JsonException;
+import com.serotonin.json.JsonObject;
+import com.serotonin.json.JsonReader;
+import com.serotonin.json.JsonRemoteProperty;
+import com.serotonin.json.JsonSerializable;
+import com.serotonin.json.JsonValue;
+import com.serotonin.mango.Common;
+import com.serotonin.mango.db.dao.PublisherDao;
+import com.serotonin.mango.rt.event.AlarmLevels;
+import com.serotonin.mango.rt.event.type.EventType;
+import com.serotonin.mango.rt.publish.PublisherRT;
+import com.serotonin.mango.util.ExportCodes;
+import com.serotonin.mango.util.LocalizableJsonException;
+import com.serotonin.mango.vo.event.EventTypeVO;
+import com.serotonin.mango.vo.publish.httpSender.HttpSenderVO;
+import com.serotonin.mango.vo.publish.pachube.PachubeSenderVO;
+import com.serotonin.mango.vo.publish.persistent.PersistentSenderVO;
+import com.serotonin.util.SerializationHelper;
+import com.serotonin.util.StringUtils;
+import com.serotonin.web.dwr.DwrResponseI18n;
+import com.serotonin.web.i18n.LocalizableMessage;
 
-<table cellpadding="0" cellspacing="0"><tr><td>
-  <div class="borderDiv">
-    <table width="100%">
-      <tr>
-        <td class="smallTitle"><fmt:message key="publisherEdit.points"/></td>
-        <td align="right">
-          <select id="availablePoints"></select>
-          <tag:img png="icon_comp_add" onclick="selectPoint()"/>
-        </td>
-      </tr>
-    </table>
-    
-    <table cellspacing="1" cellpadding="0">
-      <tr class="rowHeader">
-        <td><fmt:message key="publisherEdit.point.name"/></td>
-        <td><fmt:message key="publisherEdit.point.status"/></td>
-        <td><fmt:message key="publisherEdit.point.type"/></td>
-        <td></td>
-      </tr>
-      <tbody id="selectedPointsEmpty" style="display:none;"><tr><td colspan="5"><fmt:message key="publisherEdit.noPoints"/></td></tr></tbody>
-      <tbody id="selectedPoints"></tbody>
-    </table>
-    <div id="pointsMsg" class="formError" style="display:none;"></div>
-  </div>
-</td></tr></table>
+/**
+ * @author Matthew Lohbihler
+ */
+abstract public class PublisherVO<T extends PublishedPointVO> implements Serializable, JsonSerializable {
+    public enum Type {
+        HTTP_SENDER(1, "publisherEdit.httpSender") {
+            @Override
+            public PublisherVO<?> createPublisherVO() {
+                return new HttpSenderVO();
+            }
+        },
+        PACHUBE(2, "publisherEdit.pachube") {
+            @Override
+            public PublisherVO<?> createPublisherVO() {
+                return new PachubeSenderVO();
+            }
+        },
+        PERSISTENT(3, "publisherEdit.persistent") {
+            @Override
+            public PublisherVO<?> createPublisherVO() {
+                return new PersistentSenderVO();
+            }
+        };
+
+        private Type(int id, String key) {
+            this.id = id;
+            this.key = key;
+        }
+
+        private final int id;
+        private final String key;
+
+        public int getId() {
+            return id;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public abstract PublisherVO<?> createPublisherVO();
+
+        public static Type valueOf(int id) {
+            for (Type type : values()) {
+                if (type.id == id)
+                    return type;
+            }
+            return null;
+        }
+
+        public static Type valueOfIgnoreCase(String text) {
+            for (Type type : values()) {
+                if (type.name().equalsIgnoreCase(text))
+                    return type;
+            }
+            return null;
+        }
+
+        public static List<String> getTypeList() {
+            List<String> result = new ArrayList<String>();
+            for (Type type : values())
+                result.add(type.name());
+            return result;
+        }
+    }
+
+    public static final String XID_PREFIX = "PUB_";
+
+    public static PublisherVO<? extends PublishedPointVO> createPublisherVO(int typeId) {
+        return Type.valueOf(typeId).createPublisherVO();
+    }
+
+    abstract public Type getType();
+
+    abstract public LocalizableMessage getConfigDescription();
+
+    abstract public PublisherRT<T> createPublisherRT();
+
+    public LocalizableMessage getTypeMessage() {
+        return new LocalizableMessage(getType().getKey());
+    }
+
+    public List<EventTypeVO> getEventTypes() {
+        List<EventTypeVO> eventTypes = new ArrayList<EventTypeVO>();
+        eventTypes.add(new EventTypeVO(EventType.EventSources.PUBLISHER, getId(), PublisherRT.POINT_DISABLED_EVENT,
+                new LocalizableMessage("event.pb.pointMissing"), AlarmLevels.URGENT));
+        eventTypes.add(new EventTypeVO(EventType.EventSources.PUBLISHER, getId(), PublisherRT.QUEUE_SIZE_WARNING_EVENT,
+                new LocalizableMessage("event.pb.queueSize"), AlarmLevels.URGENT));
+
+        getEventTypesImpl(eventTypes);
+
+        return eventTypes;
+    }
+
+    protected static void addDefaultEventCodes(ExportCodes codes) {
+        codes.addElement(PublisherRT.POINT_DISABLED_EVENT, "POINT_DISABLED_EVENT");
+        codes.addElement(PublisherRT.QUEUE_SIZE_WARNING_EVENT, "QUEUE_SIZE_WARNING_EVENT");
+    }
+
+    abstract public ExportCodes getEventCodes();
+
+    abstract protected void getEventTypesImpl(List<EventTypeVO> eventTypes);
+
+    abstract protected T createPublishedPointInstance();
+
+    public boolean isNew() {
+        return id == Common.NEW_ID;
+    }
+
+    private int id = Common.NEW_ID;
+    private String xid;
+    @JsonRemoteProperty
+    private String name;
+    @JsonRemoteProperty
+    private boolean enabled;
+    protected List<T> points = new ArrayList<T>();
+    @JsonRemoteProperty
+    private boolean changesOnly;
+    @JsonRemoteProperty
+    private int cacheWarningSize = 100;
+    @JsonRemoteProperty
+    private boolean sendSnapshot;
+    private int snapshotSendPeriodType = Common.TimePeriods.MINUTES;
+    @JsonRemoteProperty
+    private int snapshotSendPeriods = 5;
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getXid() {
+        return xid;
+    }
+
+    public void setXid(String xid) {
+        this.xid = xid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<T> getPoints() {
+        return points;
+    }
+
+    public void setPoints(List<T> points) {
+        this.points = points;
+    }
+
+    public boolean isChangesOnly() {
+        return changesOnly;
+    }
+
+    public void setChangesOnly(boolean changesOnly) {
+        this.changesOnly = changesOnly;
+    }
+
+    public int getCacheWarningSize() {
+        return cacheWarningSize;
+    }
+
+    public void setCacheWarningSize(int cacheWarningSize) {
+        this.cacheWarningSize = cacheWarningSize;
+    }
+
+    public boolean isSendSnapshot() {
+        return sendSnapshot;
+    }
+
+    public void setSendSnapshot(boolean sendSnapshot) {
+        this.sendSnapshot = sendSnapshot;
+    }
+
+    public int getSnapshotSendPeriodType() {
+        return snapshotSendPeriodType;
+    }
+
+    public void setSnapshotSendPeriodType(int snapshotSendPeriodType) {
+        this.snapshotSendPeriodType = snapshotSendPeriodType;
+    }
+
+    public int getSnapshotSendPeriods() {
+        return snapshotSendPeriods;
+    }
+
+    public void setSnapshotSendPeriods(int snapshotSendPeriods) {
+        this.snapshotSendPeriods = snapshotSendPeriods;
+    }
+
+    public void validate(DwrResponseI18n response) {
+        if (StringUtils.isEmpty(name))
+            response.addContextualMessage("name", "validate.required");
+        if (StringUtils.isLengthGreaterThan(name, 40))
+            response.addContextualMessage("name", "validate.nameTooLong");
+
+        if (StringUtils.isEmpty(xid))
+            response.addContextualMessage("xid", "validate.required");
+        else if (!new PublisherDao().isXidUnique(xid, id))
+            response.addContextualMessage("xid", "validate.xidUsed");
+        else if (StringUtils.isLengthGreaterThan(xid, 50))
+            response.addContextualMessage("xid", "validate.notLongerThan", 50);
+
+        if (sendSnapshot) {
+            if (snapshotSendPeriods <= 0)
+                response.addContextualMessage("snapshotSendPeriods", "validate.greaterThanZero");
+        }
+
+        if (cacheWarningSize < 1)
+            response.addContextualMessage("cacheWarningSize", "validate.greaterThanZero");
+
+    }
+
+    //
+    // /
+    // / Serialization
+    // /
+    //
+    private static final long serialVersionUID = -1;
+    private static final int version = 2;
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.writeInt(version);
+        SerializationHelper.writeSafeUTF(out, name);
+        out.writeBoolean(enabled);
+        out.writeObject(points);
+        out.writeBoolean(changesOnly);
+        out.writeInt(cacheWarningSize);
+        out.writeBoolean(sendSnapshot);
+        out.writeInt(snapshotSendPeriodType);
+        out.writeInt(snapshotSendPeriods);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        int ver = in.readInt();
+
+        // Switch on the version of the class so that version changes can be elegantly handled.
+        if (ver == 1) {
+            name = SerializationHelper.readSafeUTF(in);
+            enabled = in.readBoolean();
+            points = (List<T>) in.readObject();
+            changesOnly = in.readBoolean();
+            cacheWarningSize = in.readInt();
+            sendSnapshot = false;
+            snapshotSendPeriodType = Common.TimePeriods.MINUTES;
+            snapshotSendPeriods = 5;
+        }
+        else if (ver == 2) {
+            name = SerializationHelper.readSafeUTF(in);
+            enabled = in.readBoolean();
+            points = (List<T>) in.readObject();
+            changesOnly = in.readBoolean();
+            cacheWarningSize = in.readInt();
+            sendSnapshot = in.readBoolean();
+            snapshotSendPeriodType = in.readInt();
+            snapshotSendPeriods = in.readInt();
+        }
+    }
+
+    public void jsonSerialize(Map<String, Object> map) {
+        map.put("xid", xid);
+        map.put("type", getType().name());
+        map.put("points", points);
+        map.put("snapshotSendPeriodType", Common.TIME_PERIOD_CODES.getCode(snapshotSendPeriodType));
+    }
+
+    public void jsonDeserialize(JsonReader reader, JsonObject json) throws JsonException, LocalizableJsonException {
+        JsonArray arr = json.getJsonArray("points");
+        if (arr != null) {
+            points.clear();
+            for (JsonValue jv : arr.getElements()) {
+                T point = createPublishedPointInstance();
+                reader.populateObject(point, jv.toJsonObject());
+                points.add(point);
+            }
+        }
+
+        String text = json.getString("snapshotSendPeriodType");
+        if (text != null) {
+            snapshotSendPeriodType = Common.TIME_PERIOD_CODES.getId(text);
+            if (snapshotSendPeriodType == -1)
+                throw new LocalizableJsonException("emport.error.invalid", "snapshotSendPeriodType", text,
+                        Common.TIME_PERIOD_CODES.getCodeList());
+        }
+    }
+}

@@ -1,1 +1,1 @@
-¥$ 2jspXŒhr+war/WEB-INF/jsp/dataSourceEdit/editMeta.jsp
+¥$ 2javaXwhrLsrc/com/serotonin/mango/vo/dataSource/spinwave/SpinwaveV1PointLocatorVO.java

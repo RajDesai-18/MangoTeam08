@@ -1,1 +1,1 @@
-œ 2javaXwhr@src/com/serotonin/mango/vo/dataSource/meta/MetaDataSourceVO.java
+œ 2webX.hr2build/resources/dojo/tests/i18n/test_strings3.html

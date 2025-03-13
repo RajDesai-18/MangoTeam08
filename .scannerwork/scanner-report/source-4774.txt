@@ -1,4 +1,4 @@
-<%--
+/*
     Mango - Open Source M2M - http://mango.serotoninsoftware.com
     Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
     @author Matthew Lohbihler
@@ -14,164 +14,204 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see http://www.gnu.org/licenses/.
---%><%@ include file="/WEB-INF/jsp/include/tech.jsp" %>
-<c:if test="${!empty events || !noContentWhenEmpty}">
-  <c:if test="${displayPagination}">
-    <div style="padding:3px; float:left;">
-      <c:choose>
-        <c:when test="${page == 0}">1</c:when>
-        <c:otherwise><a href="#" onclick="doSearch(0);return false;">1</a></c:otherwise>
-      </c:choose>
-      <c:if test="${leftEllipsis}">...</c:if>
-      <c:forEach begin="${linkFrom}" end="${linkTo}" var="i">
-        <c:choose>
-          <c:when test="${i-1 == page}">${i}</c:when>
-          <c:otherwise><a href="#" onclick="doSearch(${i-1});return false;">${i}</a></c:otherwise>
-        </c:choose>
-      </c:forEach>
-      <c:if test="${rightEllipsis}">...</c:if>
-      <c:choose>
-        <c:when test="${page == numberOfPages-1}">${numberOfPages}</c:when>
-        <c:otherwise><a href="#" onclick="doSearch(${numberOfPages-1});return false;">${numberOfPages}</a></c:otherwise>
-      </c:choose>
-      
-      <c:choose>
-        <c:when test="${page <= 0}">&lt;</c:when>
-        <c:otherwise><a href="#" onclick="doSearch(${page-1});return false;">&lt;</a></c:otherwise>
-      </c:choose>
-      <c:choose>
-        <c:when test="${page + 1 >= numberOfPages}">&gt;</c:when>
-        <c:otherwise><a href="#" onclick="doSearch(${page+1});return false;">&gt;</a></c:otherwise>
-      </c:choose>
-    </div>
-  </c:if>
-  <c:if test="${!empty events && !pendingEvents}">
-    <div style="padding:3px; float:left;">
-      <c:if test="${displayPagination}">|</c:if>
-      <a href="#" onclick="jumpToDate(this);return false;"><fmt:message key="events.jumpToDate"/></a>
-      | <fmt:message key="events.listed"><fmt:param value="${fn:length(events)}"/></fmt:message>
-    </div>
-  </c:if>
-  <div style="clear:both;"></div>
-  
-  <table cellspacing="1" cellpadding="0" border="0">
-    <tr class="rowHeader">
-      <td><fmt:message key="events.id"/></td>
-      <td><fmt:message key="common.alarmLevel"/></td>
-      <td><fmt:message key="common.time"/></td>
-      <td><fmt:message key="events.msg"/></td>
-      <td><fmt:message key="common.inactiveTime"/></td>
-      <c:if test="${!pendingEvents}"><td><fmt:message key="events.acknowledged"/></td></c:if>
-      <td></td>
-    </tr>
-    <c:if test="${empty events}"><tr><td colspan="6"><b><fmt:message key="events.emptyList"/></b></td></tr></c:if>
-    <c:forEach items="${events}" var="event" varStatus="status">
-      <tr class="row<c:if test="${status.index % 2 == 1}">Alt</c:if>">
-        <td align="center">${event.id}</td>
-        <td align="center"><tag:eventIcon event="${event}"/></td>
-        <td>${sst:time(event.activeTimestamp)}</td>
-        <td>
-          <table cellspacing="0" cellpadding="0" width="100%">
-            <tr>
-              <td colspan="2"><b><sst:i18n message="${event.message}"/></b></td>
-              <td align="right">
-                <tag:img png="comment_add" title="notes.addNote"
-                        onclick="openCommentDialog(${applicationScope['constants.UserComment.TYPE_EVENT']}, ${event.id})"/>
-              </td>
-            </tr>
-            <tbody id="eventComments${event.id}"><tag:comments comments="${event.eventComments}"/></tbody>
-          </table>
-        </td>
-        <td>
-          <c:choose>
-            <c:when test="${event.active}">
-              <fmt:message key="common.active"/>
-              <a href="events.shtm"><tag:img png="flag_white" title="common.active"/></a>
-            </c:when>
-            <c:when test="${!event.rtnApplicable}"><fmt:message key="common.nortn"/></c:when>
-            <c:otherwise>
-              ${sst:time(event.rtnTimestamp)} - <sst:i18n message="${event.rtnMessage}"/>
-            </c:otherwise>
-          </c:choose>
-        </td>
-        <c:if test="${!pendingEvents}">
-          <td>
-            <c:if test="${event.acknowledged}">
-              ${sst:time(event.acknowledgedTimestamp)}
-              <sst:i18n message="${event.ackMessage}"/>
-            </c:if>
-          </td>
-        </c:if>
-        <td style="white-space:nowrap;">
-          <c:if test="${pendingEvents}">
-            <tag:alarmAck event="${event}"/>
-          </c:if>
-          <c:choose>
-            <c:when test="${event.eventType.eventSourceId == applicationScope['constants.EventType.EventSources.DATA_POINT']}">
-              <a href="data_point_details.shtm?dpid=${event.eventType.dataPointId}"><tag:img png="icon_comp" title="events.pointDetails"/></a>
-            </c:when>
-            <c:when test="${event.eventType.eventSourceId == applicationScope['constants.EventType.EventSources.DATA_SOURCE']}">
-              <a href="data_source_edit.shtm?dsid=${event.eventType.dataSourceId}"><tag:img png="icon_ds_edit" title="events.editDataSource"/></a>
-            </c:when>
-            <c:when test="${event.eventType.eventSourceId == applicationScope['constants.EventType.EventSources.SYSTEM']}">
-              <c:choose>
-                <c:when test="${event.eventType.systemEventTypeId == applicationScope['constants.SystemEventType.TYPE_VERSION_CHECK']}">
-                  <a href="http://mango.serotoninsoftware.com/download.jsp" target="_blank"><tag:img png="bullet_down" title="events.downloadMango"/></a>
-                </c:when>
-                <c:when test="${event.eventType.systemEventTypeId == applicationScope['constants.SystemEventType.TYPE_COMPOUND_DETECTOR_FAILURE']}">
-                  <a href="compound_events.shtm?cedid=${event.eventType.referenceId2}"><tag:img png="multi_bell" title="events.editCompound"/></a>
-                </c:when>
-                <c:when test="${event.eventType.systemEventTypeId == applicationScope['constants.SystemEventType.TYPE_SET_POINT_HANDLER_FAILURE']}">
-                  <a href="event_handlers.shtm?ehid=${event.eventType.referenceId2}"><tag:img png="cog" title="events.editEventHandler"/></a>
-                </c:when>
-                <c:when test="${event.eventType.systemEventTypeId == applicationScope['constants.SystemEventType.TYPE_POINT_LINK_FAILURE']}">
-                  <a href="point_links.shtm?plid=${event.eventType.referenceId2}"><tag:img png="link" title="events.editPointLink"/></a>
-                </c:when>
-              </c:choose>
-            </c:when>
-            <c:when test="${event.eventType.eventSourceId == applicationScope['constants.EventType.EventSources.COMPOUND']}">
-              <a href="compound_events.shtm?cedid=${event.eventType.compoundEventDetectorId}"><tag:img png="multi_bell" title="events.editCompound"/></a>
-            </c:when>
-            <c:when test="${event.eventType.eventSourceId == applicationScope['constants.EventType.EventSources.SCHEDULED']}">
-              <a href="scheduled_events.shtm?seid=${event.eventType.scheduleId}"><tag:img png="clock" title="events.editScheduledEvent"/></a>
-            </c:when>
-            <c:when test="${event.eventType.eventSourceId == applicationScope['constants.EventType.EventSources.PUBLISHER']}">
-              <a href="publisher_edit.shtm?pid=${event.eventType.publisherId}"><tag:img png="transmit_edit" title="events.editPublisher"/></a>
-            </c:when>
-            <c:when test="${event.eventType.eventSourceId == applicationScope['constants.EventType.EventSources.AUDIT']}">
-              <c:choose>
-                <c:when test="${event.eventType.auditEventTypeId == applicationScope['constants.AuditEventType.TYPE_DATA_SOURCE']}">
-                  <a href="data_source_edit.shtm?dsid=${event.eventType.referenceId2}"><tag:img png="icon_ds_edit" title="events.editDataSource"/></a>
-                </c:when>
-                <c:when test="${event.eventType.auditEventTypeId == applicationScope['constants.AuditEventType.TYPE_DATA_POINT']}">
-                  <a href="data_point_edit.shtm?dpid=${event.eventType.referenceId2}"><tag:img png="icon_comp_edit" title="events.pointEdit"/></a>
-                  <a href="data_source_edit.shtm?pid=${event.eventType.referenceId2}"><tag:img png="icon_ds_edit" title="events.editDataSource"/></a>
-                </c:when>
-                <c:when test="${event.eventType.auditEventTypeId == applicationScope['constants.AuditEventType.TYPE_POINT_EVENT_DETECTOR']}">
-                  <a href="data_point_edit.shtm?pedid=${event.eventType.referenceId2}"><tag:img png="icon_comp_edit" title="events.pointEdit"/></a>
-                </c:when>
-                <c:when test="${event.eventType.auditEventTypeId == applicationScope['constants.AuditEventType.TYPE_COMPOUND_EVENT_DETECTOR']}">
-                  <a href="compound_events.shtm?cedid=${event.eventType.referenceId2}"><tag:img png="multi_bell" title="events.editCompound"/></a>
-                </c:when>
-                <c:when test="${event.eventType.auditEventTypeId == applicationScope['constants.AuditEventType.TYPE_SCHEDULED_EVENT']}">
-                  <a href="scheduled_events.shtm?seid=${event.eventType.referenceId2}"><tag:img png="clock" title="events.editScheduledEvent"/></a>
-                </c:when>
-                <c:when test="${event.eventType.auditEventTypeId == applicationScope['constants.AuditEventType.TYPE_EVENT_HANDLER']}">
-                  <a href="event_handlers.shtm?ehid=${event.eventType.referenceId2}"><tag:img png="cog" title="events.editEventHandler"/></a>
-                </c:when>
-                <c:when test="${event.eventType.auditEventTypeId == applicationScope['constants.AuditEventType.TYPE_POINT_LINK']}">
-                  <a href="point_links.shtm?plid=${event.eventType.referenceId2}"><tag:img png="link" title="events.editPointLink"/></a>
-                </c:when>
-              </c:choose>
-            </c:when>
-            <c:when test="${event.eventType.eventSourceId == applicationScope['constants.EventType.EventSources.MAINTENANCE']}">
-              <a href="maintenance_events.shtm?meid=${event.eventType.maintenanceId}"><tag:img png="hammer" title="events.editMaintenanceEvent"/></a>
-            </c:when>
-            <c:otherwise>(unknown event source id ${event.eventType.eventSourceId})</c:otherwise>
-          </c:choose>
-        </td>
-      </tr>
-    </c:forEach>
-  </table>
-</c:if>
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.web.dwr;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.directwebremoting.WebContextFactory;
+
+import com.serotonin.mango.Common;
+import com.serotonin.mango.db.dao.DataPointDao;
+import com.serotonin.mango.db.dao.DataSourceDao;
+import com.serotonin.mango.db.dao.UserDao;
+import com.serotonin.mango.rt.maint.work.EmailWorkItem;
+import com.serotonin.mango.vo.DataPointNameComparator;
+import com.serotonin.mango.vo.DataPointVO;
+import com.serotonin.mango.vo.User;
+import com.serotonin.mango.vo.dataSource.DataSourceVO;
+import com.serotonin.mango.vo.permission.DataPointAccess;
+import com.serotonin.mango.vo.permission.PermissionException;
+import com.serotonin.mango.vo.permission.Permissions;
+import com.serotonin.mango.web.email.MangoEmailContent;
+import com.serotonin.util.StringUtils;
+import com.serotonin.web.dwr.DwrResponseI18n;
+import com.serotonin.web.i18n.I18NUtils;
+import com.serotonin.web.i18n.LocalizableMessage;
+
+public class UsersDwr extends BaseDwr {
+    public Map<String, Object> getInitData() {
+        Map<String, Object> initData = new HashMap<String, Object>();
+
+        User user = Common.getUser();
+        if (Permissions.hasAdmin(user)) {
+            // Users
+            initData.put("admin", true);
+            initData.put("users", new UserDao().getUsers());
+
+            // Data sources
+            List<DataSourceVO<?>> dataSourceVOs = new DataSourceDao().getDataSources();
+            List<Map<String, Object>> dataSources = new ArrayList<Map<String, Object>>(dataSourceVOs.size());
+            Map<String, Object> ds, dp;
+            List<Map<String, Object>> points;
+            DataPointDao dataPointDao = new DataPointDao();
+            for (DataSourceVO<?> dsvo : dataSourceVOs) {
+                ds = new HashMap<String, Object>();
+                ds.put("id", dsvo.getId());
+                ds.put("name", dsvo.getName());
+                points = new LinkedList<Map<String, Object>>();
+                for (DataPointVO dpvo : dataPointDao.getDataPoints(dsvo.getId(), DataPointNameComparator.instance)) {
+                    dp = new HashMap<String, Object>();
+                    dp.put("id", dpvo.getId());
+                    dp.put("name", dpvo.getName());
+                    dp.put("settable", dpvo.getPointLocator().isSettable());
+                    points.add(dp);
+                }
+                ds.put("points", points);
+                dataSources.add(ds);
+            }
+            initData.put("dataSources", dataSources);
+        } else
+            initData.put("user", user);
+
+        return initData;
+    }
+
+    public User getUser(int id) {
+        Permissions.ensureAdmin();
+        if (id == Common.NEW_ID) {
+            User user = new User();
+            user.setDataSourcePermissions(new ArrayList<Integer>(0));
+            user.setDataPointPermissions(new ArrayList<DataPointAccess>(0));
+            return user;
+        }
+        return new UserDao().getUser(id);
+    }
+
+    public DwrResponseI18n saveUserAdmin(int id, String username, String password, String email, String phone,
+            boolean admin, boolean disabled, int receiveAlarmEmails, boolean receiveOwnAuditEvents,
+            List<Integer> dataSourcePermissions, List<DataPointAccess> dataPointPermissions) {
+        Permissions.ensureAdmin();
+
+        // Validate the given information. If there is a problem, return an appropriate
+        // error message.
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        User currentUser = Common.getUser(request);
+        UserDao userDao = new UserDao();
+
+        User user;
+        if (id == Common.NEW_ID)
+            user = new User();
+        else
+            user = userDao.getUser(id);
+        user.setUsername(username);
+        if (!StringUtils.isEmpty(password))
+            user.setPassword(Common.encrypt(password));
+        user.setEmail(email);
+        user.setPhone(phone);
+        user.setAdmin(admin);
+        user.setDisabled(disabled);
+        user.setReceiveAlarmEmails(receiveAlarmEmails);
+        user.setReceiveOwnAuditEvents(receiveOwnAuditEvents);
+        user.setDataSourcePermissions(dataSourcePermissions);
+        user.setDataPointPermissions(dataPointPermissions);
+
+        DwrResponseI18n response = new DwrResponseI18n();
+        user.validate(response);
+
+        // Check if the username is unique.
+        User dupUser = userDao.getUser(username);
+        if (id == Common.NEW_ID && dupUser != null)
+            response.addMessage(new LocalizableMessage("users.validate.usernameUnique"));
+        else if (dupUser != null && id != dupUser.getId())
+            response.addMessage(new LocalizableMessage("users.validate.usernameInUse"));
+
+        // Cannot make yourself disabled or not admin
+        if (currentUser.getId() == id) {
+            if (!admin)
+                response.addMessage(new LocalizableMessage("users.validate.adminInvalid"));
+            if (disabled)
+                response.addMessage(new LocalizableMessage("users.validate.adminDisable"));
+        }
+
+        if (!response.getHasMessages()) {
+            userDao.saveUser(user);
+
+            if (currentUser.getId() == id)
+                // Update the user object in session too. Why not?
+                Common.setUser(request, user);
+
+            response.addData("userId", user.getId());
+        }
+
+        return response;
+    }
+
+    public DwrResponseI18n saveUser(int id, String password, String email, String phone, int receiveAlarmEmails,
+            boolean receiveOwnAuditEvents) {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        User user = Common.getUser(request);
+        if (user.getId() != id)
+            throw new PermissionException("Cannot update a different user", user);
+
+        UserDao userDao = new UserDao();
+        User updateUser = userDao.getUser(id);
+        if (!StringUtils.isEmpty(password))
+            updateUser.setPassword(Common.encrypt(password));
+        updateUser.setEmail(email);
+        updateUser.setPhone(phone);
+        updateUser.setReceiveAlarmEmails(receiveAlarmEmails);
+        updateUser.setReceiveOwnAuditEvents(receiveOwnAuditEvents);
+
+        DwrResponseI18n response = new DwrResponseI18n();
+        updateUser.validate(response);
+
+        if (!response.getHasMessages()) {
+            userDao.saveUser(user);
+
+            // Update the user object in session too. Why not?
+            Common.setUser(request, updateUser);
+        }
+
+        return response;
+    }
+
+    public Map<String, Object> sendTestEmail(String email, String username) {
+        Permissions.ensureAdmin();
+        Map<String, Object> result = new HashMap<String, Object>();
+        try {
+            ResourceBundle bundle = Common.getBundle();
+            Map<String, Object> model = new HashMap<String, Object>();
+            model.put("message", new LocalizableMessage("ftl.userTestEmail", username));
+            MangoEmailContent cnt = new MangoEmailContent("testEmail", model, bundle, I18NUtils.getMessage(bundle,
+                    "ftl.testEmail"), Common.UTF8);
+            EmailWorkItem.queueEmail(email, cnt);
+            result.put("message", new LocalizableMessage("common.testEmailSent", email));
+        } catch (Exception e) {
+            result.put("exception", e.getMessage());
+        }
+        return result;
+    }
+
+    public DwrResponseI18n deleteUser(int id) {
+        Permissions.ensureAdmin();
+        DwrResponseI18n response = new DwrResponseI18n();
+        User currentUser = Common.getUser();
+
+        if (currentUser.getId() == id)
+            // You can't delete yourself.
+            response.addMessage(new LocalizableMessage("users.validate.badDelete"));
+        else
+            new UserDao().deleteUser(id);
+
+        return response;
+    }
+}

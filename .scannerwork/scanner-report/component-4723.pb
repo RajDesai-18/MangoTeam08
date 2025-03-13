@@ -1,0 +1,1 @@
+ó$ 2javaXQhr8src/com/serotonin/mango/web/dwr/beans/DataPointBean.java

@@ -1,1 +1,1 @@
-Ù 2jsXhr3war/resources/dojo/tests/i18n/nls/pl/salutations.js
+Ù 2jspXžhr$build/WEB-INF/jsp/systemSettings.jsp

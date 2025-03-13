@@ -1,66 +1,56 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-
-<script type="text/javascript">
-    var djConfig = {isDebug: true, debugAtAllCosts: true };
-</script>
-<script type="text/javascript" src="../../../dojo.js"></script>
-<script type="text/javascript">
-
-    dojo.require("dojo.widget.*");
-    dojo.require("dojo.widget.TreeV3");
-    dojo.require("dojo.widget.TreeNodeV3");
-    dojo.require("dojo.widget.TreeEditor");
-    dojo.require("dojo.widget.TreeBasicControllerV3");
-    dojo.require("dojo.widget.TreeContextMenuV3");
-    dojo.require("dojo.widget.TreeDemo");
-    dojo.hostenv.writeIncludes();
-
-
-
-    dojo.addOnLoad(function() {
-        dojo.addOnLoad(function() { dojo.widget.TreeDemo.bindDemoMenu(dojo.widget.byId("treeController")) });
-    });
-
-</script>
-
-
-</head>
-<body>
-
-<h2>A basic markup tree with menu,controller and multiline content</h2>
-
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
     
-<div dojoType="TreeEditor" widgetId="editor"></div>
-<div dojoType="TreeBasicControllerV3" widgetId="treeController" editor="editor"></div>  
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<div dojoType="TreeContextMenuV3" toggle="explode" contextMenuForWindow="false" widgetId="contextMenu">
-    <div dojoType="TreeMenuItemV3" treeActions="addChild" iconSrc="../images/createsmall.gif" widgetId="treeContextMenuCreate" caption="Create"></div>
-    <div dojoType="TreeMenuItemV3" treeActions="remove" iconSrc="../images/removesmall.gif" caption="Remove" widgetId="treeContextMenuDestroy"></div>
-    <div dojoType="TreeMenuItemV3" treeActions="move" iconSrc="../images/downsmall.png" caption="Up" widgetId="treeContextMenuUp"></div>
-    <div dojoType="TreeMenuItemV3" treeActions="move" iconSrc="../images/upsmall.png" caption="Down" widgetId="treeContextMenuDown"></div>
-    <div dojoType="TreeMenuItemV3" treeActions="edit" caption="Edit" widgetId="treeContextMenuEdit"></div>
-</div>
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataSource.modbus;
 
-<div dojoType="TreeV3" listeners="treeController;contextMenu">
-    <div dojoType="TreeNodeV3" title="Item 1" widgetId="Item 1">
-        <div dojoType="TreeNodeV3" title="Item 1.1" widgetId="Item 1.1"></div>
-        <div dojoType="TreeNodeV3" title="Item 1.2" widgetId="Item 1.2"></div>
-    </div>
+import com.serotonin.mango.vo.dataSource.modbus.ModbusIpDataSourceVO;
+import com.serotonin.mango.vo.dataSource.modbus.ModbusIpDataSourceVO.TransportType;
+import com.serotonin.modbus4j.ModbusFactory;
+import com.serotonin.modbus4j.ModbusMaster;
+import com.serotonin.modbus4j.ip.IpParameters;
 
-    <div dojoType="TreeNodeV3" title="Item 2<br/>title long yeah" widgetId="Item 2">
-        <div dojoType="TreeNodeV3" title="Item 2.1" widgetId="Item 2.1"></div>
-    </div>
+public class ModbusIpDataSource extends ModbusDataSource {
+    private final ModbusIpDataSourceVO configuration;
 
-    <div dojoType="TreeNodeV3" title="Item 3" isFolder="true" widgetId="Item 3"></div>
-    <div dojoType="TreeNodeV3" title="Item 4" widgetId="Item 4"></div>
-</div>
+    public ModbusIpDataSource(ModbusIpDataSourceVO configuration) {
+        super(configuration);
+        this.configuration = configuration;
+    }
 
+    //
+    //
+    // Lifecycle
+    //
+    //
+    @Override
+    public void initialize() {
+        IpParameters params = new IpParameters();
+        params.setHost(configuration.getHost());
+        params.setPort(configuration.getPort());
+        params.setEncapsulated(configuration.isEncapsulated());
 
+        ModbusMaster modbusMaster;
+        if (configuration.getTransportType() == TransportType.UDP)
+            modbusMaster = new ModbusFactory().createUdpMaster(params);
+        else
+            modbusMaster = new ModbusFactory().createTcpMaster(params,
+                    configuration.getTransportType() == TransportType.TCP_KEEP_ALIVE);
 
-
-</body>
-</html>
+        super.initialize(modbusMaster);
+    }
+}

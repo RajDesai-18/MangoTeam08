@@ -1,33 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-	<head>
-		<title>Dojo: Testing the scope of svg functions</title>
-	</head>
-	<body>
-		<iframe src="test_svgScope.svg" id="svgWindow">
-		</iframe>
-		<script type="text/javascript">
-		<!--
-			function scopeTest(svgDoc,svgDocTest) {
-				svgDoc = svgDoc;
-				if(svgDoc.test){
-					svgDoc.test("html");
-				}
-				if(window.frames[0].test){
-					window.frames[0].test("html (through frames reference)");
-				}
-				if(svgDocTest){
-					svgDocTest("html (reference passed though)");
-				}
-				test("html");
-			}
-			
-			function test(sourceDocumentType){
-				alert("found html test function scope correctly from a(n) " + sourceDocumentType + " document");
-			}
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-		// -->
-		</script>
-	</body>
-</html>
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataSource.sql;
+
+import com.serotonin.mango.rt.dataSource.PointLocatorRT;
+import com.serotonin.mango.vo.dataSource.sql.SqlPointLocatorVO;
+
+/**
+ * @author Matthew Lohbihler
+ */
+public class SqlPointLocatorRT extends PointLocatorRT {
+    private final SqlPointLocatorVO vo;
+
+    public SqlPointLocatorRT(SqlPointLocatorVO vo) {
+        this.vo = vo;
+    }
+
+    @Override
+    public boolean isSettable() {
+        return vo.isSettable();
+    }
+
+    public SqlPointLocatorVO getVO() {
+        return vo;
+    }
+}

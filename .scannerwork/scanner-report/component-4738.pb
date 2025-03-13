@@ -1,0 +1,1 @@
+‚% 2javaXAhr@src/com/serotonin/mango/web/dwr/beans/MBusResponseFrameBean.java

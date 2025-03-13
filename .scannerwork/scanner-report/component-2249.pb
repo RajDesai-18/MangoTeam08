@@ -1,1 +1,1 @@
-É 2javaXMhr3src/com/serotonin/mango/view/custom/CustomView.java
+É 2webXwhr7build/resources/dojo/tests/dnd/test_dragdropparent.html

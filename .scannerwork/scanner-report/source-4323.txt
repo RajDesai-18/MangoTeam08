@@ -1,110 +1,53 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-<title>Dojo Tree Widget Test</title>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<script type="text/javascript">
-	var djConfig = {isDebug: true, debugAtAllCosts: true };
-</script>
-<script type="text/javascript" src="../../../dojo.js"></script>
-<script type="text/javascript">
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-	dojo.require("dojo.widget.*");
-	dojo.require("dojo.widget.TreeV3");
-	dojo.require("dojo.widget.TreeBasicControllerV3");
-	dojo.hostenv.writeIncludes();
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataSource.galil;
 
+import com.serotonin.messaging.IncomingMessage;
+import com.serotonin.messaging.MessageParser;
+import com.serotonin.util.queue.ByteQueue;
 
-	dojo.addOnLoad(function() {
+/**
+ * @author Matthew Lohbihler
+ */
+public class GalilMessageParser implements MessageParser {
+    private static final byte[] MESSAGE_END = ":".getBytes(GalilDataSourceRT.CHARSET);
+    private static final byte[] ERROR_RESPONSE = "?".getBytes(GalilDataSourceRT.CHARSET);
 
-		// Hook before dojo.event.publish to print all events
-		var reporter = {
-			beforePublish: function(topic, message) {
-				dojo.debug("Going to publish:"+topic);
-			},
+    public IncomingMessage parseMessage(ByteQueue queue) {
+        int end = queue.indexOf(MESSAGE_END);
 
-			beforeSubscribe: function(topic, message) {
-				dojo.debug("Going to subscribe:"+topic);
-			}
-		}
+        if (end == -1) {
+            end = queue.indexOf(ERROR_RESPONSE);
+            if (end == -1)
+                return null;
 
-		dojo.event.kwConnect({
-			type: "before",
-			srcObj: dojo.event.topic,
-			srcFunc: "publish",
-			targetObj: reporter,
-			targetFunc: "beforePublish"
-		});
-
-
-		dojo.event.kwConnect({
-			type: "before",
-			srcObj: dojo.event.topic.TopicImpl,
-			srcFunc: "subscribe",
-			targetObj: reporter,
-			targetFunc: "report"
-		});
-
-	});
-
-
-	function kill(id) {
-		dojo.debug("RUN DESTROY...");
-		var widget = dojo.widget.byId(id);
-        if (widget.isTreeNode) {
-            var controller = dojo.widget.byId('controller');
-            if (!controller) {
-                dojo.debug("No controller to destroy");
-                return;
-            }
-            controller.destroyChild(widget);
-        } else {
-            widget.destroy();
+            queue.pop(end + ERROR_RESPONSE.length);
+            return new GalilResponse();
         }
-		dojo.debug("...DONE DESTROY");
-	}
 
-	function print() {
-		dojo.debug('---');
-		dojo.debug("Dumping all widgets:");
-		dojo.lang.forEach(dojo.widget.manager.getAllWidgets(),
-			function(t) { dojo.debug(t) }
-		);
-		dojo.debug('---');
-	}
+        // Pop off the message
+        byte[] data = new byte[end];
+        queue.pop(data);
 
-	function test(id) {
-		print();
-		kill(id);
-		print();
-	}
+        // Pop off the end indicator
+        queue.pop(MESSAGE_END.length);
 
-
-</script>
-
-</head>
-<body>
-
-<h2>Destroy Tree</h2>
-
-<div dojoType="TreeBasicControllerV3" id="controller"></div>
-
-
-<div dojoType="TreeV3" id="tree" listeners="controller">
-	<div dojoType="TreeNodeV3" title="Item 1" id="node1">
-		<div dojoType="TreeNodeV3" title="Item 1.1" ></div>
-	</div>
-	<div dojoType="TreeNodeV3" title="Item 2" ></div>
-</div>
-
-<p>
-<input type=button onClick="test('node1'); this.parentNode.removeChild(this)" value="Destroy firstNode"/>
-<br/>
-<input type=button onClick="test('tree'); this.parentNode.removeChild(this)" value="Destroy tree"/>
-<br/>
-<input type=button onClick="test('controller'); this.parentNode.removeChild(this)" value="Destroy controller"/>
-<br/>
-
-</body>
-</html>
+        return new GalilResponse(data);
+    }
+}

@@ -1,0 +1,1 @@
+á 2xmlX/hr,build/resources/dojo/tests/xml/full-page.xsl

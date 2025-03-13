@@ -1,1 +1,1 @@
-Î 2javaX&hr.src/com/serotonin/mango/view/DynamicImage.java
+Î 2webX:hr<build/resources/dojo/tests/dnd/test_nested_drop_targets.html

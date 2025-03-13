@@ -1,51 +1,62 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<title>Resize Widget Test</title>
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-<script type="text/javascript">
-	var djConfig = {isDebug: true};
-</script>
-<script type="text/javascript" src="../../dojo.js"></script>
-<script language="JavaScript" type="text/javascript">
-	dojo.require("dojo.widget.ContentPane");
-	dojo.require("dojo.widget.ResizeHandle");
-</script>
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.db.upgrade;
 
-</head>
-<body style="background-color: ThreeDFace;">
+import java.io.OutputStream;
 
-<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nam facilisis enim. Pellentesque in elit et lacus euismod dignissim. Aliquam dolor pede, convallis eget, dictum a, blandit ac, urna. Pellentesque sed nunc ut justo volutpat egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. In erat. Suspendisse potenti. Fusce faucibus nibh sed nisi. Phasellus faucibus, dui a cursus dapibus, mauris nulla euismod velit, a lobortis turpis arcu vel dui. Pellentesque fermentum ultrices pede. Donec auctor lectus eu arcu. Curabitur non orci eget est porta gravida. Aliquam pretium orci id nisi. Duis faucibus, mi non adipiscing venenatis, erat urna aliquet elit, eu fringilla lacus tellus quis erat. Nam tempus ornare lorem. Nullam feugiat.</p>
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-<p>Sed congue. Aenean blandit sollicitudin mi. Maecenas pellentesque. Vivamus ac urna. Nunc consequat nisi vitae quam. Suspendisse sed nunc. Proin suscipit porta magna. Duis accumsan nunc in velit. Nam et nibh. Nulla facilisi. Cras venenatis urna et magna. Aenean magna mauris, bibendum sit amet, semper quis, aliquet nec, sapien. Aliquam aliquam odio quis erat. Etiam est nisi, condimentum non, lacinia ac, vehicula laoreet, elit. Sed interdum augue sit amet quam dapibus semper. Nulla facilisi. Pellentesque lobortis erat nec quam.</p>
+/**
+ * @author Matthew Lohbihler
+ */
+public class Upgrade1_3_0 extends DBUpgrade {
+    private final Log log = LogFactory.getLog(getClass());
 
+    @Override
+    public void upgrade() throws Exception {
+        OutputStream out = createUpdateLogOutputStream("1_3_0");
 
-<div dojoType="ContentPane"
-	title="Test window"
-	constrainToContainer="1"
-	style="width: 300px; height: 200px; border: solid blue 5px; position: relative; background: white;"
-	widgetId="testWindow"
->
-	Content Pane w/a resize handle
-	<div dojoType="ResizeHandle" targetElmId="testWindow"></div>
-</div>
+        // Run the script.
+        log.info("Running script");
+        runScript(script, out);
 
-<br>
+        out.flush();
+        out.close();
+    }
 
-<div 
-	id="plainDiv"
-	style="width: 300px; height: 200px; border: solid red 5px; position: relative; background: white;"
->
-	Plain div w/a resize handle
-	<div dojoType="ResizeHandle" targetElmId="plainDiv" style="bottom: 0; right: 0; position: absolute;"></div>
-</div>
+    @Override
+    protected String getNewSchemaVersion() {
+        return "1.4.0";
+    }
 
-<p>Sed arcu magna, molestie at, fringilla in, sodales eu, elit. Curabitur mattis lorem et est. Quisque et tortor. Integer bibendum vulputate odio. Nam nec ipsum. Vestibulum mollis eros feugiat augue. Integer fermentum odio lobortis odio. Nullam mollis nisl non metus. Maecenas nec nunc eget pede ultrices blandit. Ut non purus ut elit convallis eleifend. Fusce tincidunt, justo quis tempus euismod, magna nulla viverra libero, sit amet lacinia odio diam id risus. Ut varius viverra turpis. Morbi urna elit, imperdiet eu, porta ac, pharetra sed, nisi. Etiam ante libero, ultrices ac, faucibus ac, cursus sodales, nisl. Praesent nisl sem, fermentum eu, consequat quis, varius interdum, nulla. Donec neque tortor, sollicitudin sed, consequat nec, facilisis sit amet, orci. Aenean ut eros sit amet ante pharetra interdum.</p>
+    private static String[] script = {
+            "create table mangoViewUsers (",
+            "  mangoViewId int not null,",
+            "  userId int not null,",
+            "  accessType int not null",
+            ");",
+            "alter table mangoViewUsers add constraint mangoViewUsersPk primary key (mangoViewId, userId);",
+            "alter table mangoViewUsers add constraint mangoViewUsersFk1 foreign key (mangoViewId) references mangoViews(id);",
+            "alter table mangoViewUsers add constraint mangoViewUsersFk1 foreign key (userId) references users(id);",
 
-<p>Fusce rutrum pede eget quam. Praesent purus. Aenean at elit in sem volutpat facilisis. Nunc est augue, commodo at, pretium a, fermentum at, quam. Nam sit amet enim. Suspendisse potenti. Cras hendrerit rhoncus justo. Integer libero. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Sed adipiscing mi vel ipsum.</p>
-
-<p>Sed aliquam, quam consectetuer condimentum bibendum, neque libero commodo metus, non consectetuer magna risus vitae eros. Pellentesque mollis augue id libero. Morbi nonummy hendrerit dui. Morbi nisi felis, fringilla ac, euismod vitae, dictum mollis, pede. Integer suscipit, est sed posuere ullamcorper, ipsum lectus interdum nunc, quis blandit erat eros hendrerit pede. Vestibulum varius, elit id mattis mattis, nulla est feugiat ante, eget vestibulum augue eros ut odio. Maecenas euismod purus quis felis. Ut hendrerit tincidunt est. Fusce euismod, nunc eu tempus tempor, purus ligula volutpat tellus, nec lacinia sapien enim id risus. Aliquam orci turpis, condimentum sed, sollicitudin vel, placerat in, purus. Proin tortor nisl, blandit quis, imperdiet quis, scelerisque at, nisl. Maecenas suscipit fringilla erat. Curabitur consequat, dui blandit suscipit dictum, felis lectus imperdiet tellus, sit amet ornare risus mauris non ipsum. Fusce a purus. Vestibulum sodales. Sed porta ultrices nibh. Vestibulum metus.</p>
-
-</body>
-</html>
+            "alter table events add messageOld varchar(1024);", "update events set messageOld=message;",
+            "alter table events drop message;", "alter table events add message clob;",
+            "update events set message=messageOld;", "alter table events drop messageOld;", };
+}

@@ -1,1 +1,1 @@
-¹$ 2jspX¯hrwar/WEB-INF/jsp/emport.jsp
+¹$ 2javaXçhr=src/com/serotonin/mango/vo/event/CompoundEventDetectorVO.java

@@ -1,1 +1,0 @@
-¤  2webX*hr<war/resources/dojo/tests/widget/Editor/test_Editor2Code.html

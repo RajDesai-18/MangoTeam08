@@ -1,3 +1,2 @@
-V
-WebS5254@Add "lang" and/or "xml:lang" attributes to this "<html>" element2 J
-WebImgWithoutAltCheck%Add an "alt" attribute to this image.2 $
+e
+javaS101MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.2 

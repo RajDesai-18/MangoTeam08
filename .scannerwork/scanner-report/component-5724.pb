@@ -1,0 +1,1 @@
+Ü, 2jsXhr:war/resources/dojo/src/widget/Editor2Plugin/__package__.js

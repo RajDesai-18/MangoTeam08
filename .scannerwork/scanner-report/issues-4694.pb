@@ -1,10 +1,4 @@
-G
-WebS1827/Remove this deprecated "cellspacing" attribute.299 4G
-WebS1827/Remove this deprecated "cellpadding" attribute.299 4=
-WebS5256%Add "<th>" headers to this "<table>".299 4=
-WebS5256%Add "<th>" headers to this "<table>".2==
- (=
-WebS5256%Add "<th>" headers to this "<table>".2LL
- C
-WebS1827)Remove this deprecated "align" attribute.2
-°° 
+©
+javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2%%A Q@©
+javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2&&J \@r
+javaS1210YOverride "equals(Object obj)" to comply with the contract of the "compareTo(T o)" method.2nn 

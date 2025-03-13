@@ -1,45 +1,114 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<script type="text/javascript">
-	var djConfig = {isDebug: true, debugAtAllCosts: true };
-</script>
-<script type="text/javascript" src="../../../dojo.js"></script>
-<script type="text/javascript">
-	dojo.require("dojo.lang.*");
-	dojo.require("dojo.widget.*");
-	dojo.require("dojo.widget.Tree");
-	dojo.require("dojo.widget.TreeLoadingController");
-	dojo.hostenv.writeIncludes();
-</script>
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataSource.bacnet;
 
-</head>
-<body>
+import com.serotonin.bacnet4j.Network;
+import com.serotonin.bacnet4j.RemoteDevice;
+import com.serotonin.bacnet4j.obj.ObjectCovSubscription;
+import com.serotonin.bacnet4j.type.constructed.Address;
+import com.serotonin.bacnet4j.type.enumerated.ObjectType;
+import com.serotonin.bacnet4j.type.enumerated.PropertyIdentifier;
+import com.serotonin.bacnet4j.type.primitive.ObjectIdentifier;
+import com.serotonin.mango.rt.dataSource.PointLocatorRT;
+import com.serotonin.mango.vo.dataSource.bacnet.BACnetIPPointLocatorVO;
+import com.serotonin.util.IpAddressUtils;
+import com.serotonin.util.StringUtils;
 
-<ul>
-<li>New nodes are loaded dynamically.
-<li>Tree is expanded to level 1, some nodes are autoexpanded also.
-<li>DND is working in between mode.
-</ul>
+/**
+ * @author Matthew Lohbihler
+ */
+public class BACnetIPPointLocatorRT extends PointLocatorRT {
+    private static int NEXT_COV_ID = 1;
 
-<div dojoType="TreeLoadingController" RPCUrl="http://tmp.x/5.php" widgetId="treeController" DNDcontroller="create"></div>
+    private final BACnetIPPointLocatorVO vo;
+    private RemoteDevice remoteDevice;
+    private final ObjectIdentifier oid;
+    private final PropertyIdentifier pid;
+    private final int covId;
 
+    public BACnetIPPointLocatorRT(BACnetIPPointLocatorVO vo) {
+        this.vo = vo;
+        oid = new ObjectIdentifier(new ObjectType(vo.getObjectTypeId()), vo.getObjectInstanceNumber());
+        pid = new PropertyIdentifier(vo.getPropertyIdentifierId());
 
+        if (vo.isUseCovSubscription())
+            covId = NEXT_COV_ID++;
+        else
+            covId = -1;
+    }
 
-<div dojoType="Tree" expandLevel="1" widgetId="firstTree" controller="treeController" DNDMode="between" DNDAcceptTypes="firstTree">
-    <div dojoType="TreeNode" title="Node 1"></div>
-    <div dojoType="TreeNode" expandLevel="1" title="Expanded to level 1">
-        <div dojoType="TreeNode" title="Node 2.1"></div>
-        <div dojoType="TreeNode" isFolder="true" title="Node 2.2"></div>
-    </div>
-    <div dojoType="TreeNode" expandLevel="2" title="Expanded to level 2" isFolder="true">
-    </div>
+    public Address getAddress(int defaultPort) {
+        int port = defaultPort;
+        if (vo.getRemoteDevicePort() != 0)
+            port = vo.getRemoteDevicePort();
+        return new Address(IpAddressUtils.toIpAddress(vo.getRemoteDeviceIp()), port);
+    }
 
-</div>
+    public Network getNetwork() {
+        if (!StringUtils.isEmpty(vo.getNetworkAddress()))
+            return new Network(vo.getNetworkNumber(), vo.getNetworkAddress());
+        return null;
+    }
 
+    public int getRemoteDeviceInstanceNumber() {
+        return vo.getRemoteDeviceInstanceNumber();
+    }
 
-</body>
-</html>
+    public boolean isInitialized() {
+        return remoteDevice != null;
+    }
+
+    public boolean isUseCovSubscription() {
+        return vo.isUseCovSubscription() && ObjectCovSubscription.supportedObjectType(oid.getObjectType());
+    }
+
+    public void setRemoteDevice(RemoteDevice remoteDevice) {
+        this.remoteDevice = remoteDevice;
+    }
+
+    public RemoteDevice getRemoteDevice() {
+        return remoteDevice;
+    }
+
+    public ObjectIdentifier getOid() {
+        return oid;
+    }
+
+    public PropertyIdentifier getPid() {
+        return pid;
+    }
+
+    public int getCovId() {
+        return covId;
+    }
+
+    @Override
+    public boolean isSettable() {
+        return vo.isSettable();
+    }
+
+    @Override
+    public boolean isRelinquishable() {
+        return vo.isRelinquishable();
+    }
+
+    public int getWritePriority() {
+        return vo.getWritePriority();
+    }
+}

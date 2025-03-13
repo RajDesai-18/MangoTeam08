@@ -1,1 +1,1 @@
-¢% 2jspXhr)war/WEB-INF/snippet/changeContentText.jsp
+¢% 2javaXFhr5src/com/serotonin/mango/web/dwr/PublisherListDwr.java

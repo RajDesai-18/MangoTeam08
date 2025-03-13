@@ -1,1 +1,1 @@
-È 2javaX)hr=src/com/serotonin/mango/view/conversion/LinearConversion.java
+È 2webX;hr1build/resources/dojo/tests/dnd/test_dragcopy.html

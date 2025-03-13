@@ -1,8 +1,2 @@
-D
-WebS1827*Remove this deprecated "valign" attribute.2
-³³ ?
-WebS5256%Add "<th>" headers to this "<table>".2
-µµ C
-WebS1827)Remove this deprecated "align" attribute.2
-¾¾
- )
+r
+javaS120ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.2 )

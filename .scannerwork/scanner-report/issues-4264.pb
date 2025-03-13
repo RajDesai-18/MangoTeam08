@@ -1,8 +1,3 @@
-V
-WebS5254@Add "lang" and/or "xml:lang" attributes to this "<html>" element2 E
-WebPageWithoutTitleCheckAdd a <title> tag to this page.2 V
-WebFrameWithoutTitleCheck-Add a "title" attribute to this <iframe> tag.2VV PZ
-
-javascriptS1481;Remove the declaration of the unused 'contentWin' variable.2ZZ W
-
-javascriptS18548Remove this useless assignment to variable "contentWin".2ZZ 
+c
+javaS2095JUse try-with-resources or close this "OutputStream" in a "finally" clause.2 @e
+javaS101MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.2 

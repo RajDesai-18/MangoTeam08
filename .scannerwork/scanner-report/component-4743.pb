@@ -1,0 +1,1 @@
+‡% 2javaX3hr>src/com/serotonin/mango/web/dwr/beans/OpenV4JProtocolBean.java

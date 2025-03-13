@@ -1,0 +1,1 @@
+è 2webX4hr8build/resources/dojo/tests/widget/test_ResizeHandle.html

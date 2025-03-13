@@ -1,0 +1,1 @@
+ç2 2webXChrAwar/resources/dojo/tests/widget/deprecated/test_Button_lots2.html

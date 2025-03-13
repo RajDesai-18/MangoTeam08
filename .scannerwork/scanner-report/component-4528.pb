@@ -1,0 +1,1 @@
+°# 2javaXÝhr:src/com/serotonin/mango/view/component/PointComponent.java

@@ -1,5 +1,3 @@
-`
-javaS1124EReorder the modifiers to comply with the Java Language Specification.2__ @ã
-javaS2886ISynchronize this method to match the synchronization on "setEventActive".2JJ  :'
-%‡|| +setEventActive method.`
-javaS1124EReorder the modifiers to comply with the Java Language Specification.2|| @
+°
+
+javascriptS5852ÅMake sure the regex used here, which is vulnerable to super-linear runtime due to backtracking, cannot lead to denial of service.22 @

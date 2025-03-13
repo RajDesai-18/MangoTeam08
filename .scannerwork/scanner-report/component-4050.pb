@@ -1,1 +1,0 @@
-Ò 2webX‚hr6war/resources/dojo/tests/style/test_style_metrics.html

@@ -1,47 +1,39 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<html>
-	<head>
-			
-		<title>Monthly Calendar Demo</title>
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-		<script type="text/javascript"> var djConfig = {isDebug: true}; </script>
-		<script type="text/javascript" src="../../dojo.js"></script>
-		<script language="JavaScript" type="text/javascript">
-			dojo.require("dojo.widget.*");
-			dojo.require("dojo.widget.MonthlyCalendar");
-			dojo.require("dojo.event.*");
-			dojo.require("dojo.io.*");
-			dojo.require("dojo.cal.iCalendar");
-			
-			var calendar="test_Calendar.ics";
-			dojo.debug("Calendar: " + calendar);
-			dojo.addOnLoad(function(){
-				dojo.io.bind({
-					url: calendar,
-					load: function(type, data, evt){
-						dojo.debug("Got ICS file");
-						var cal = dojo.cal.iCalendar.fromText(data);
-						var monthly = dojo.widget.byId("Calendar");
-						if(!monthly){
-							dojo.debug("ERROR: Calendar widget wasn't instantiated!");
-							return;
-						}
-						for (var x=0; x<cal.length; x++) {
-							monthly.addCalendar(cal[x]);
-						} 
-						dojo.debug("Done Adding Calendar");
-					},
-					mimetype: "text/plain"
-				});
-			});
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.db.upgrade;
 
-		</script>
-			
-	</head>
-	<body bgcolor="white">
-		<h1>Experimental</h1>
-		<div id="Calendar" dojoType="monthlycalendar" ></div>
-	</body>
-</html>
+import java.io.OutputStream;
+
+/**
+ * @author Matthew Lohbihler
+ */
+public class Upgrade1_11_2 extends DBUpgrade {
+    @Override
+    public void upgrade() throws Exception {
+        OutputStream out = createUpdateLogOutputStream("1_11_2");
+
+        out.flush();
+        out.close();
+    }
+
+    @Override
+    protected String getNewSchemaVersion() {
+        return "1.12.0";
+    }
+}

@@ -1,1 +1,1 @@
-ß 2javaX}hr:src/com/serotonin/mango/web/servlet/ImageValueServlet.java
+ß 2cssXhr:build/resources/dojo/tests/widget/Editor/test_richtext.css

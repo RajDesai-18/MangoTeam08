@@ -1,0 +1,1 @@
+×# 2javaXbhr<src/com/serotonin/mango/view/stats/NumericDataQuantizer.java

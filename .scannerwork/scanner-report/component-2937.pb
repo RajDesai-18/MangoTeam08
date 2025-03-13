@@ -1,1 +1,0 @@
-ù 2jsX­hrwar/resources/common.js

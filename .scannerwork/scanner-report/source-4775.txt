@@ -1,4 +1,4 @@
-<%--
+/*
     Mango - Open Source M2M - http://mango.serotoninsoftware.com
     Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
     @author Matthew Lohbihler
@@ -14,26 +14,23 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see http://www.gnu.org/licenses/.
---%>
-<%-- The snippet used for histories of images --%>
-<%@ include file="/WEB-INF/snippet/common.jsp" %>
-<%@page import="com.serotonin.mango.web.servlet.ImageValueServlet"%>
-<c:choose>
-  <c:when test="${empty chartData}"><fmt:message key="common.noData"/></c:when>
-  <c:otherwise>
-    <table cellpadding="0" cellspacing="0">
-      <tr><td>
-        <c:forEach items="${chartData}" var="imageValue" varStatus="status">
-          <img src="<%= ImageValueServlet.servletPath %>${imageValue.value.filename}?id=${point.id}w=50&h=50"/>
-        </c:forEach>
-      </td></tr>
-    </table>
-    <script type="text/javascript">
-      var flipbookArray${componentId} = [];
-        flipbookArray${componentId}[${status.index}] = "";
-      $("flipbook${componentId}").src = "<%= ImageValueServlet.servletPath %>"+ flipbookArray${componentId}[flipbookArray${componentId}.length-1] +"?w=400&h=300";
-      alert($("flipbook${componentId}").src);
-    </script>
-  </c:otherwise>
-</c:choose>
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.web.dwr.util;
+
+import java.lang.reflect.Method;
+
+import org.directwebremoting.AjaxFilter;
+import org.directwebremoting.AjaxFilterChain;
+
+import com.serotonin.mango.vo.permission.Permissions;
+
+/**
+ * @author Matthew Lohbihler
+ */
+public class AdminAjaxFilter implements AjaxFilter {
+    public Object doFilter(Object obj, Method method, Object[] params, AjaxFilterChain chain) throws Exception {
+        Permissions.ensureAdmin();
+        return chain.doFilter(obj, method, params);
+    }
+}

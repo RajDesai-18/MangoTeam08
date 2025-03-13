@@ -1,6 +1,2 @@
-V
-WebS5254@Add "lang" and/or "xml:lang" attributes to this "<html>" element2 J
-WebAvoidCommentedOutCodeCheckRemove this commented out code.2
-
- C
-WebS1827+Remove this deprecated "datasrc" attribute.2 9
+r
+javaS120ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.2 (

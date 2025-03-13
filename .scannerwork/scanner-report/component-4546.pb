@@ -1,0 +1,1 @@
+Â# 2javaXmhr@src/com/serotonin/mango/view/graphic/AnalogImageSetRenderer.java

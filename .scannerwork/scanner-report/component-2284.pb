@@ -1,1 +1,1 @@
-ì 2javaX§hr9src/com/serotonin/mango/view/text/BinaryTextRenderer.java
+ì 2webXLhr/build/resources/dojo/tests/gfx/test_bezier.html

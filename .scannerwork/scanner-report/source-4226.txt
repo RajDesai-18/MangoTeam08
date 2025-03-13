@@ -1,111 +1,120 @@
-<html xmlns:dojo xmlns:myown>
-<head>
+package br.org.scadabr.vo.dataSource.opc;
 
-<script type="text/javascript">
-	var djConfig = {isDebug: true};
-	// Warning: To use debugAtAllCosts each set of calls to require needs to be within
-	// their own script tag, with a call before the closing tag to 
-	// dojo.hostenv.writeIncludes(true); Also there *must* be a final call to 
-	// dojo.hostenv.writeIncludes(); without the true
-	// See example in test_Custom_Widget_Debugging.html
-</script>
-<script language="JavaScript" type="text/javascript" src="../../dojo.js"></script>
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.List;
+import java.util.Map;
 
-<script>
-	dojo.require('dojo.ns');
-	dojo.registerNamespace("myown", "myown");      // Get exception here if debugAtAllCosts set to true - see above.
+import br.org.scadabr.rt.dataSource.opc.OPCPointLocatorRT;
 
-	// declaring a custom button widget that overrides a single function
-	dojo.require('dojo.widget.Button');
-	dojo.widget.defineWidget('myown.TestButton', dojo.widget.Button, {
+import com.serotonin.json.JsonException;
+import com.serotonin.json.JsonObject;
+import com.serotonin.json.JsonReader;
+import com.serotonin.json.JsonRemoteEntity;
+import com.serotonin.json.JsonRemoteProperty;
+import com.serotonin.json.JsonSerializable;
+import com.serotonin.mango.DataTypes;
+import com.serotonin.mango.rt.dataSource.PointLocatorRT;
+import com.serotonin.mango.rt.event.type.AuditEventType;
+import com.serotonin.mango.vo.dataSource.AbstractPointLocatorVO;
+import com.serotonin.util.SerializationHelper;
+import com.serotonin.web.dwr.DwrResponseI18n;
+import com.serotonin.web.i18n.LocalizableMessage;
 
-		buttonName : '',
+@JsonRemoteEntity
+public class OPCPointLocatorVO extends AbstractPointLocatorVO implements JsonSerializable {
+    @Override
+    public PointLocatorRT createRuntime() {
+        return new OPCPointLocatorRT(this);
+    }
 
-		// override the buttonClick() method declared in Button
-		buttonClick: function() {
-			alert('button ' + this.buttonName + ' clicked');
-			myown.TestButton.superclass.buttonClick.apply(this, arguments);
-		}
+    @Override
+    public LocalizableMessage getConfigurationDescription() {
+        return new LocalizableMessage("common.noMessage");
+    }
 
-	});
-</script>
-</head>
-<body>
-<div id="test" style="width:10px"></div>
-	<h2>Creating a Dojo widget entirely within page markup</h2>
-	<p>Very useful when developing your own widgets, or you just want to quickly test something.</p>
-	<p>Also useful when you just want to slightly change an exising widget e.g. change the CSS template, change the HTML template, or just override one or two methods.</p>
-	<p>You should see two blue buttons with custom properties below. They show an alert when clicked:</p>
-	<br>
+    @JsonRemoteProperty
+    private String tag = "";
+    private int dataType = DataTypes.BINARY;
+    @JsonRemoteProperty
+    private boolean settable;
 
-	<!-- our custom button declared above -->
-	<div dojoType="myown:TestButton" buttonName="1st button">
-		myown:TestButton widget
-	</div>
-	<br>
-	<div dojoType="myown:TestButton" buttonName="Wow!">
-		Wow button.
-	</div>
-	<br>
+    public String getTag() {
+        return tag;
+    }
 
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
 
-    <!-- Declaring a custom widget with it's own template and css declared in file -->
+    @Override
+    public int getDataTypeId() {
+        return dataType;
+    }
 
+    public void setDataTypeId(int dataType) {
+        this.dataType = dataType;
+    }
 
-	<!-- xmp is a very special element type - browser ignores all markup until it reaches /xmp tag -->
-	<!-- You might want to use a plain javascript string instead -->
-	<xmp id="TestTemplate" style="display:none">
-		<div class="myTest" dojoAttachEvent="onMouseMove; onClick:buttonClick;">
-			<p>And a myown:Test Widget</p>
-			<p dojoAttachPoint="mousePosNode">mouse.clientX: [Set on mouseover]</p>
-		</div>
-	</xmp>
-	<!-- You could put this in the page style, but this way dojo can fixup any urls. Or just use a string! -->
-	<xmp id="TestTemplateCss" style="display:none">
-		/* ---- myTest css --- */
-		.myTest {
-			background-color:yellow;
-			width: 20em;
-			height: 5em;
-			border: 3px dotted blue;
-		}
-	</xmp>
-	<!-- Declared in BODY so can refer to XMP elements. -->
-	<script>
-		dojo.widget.defineWidget('myown.Test', dojo.widget.HtmlWidget, {
+    @Override
+    public boolean isSettable() {
+        return settable;
+    }
 
-			templateString: dojo.byId('TestTemplate').textContent || dojo.byId('TestTemplate').innerText,
+    public void setSettable(boolean settable) {
+        this.settable = settable;
+    }
 
-			templateCssString: dojo.byId('TestTemplateCss').textContent || dojo.byId('TestTemplateCss').innerText,
+    @Override
+    public void validate(DwrResponseI18n response) {
+        if (!DataTypes.CODES.isValidId(dataType))
+            response.addContextualMessage("dataType", "validate.invalidValue");
+    }
 
-			mousePosNode: null,
-			clickTimes: 0,
+    @Override
+    public void addProperties(List<LocalizableMessage> list) {
+        AuditEventType.addPropertyMessage(list, "dsedit.opc.tagName", tag);
+        AuditEventType.addDataTypeMessage(list, "dsEdit.pointDataType", dataType);
+        AuditEventType.addPropertyMessage(list, "dsEdit.settable", settable);
+    }
 
-			onMouseMove: function(ev) {
-				this.mousePosNode.innerHTML = 'mouse.clientX: ' + ev.clientX;
-			},
+    @Override
+    public void addPropertyChanges(List<LocalizableMessage> list, Object o) {
+        OPCPointLocatorVO from = (OPCPointLocatorVO) o;
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsedit.opc.tagName", from.tag, tag);
+        AuditEventType.maybeAddDataTypeChangeMessage(list, "dsEdit.pointDataType", from.dataType, dataType);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "dsEdit.settable", from.settable, settable);
+    }
 
-			buttonClick: function(ev) {
-				this.clickTimes++;
-				alert('clicked. You have clicked this ' + this.clickTimes + ' times.');
-			}
-		});
-	</script>
+    private static final long serialVersionUID = -1;
+    private static final int version = 1;
 
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.writeInt(version);
+        SerializationHelper.writeSafeUTF(out, tag);
+        out.writeInt(dataType);
+        out.writeBoolean(settable);
+    }
 
-	<br>
-	<p>
-		The yellow divs below show an alert when clicked, and they update the mouse.clientX text when the mouse is moved over it.
-		The second yellow div shows how widget namespaces are used.
-	</p>
+    private void readObject(ObjectInputStream in) throws IOException {
+        int ver = in.readInt();
+        if (ver == 1) {
+            tag = SerializationHelper.readSafeUTF(in);
+            dataType = in.readInt();
+            settable = in.readBoolean();
+        }
+    }
 
-	<!-- can use widget immediately in markup - no parsing occurs until document loaded and scripts run -->
-	<div dojoType="myown:Test">
-	</div>
+    @Override
+    public void jsonDeserialize(JsonReader reader, JsonObject json) throws JsonException {
+        Integer value = deserializeDataType(json, DataTypes.IMAGE);
+        if (value != null)
+            dataType = value;
+    }
 
-	<br>
-	<!-- example using XML style - dont forget xmlns in the HTML tag! -->
-	<myown:Test></myown:Test>
-
-</body>
-</html>
+    @Override
+    public void jsonSerialize(Map<String, Object> map) {
+        serializeDataType(map);
+    }
+}

@@ -1,1 +1,1 @@
-® 2javaX®hr2src/com/serotonin/mango/web/dwr/PointLinksDwr.java
+® 2jsXhr:build/resources/dojo/tests/widget/acme/RemotePaths_test.js

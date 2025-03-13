@@ -1,15 +1,10 @@
-I
-WebS1827/Remove this deprecated "cellpadding" attribute.2
-ùù gI
-WebS1827/Remove this deprecated "cellspacing" attribute.2
-ùù g?
-WebS5256%Add "<th>" headers to this "<table>".2
-ùù gC
-WebS1827)Remove this deprecated "width" attribute.2
-ûû ?
-WebS5256%Add "<th>" headers to this "<table>".2
-ûû C
-WebS1827)Remove this deprecated "align" attribute.2
-°° ?
-WebS5256%Add "<th>" headers to this "<table>".2
-§§ 
+r
+javaS120ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.2 0t
+javaS115ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.2
+öö $±
+javaS1214CMove constants defined in this interfaces to another class or enum.2BB  :
+∑$CC :
+∑$DD :
+∑$EE :
+∑$FF :
+∑$GG 

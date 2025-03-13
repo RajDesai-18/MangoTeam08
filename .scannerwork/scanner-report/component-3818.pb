@@ -1,1 +1,0 @@
-ê 2webX$hr0war/resources/dojo/tests/compat/test_compat.html

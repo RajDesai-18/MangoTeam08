@@ -1,3 +1,17 @@
-©
-javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2` w@`
-javaS1124EReorder the modifiers to comply with the Java Language Specification.2	 @
+J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2 @J
+
+javascriptS3504)Unexpected var, use let or const instead.2"" 
+@U
+
+javascriptS14816Remove the declaration of the unused '_this' variable.2"" 
+J
+
+javascriptS3504)Unexpected var, use let or const instead.2'' @

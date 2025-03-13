@@ -1,0 +1,1 @@
+˜ 2jsXFhrAbuild/resources/dojo/tests/widget/namespaces/myns/widget/Check.js

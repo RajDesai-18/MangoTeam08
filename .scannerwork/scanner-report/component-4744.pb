@@ -1,0 +1,1 @@
+ˆ% 2javaX‹hrAsrc/com/serotonin/mango/web/dwr/beans/RecipientListEntryBean.java

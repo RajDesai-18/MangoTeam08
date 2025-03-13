@@ -1,1 +1,0 @@
-¶ 2javaXwhrBsrc/com/serotonin/mango/view/component/BinaryGraphicComponent.java

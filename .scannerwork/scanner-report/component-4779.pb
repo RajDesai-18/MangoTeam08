@@ -1,1 +1,1 @@
-«% 2jspXhr)war/WEB-INF/snippet/imageValueContent.jsp
+«% 2javaXÂhr1src/com/serotonin/mango/web/dwr/WatchListDwr.java

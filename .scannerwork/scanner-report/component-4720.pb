@@ -1,0 +1,1 @@
+ð$ 2javaXJhr9src/com/serotonin/mango/web/dwr/beans/BasePointState.java

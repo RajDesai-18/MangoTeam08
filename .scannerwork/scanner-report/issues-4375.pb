@@ -1,2 +1,4 @@
-V
-WebS5254@Add "lang" and/or "xml:lang" attributes to this "<html>" element2 
+r
+javaS120ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.2 1©
+javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2##C W@n
+javaS1201UEither override Object.equals(Object), or rename the method to prevent any confusion.2LL 

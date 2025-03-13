@@ -1,1 +1,1 @@
-È 2webX6hr/war/resources/dojo/tests/html/test_metrics.html
+È 2jspX¹hr.build/WEB-INF/jsp/pointEdit/eventDetectors.jsp

@@ -1,1 +1,0 @@
-› 2webXYhr/war/resources/dojo/tests/lang/test_declare.html

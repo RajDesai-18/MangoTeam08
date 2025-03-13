@@ -1,5 +1,5 @@
-<pre>
-    Mango - Open Source M2M - <a href="http://mango.serotoninsoftware.com">http://mango.serotoninsoftware.com</a>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
     Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
     @author Matthew Lohbihler
     
@@ -14,199 +14,351 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
-</pre>
-<br/>
-<br/>
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.event.type;
 
-<p>Below is a general overview of how this application works, and design concepts that users should know. Helpful 
-details can be found throughout the application using contextual help, indicated by the help icon 
-(<img src="images/help.png">). Click on this icon wherever it appears to get more information on the feature you are 
-using.</p>
+import java.util.Map;
 
-<h1>Application overview</h1>
-<p>Functionality in this application is primarily accessed using the controls in the header. Depending on the 
-permissions granted to your user account, you will see various icons underneath the application logo. When you hover
-over these icons with your mouse, you will see an overlay message with a short description of what the icon is 
-for.</p>
-<p>Beside the header controls at the right-hand side of the header is the username of the user who is currently 
-logged in.</p>
-<p>When your application has an active alarm, you will see a flashing flag icon (<img src="images/flag_white.png"/>)
-and an associated description near the center of the header area. The colour of the icon will indicate the severity
-of the alarm:</p>
-<ul style="list-style-type:none;">
-  <li><img src="images/flag_blue.png"> Information</li>
-  <li><img src="images/flag_yellow.png"> Urgent</li>
-  <li><img src="images/flag_orange.png"> Critical</li>
-  <li><img src="images/flag_red.png"> Life safety</li>
-</ul>
-<p>You can click on the icon or the description to go to the list of active alarms.</p>
+import com.serotonin.json.JsonException;
+import com.serotonin.json.JsonObject;
+import com.serotonin.json.JsonReader;
+import com.serotonin.json.JsonRemoteEntity;
+import com.serotonin.json.JsonSerializable;
+import com.serotonin.mango.db.dao.CompoundEventDetectorDao;
+import com.serotonin.mango.db.dao.DataPointDao;
+import com.serotonin.mango.db.dao.DataSourceDao;
+import com.serotonin.mango.db.dao.MaintenanceEventDao;
+import com.serotonin.mango.db.dao.PublisherDao;
+import com.serotonin.mango.db.dao.ScheduledEventDao;
+import com.serotonin.mango.util.ExportCodes;
+import com.serotonin.mango.util.LocalizableJsonException;
+import com.serotonin.mango.vo.DataPointVO;
+import com.serotonin.mango.vo.User;
+import com.serotonin.mango.vo.dataSource.DataSourceVO;
+import com.serotonin.mango.vo.event.CompoundEventDetectorVO;
+import com.serotonin.mango.vo.event.MaintenanceEventVO;
+import com.serotonin.mango.vo.event.ScheduledEventVO;
+import com.serotonin.mango.vo.publish.PublisherVO;
 
-<h1>Data types</h1>
-<p>There are five supported data types:</p>
-<ul>
-  <li><b>Binary</b> (aka boolean) values have only two states, referred to in the system as the <b>zero</b> value
-  and the <b>one</b> value. You can use a text renderer to convert the display of binary values to whatever alternate
-  labels you need, such as "on/off", "high/low", "started/stopped", etc.</li>
-  <li><b>Multistate</b> values have multiple distinct states. (Strictly speaking, the binary type is a special case
-  of a multistate.) Values are primitively represented as integers (e.g. 0, 1, 2, 7, ...), but, like binary values, 
-  you can use a text renderer to convert these values to appropriate text representations such as "on/off/disabled",
-  "cool/heat/off", or anything else.</li>
-  <li><b>Numeric</b> (aka analog) values are decimal values represented in the system with a floating point variable. 
-  Temperature, humidity, price, and altitude are examples of numeric values. Text renderers can be used to determine
-  display features like how many decimals places to display, whether to separate thousands (with commas or dots), and 
-  whether a suffix should be displayed (e.g. &deg;F, kW/h, moles, etc). Range renderers can be used to convert ranges
-  of numeric values into text labels.</li>
-  <li><b>Alphanumeric</b> values are simply strings of characters, such as the O/S description of an SNMP source.</li>
-  <li><b>Image</b> values are binary representations of image data. They are stored in files on the host file system
-  (i.e. not in the database) and are cached in memory as necessary for performance purposes. Renderers can be used to
-  create scaled images - such as thumbnails - for presentation.</li>
-</ul>
+/**
+ * An event class specifies the type of event that was raised.
+ * 
+ * @author Matthew Lohbihler
+ */
+@JsonRemoteEntity(typeFactory = EventTypeFactory.class)
+abstract public class EventType implements JsonSerializable {
+    public interface EventSources {
+        /**
+         * Data points raise events with point event detectors. All point event detectors are stored in a single table,
+         * so that the id of the detector is a unique identifier for the type. Thus, the detector's id can be (and is)
+         * used as the event type id.
+         */
+        int DATA_POINT = 1;
 
+        /**
+         * Data sources raise events internally for their own reasons (for example no response from the external system)
+         * or if a point locator failed. Data source error types are enumerated in the data sources themselves. So, the
+         * unique identifier of a data source event type is the combination of the the data source id and the data
+         * source error type.
+         */
+        int DATA_SOURCE = 3;
 
-<h1>Data sources</h1>
-<p>Data sources are fundamental to the operation of this application. A <b>data source</b> is a "place" from which 
-data is received. Virtually anything can be a data source, insofar as the communications protocol is supported by the
-application. Here are some examples:</p>
-<ul>
-  <li>If you have a Modbus network accessible via RS232, RS485, TCP/IP, or UDP/IP, you can create a Modbus data 
-  source that will poll the network for data on an interval you can define.</li>
-  <li>If you have equipment or an application that can send data over HTTP you can start an HTTP receiver data source
-  that will listen for incoming connections and route the data to the appropriate points.</li>
-  <li>For hardware that supports SNMP, start an SNMP data source. Values can be polled on an interval schedule, or 
-  traps can be received for report-on-exception.</li>
-  <li>Data can be read and updated in a SQL data base external to the system.</li>
-  <li>Data can be generated either randomly or predictively using a Virtual data source.</li>
-</ul>
-<p>Data values that are received or collected by a data source are stored within data points.</p>
+        /**
+         * The system itself is also, of course, a producer of events (for example low disk space). The types of system
+         * events are enumerated in the SystemEvents class. The system event type is the unique identifier for system
+         * events.
+         */
+        int SYSTEM = 4;
 
-<h1>Data points</h1>
-<p>A <b>data point</b> is a collection of associated historical values. For example, a particular point might be a 
-temperature reading from a room, while another point could be the humidity reading from the same room. Points can 
-also be control values, such as a switch to turn a piece of equipment on or off.</p>
-<p>There are many attributes that are used to control the behaviour of points. Primarily, there is the concept of a 
-<b>point locator</b>. Locators are used by data source to determine how to "find" the data for the particular point.
-For instance, a SQL data source has attributes including where to find the database instance; point locators for the 
-data source indicate the table and field names with which to find specific values. The logical separation of data 
-source and data point attributes depends on the communication protocol in question.</p>
-<p>Data points attributes also determine many other aspects of the point, such as its name, how it should be logged 
-(all data, changes in value only, or not at all), how long to keep logged data, how to format values for display,
-and how to chart values.</p>
-<p>You can also configure data points with <b>event detectors</b>, which are used to detect conditions of interest 
-in the point's values (eg. value has been too high for too long, is too low, changes too often, doesn't change at 
-all, etc).</p>
-<p>Points can be arranged into a hierarchy, or tree, to simplify management and display by using the Point Hierarchy 
-functionality.</p>
+        /**
+         * Compound detector event types have their unique identifiers generated by the database. These detectors listen
+         * to point event detectors and scheduled events and raise events according to their configured logical
+         * statement.
+         */
+        int COMPOUND = 5;
 
-<h1>Monitoring</h1>
-<p>Monitoring of points within the system can be done in two ways. You can use the <b>watch list</b> to dynamically
-create tabular lists of points including their values, last update times, and charts of historical information (if 
-the point is configured to support this). Values and charts are updated in real time without having to refresh your
-browser window. Charts of multiple points can also be displayed on demand.</p>
-<p>You can also create <b>graphical views</b> of points using drag and drop functionality to position graphical 
-representations of points on an arbitrary background image. Animated images can be used to create highly dynamic 
-visualization of system behaviour, and, like the watch lists, values are updated in real time without a browser 
-refresh. These views can subsequently be marked as "public", so that they can be reused on public web sites.</p>
+        /**
+         * Scheduled event types have their unique identifiers generated by the database. Scheduled events are raised by
+         * the scheduler at instants defined by the user.
+         */
+        int SCHEDULED = 6;
 
-<h1>Control</h1>
-<p>Control of external systems can also be acheived for points that can be set (aka writable or output). A 
-<b>settable</b> point can be set to a user-defined value, such as a thermostat setting or equipment control switch.
-Both watch lists and graphical views provide simple means by which to input a value to set. The point locator for the
-settable point determines how the data source sets the value within the external equipment.</p>
+        /**
+         * Publishers raise events internally for their own reasons, including general publishing failures or failures
+         * in individual points. Error types are enumerated in the publishers themselves. So, the unique identifier of a
+         * publisher event type is the combination of the publisher id and the publisher error type.
+         */
+        int PUBLISHER = 7;
 
-<h1>Events</h1>
-<p>
-  An <b>event</b> is the occurance of a defined condition within the system. Both system-defined and user-defined 
-  events are available. System-defined events include data source operation errors, user logins, and system 
-  startup/shutdown. User-defined events include point event detectors (see "event detectors" above), scheduled events,
-  and compound events which detect conditions over multiple points using logical statements. There are also "audit 
-  events", which are raised when users make changes (additions, modifications, deletions) to runtime-affecting objects
-  including data sources, data points, point event detectors, scheduled events, compound event detectors, and event
-  handlers.
-</p>
-<p>
-  Once an event has been detected, it is acted upon by handlers. An <b>event handler</b> is a user-defined behaviour
-  that is to be performed upon the raising of a particular event, such as sending an email or setting the value of a 
-  settable point.
-</p>
+        /**
+         * Audit events are created when a user makes a change that needs to be acknowledged by other users. Such
+         * changes include modifications to point event detectors, scheduled events, compound events, data sources, data
+         * points, and point links.
+         */
+        int AUDIT = 8;
 
-<h1>Application icons</h1>
-<ul style="list-style-type:none;">
-  <li><img src="images/icon_ds.png"> Data source</li>
-  <li><img src="images/icon_comp.png"> Data point</li>
-  <li><img src="images/icon_chart.png"> Chart</li>
-  <li><img src="images/icon_edit.png"> Set point</li>
-  <li><img src="images/eye.png"> Watch list</li>
-  <li><img src="images/icon_view.png"> Graphical view</li>
-  <li><img src="images/control_repeat_blue.png"> Refresh</li>
-  <li><img src="images/bell.png"> Event detector</li>
-  <li><img src="images/multi_bell.png"> Compound detector</li>
-  <li><img src="images/clock.png"> Scheduled event</li>
-  <li><img src="images/cog.png"> Event handler</li>
-  <li><img src="images/flag_white.png"> Alarm</li>
-  <li><img src="images/user.png"> User</li>
-  <li><img src="images/comment.png"> User comment</li>
-  <li><img src="images/report.png"> Report</li>
-  <li><img src="images/book.png"> Mailing list</li>
-  <li><img src="images/transmit.png"> Publisher</li>
-  <li><img src="images/warn.png"> Warning</li>
-  <li><img src="images/control_stop_blue.png"> Logout</li>
-</ul>
+        /**
+         * Maintenance events are created when maintenance mode becomes active. See MaintenanceVO for more information.
+         */
+        int MAINTENANCE = 9;
+    }
 
-<h1>Alarm sounds</h1>
-<p>Mango can play sounds when alarms are active. By default, alarm sounds are played for urgent, critical, and life
-safety alarms (i.e. not for information alarms), but sounds for each alarm type can be controlled individually. To 
-enable particular alarm sounds, valid mp3 files must exist at the following locations:</p>
-<ul>
-  <li>&lt;mango_home&gt;/audio/information.mp3</li>
-  <li>&lt;mango_home&gt;/audio/urgent.mp3</li>
-  <li>&lt;mango_home&gt;/audio/critical.mp3</li>
-  <li>&lt;mango_home&gt;/audio/lifesafety.mp3</li>
-</ul>
-<p>To disable a sound, remove the associated sound file. A library of sounds can be found in the 
-&lt;mango_home&gt;/audio/lib folder.</p>
+    public static final ExportCodes SOURCE_CODES = new ExportCodes();
+    static {
+        SOURCE_CODES.addElement(EventSources.DATA_POINT, "DATA_POINT");
+        SOURCE_CODES.addElement(EventSources.DATA_SOURCE, "DATA_SOURCE");
+        SOURCE_CODES.addElement(EventSources.SYSTEM, "SYSTEM");
+        SOURCE_CODES.addElement(EventSources.COMPOUND, "COMPOUND");
+        SOURCE_CODES.addElement(EventSources.SCHEDULED, "SCHEDULED");
+        SOURCE_CODES.addElement(EventSources.PUBLISHER, "PUBLISHER");
+        SOURCE_CODES.addElement(EventSources.AUDIT, "AUDIT");
+        SOURCE_CODES.addElement(EventSources.MAINTENANCE, "MAINTENANCE");
+    }
 
-<h1>Graphics</h1>
-<p>Mango ships with a small graphics library which can be found in the &lt;mango_home&gt;/graphics folder. Each
-sub-folder represents an image set. The contents of the sub-folder include all of the images in the image set, as 
-well as an optional properties file called <b>info.txt</b>. (Examples can be found in the graphics directories that
-ship with Mango.) This property file contains name/value pairs with the following names (all of which are 
-optional):</p>
-<ul>
-  <li><b>name</b>: The name that will be used to describe the image set in the user interface. If not provided this
-  will default to the folder name.</li>
-  <li><b>width</b>: The width of the images. (All images are expected to be the same size.) If not provided the width 
-  of the first image will be used.</li>
-  <li><b>height</b>: The height of the images. (All images are expected to be the same size.) If not provided the 
-  height of the first image will be used.</li>
-  <li><b>text.x</b>: The position of text relative to the left edge of the image, in pixels. If not provided this 
-  defaults to 5.</li>
-  <li><b>text.y</b>: The position of text relative to the top edge of the image, in pixels. If not provided this 
-  defaults to 5.</li>
-</ul>
-<p><b>Once you are using an image set in your views do not rename its folder!</b> The folder name is used internally
-as the identifier of the image set.</p>
-<p>Image files are sorted alphabetically by name. Names are case sensitive. Name/value pairs are separated with '='. 
-Lines beginning with '#' are considered comments. 'Thumbs.db' files are ignored. Archive files (zip, gz, tar, etc)
-cannot be used since the images files have to be accessible to the web server. Image sets are loaded upon system 
-startup, so any changes require a restart.</p>
-<p>To have future versions of Mango ship with your preferred graphics, please contribute them to Serotonin 
-Software. Please support open source software.</p>
+    /**
+     * This interface defines all of the possible actions that can occur if an event is raised for which type there
+     * already exists an active event.
+     * 
+     * @author Matthew Lohbihler
+     */
+    public interface DuplicateHandling {
+        /**
+         * Duplicates are not allowed. This should be the case for all event types where there is an automatic return to
+         * normal.
+         */
+        int DO_NOT_ALLOW = 1;
 
-<h1>Remote views</h1>
-<p>Public mango views can be accessed from other web sites by simply putting an iframe into your pages. For example,
-the Mango home page uses the following code to display a small thermostat view:</p>
-<pre>&lt;div style="position:relative;width:80px;height:150px"&gt;
-&lt;iframe frameBorder="0" style="position:absolute;width:450px;height:300px" scrolling="no" allowTransparency="true"
-        src="http://mango.serotoninsoftware.com/test/public_view.htm?viewId=3"&gt;&lt;/iframe&gt;
-&lt;/div&gt;</pre>
-<p>Absolute positioning and transparency is used to allow the display of charts and component controls without 
-scrolling or HTML adjustment, but is optional. The 'viewId' parameter is the internally generated id of the view to 
-be displayed, but can be substituted with the 'viewName' parameter and the view's name as the value. (However, do not
-subsequently alter the name of the view without updating this reference.)</p>
+        /**
+         * Duplicates are ignored. This should be the case where the initial occurrence of an event is really the only
+         * thing of interest to a user. For example, the initial error in a data source is usually what is most useful
+         * in diagnosing a problem.
+         */
+        int IGNORE = 2;
 
-<h1>Custom views</h1>
-<p>
-  Custom views are publically accessible views that are written by the user, using a JSP tag library to easily add
-  components. For more information see the example in customViewExample.jsp.
-</p>
+        /**
+         * Duplicates are ignored only if their message is the same as the existing.
+         */
+        int IGNORE_SAME_MESSAGE = 3;
+
+        /**
+         * Duplicates are allowed. The change detector uses this so that user's can acknowledge every change the point
+         * experiences.
+         */
+        int ALLOW = 4;
+    }
+
+    abstract public int getEventSourceId();
+
+    /**
+     * Convenience method that keeps us from having to cast.
+     * 
+     * @return false here, but the system message implementation will return true.
+     */
+    public boolean isSystemMessage() {
+        return false;
+    }
+
+    /**
+     * Convenience method that keeps us from having to cast.
+     * 
+     * @return -1 here, but the data source implementation will return the data source id.
+     */
+    public int getDataSourceId() {
+        return -1;
+    }
+
+    /**
+     * Convenience method that keeps us from having to cast.
+     * 
+     * @return -1 here, but the data point implementation will return the data point id.
+     */
+    public int getDataPointId() {
+        return -1;
+    }
+
+    /**
+     * Convenience method that keeps us from having to cast.
+     * 
+     * @return -1 here, but the schedule implementation will return the schedule id.
+     */
+    public int getScheduleId() {
+        return -1;
+    }
+
+    /**
+     * Convenience method that keeps us from having to cast.
+     * 
+     * @return -1 here, but the compound detector event type will return the compound detector id.
+     */
+    public int getCompoundEventDetectorId() {
+        return -1;
+    }
+
+    /**
+     * Convenience method that keeps us from having to cast.
+     * 
+     * @return -1 here, but the publisher implementation will return the publisher id.
+     */
+    public int getPublisherId() {
+        return -1;
+    }
+
+    /**
+     * Determines whether an event type that, once raised, will always first be deactivated or whether overriding events
+     * can be raised. Overrides can occur in data sources and point locators where a retry of a failed action causes the
+     * same event type to be raised without the previous having returned to normal.
+     * 
+     * @return whether this event type can be overridden with newer event instances.
+     */
+    abstract public int getDuplicateHandling();
+
+    abstract public int getReferenceId1();
+
+    abstract public int getReferenceId2();
+
+    /**
+     * Determines if the notification of this event to the given user should be suppressed. Useful if the action of the
+     * user resulted in the event being raised.
+     * 
+     * @return
+     */
+    public boolean excludeUser(@SuppressWarnings("unused") User user) {
+        return false;
+    }
+
+    //
+    // /
+    // / Serialization
+    // /
+    //
+    @Override
+    public void jsonSerialize(Map<String, Object> map) {
+        map.put("sourceType", SOURCE_CODES.getCode(getEventSourceId()));
+    }
+
+    /**
+     * @throws JsonException
+     */
+    @Override
+    public void jsonDeserialize(JsonReader reader, JsonObject json) throws JsonException {
+        // no op. See the factory
+    }
+
+    protected int getInt(JsonObject json, String name, ExportCodes codes) throws JsonException {
+        String text = json.getString(name);
+        if (text == null)
+            throw new LocalizableJsonException("emport.error.eventType.missing", name, codes.getCodeList());
+
+        int i = codes.getId(text);
+        if (i == -1)
+            throw new LocalizableJsonException("emport.error.eventType.invalid", name, text, codes.getCodeList());
+
+        return i;
+    }
+
+    // protected int getUserId(JsonObject json, String name) throws JsonException {
+    // String username = json.getString(name);
+    // if (username == null)
+    // throw new LocalizableJsonException("emport.error.eventType.missing.reference", name);
+    // User user = new UserDao().getUser(username);
+    // if (user == null)
+    // throw new LocalizableJsonException("emport.error.eventType.invalid.reference", name, username);
+    // return user.getId();
+    // }
+    //
+    protected int getCompoundEventDetectorId(JsonObject json, String name) throws JsonException {
+        String xid = json.getString(name);
+        if (xid == null)
+            throw new LocalizableJsonException("emport.error.eventType.missing.reference", name);
+        CompoundEventDetectorVO ced = new CompoundEventDetectorDao().getCompoundEventDetector(xid);
+        if (ced == null)
+            throw new LocalizableJsonException("emport.error.eventType.invalid.reference", name, xid);
+        return ced.getId();
+    }
+
+    // protected int getEventHandlerId(JsonObject json, String name) throws JsonException {
+    // String xid = json.getString(name);
+    // if (xid == null)
+    // throw new LocalizableJsonException("emport.error.eventType.missing.reference", name);
+    // EventHandlerVO eh = new EventDao().getEventHandler(xid);
+    // if (eh == null)
+    // throw new LocalizableJsonException("emport.error.eventType.invalid.reference", name, xid);
+    // return eh.getId();
+    // }
+    //
+    protected int getScheduledEventId(JsonObject json, String name) throws JsonException {
+        String xid = json.getString(name);
+        if (xid == null)
+            throw new LocalizableJsonException("emport.error.eventType.missing.reference", name);
+        ScheduledEventVO se = new ScheduledEventDao().getScheduledEvent(xid);
+        if (se == null)
+            throw new LocalizableJsonException("emport.error.eventType.invalid.reference", name, xid);
+        return se.getId();
+    }
+
+    protected int getDataPointId(JsonObject json, String name) throws JsonException {
+        String xid = json.getString(name);
+        if (xid == null)
+            throw new LocalizableJsonException("emport.error.eventType.missing.reference", name);
+        DataPointVO dp = new DataPointDao().getDataPoint(xid);
+        if (dp == null)
+            throw new LocalizableJsonException("emport.error.eventType.invalid.reference", name, xid);
+        return dp.getId();
+    }
+
+    // protected int getPointLinkId(JsonObject json, String name) throws JsonException {
+    // String xid = json.getString(name);
+    // if (xid == null)
+    // throw new LocalizableJsonException("emport.error.eventType.missing.reference", name);
+    // PointLinkVO pl = new PointLinkDao().getPointLink(xid);
+    // if (pl == null)
+    // throw new LocalizableJsonException("emport.error.eventType.invalid.reference", name, xid);
+    // return pl.getId();
+    // }
+
+    protected int getPointEventDetectorId(JsonObject json, String dpName, String pedName) throws JsonException {
+        return getPointEventDetectorId(json, getDataPointId(json, dpName), pedName);
+    }
+
+    protected int getPointEventDetectorId(JsonObject json, int dpId, String pedName) throws JsonException {
+        String pedXid = json.getString(pedName);
+        if (pedXid == null)
+            throw new LocalizableJsonException("emport.error.eventType.missing.reference", pedName);
+        int id = new DataPointDao().getDetectorId(pedXid, dpId);
+        if (id == -1)
+            throw new LocalizableJsonException("emport.error.eventType.invalid.reference", pedName, pedXid);
+
+        return id;
+    }
+
+    protected DataSourceVO<?> getDataSource(JsonObject json, String name) throws JsonException {
+        String xid = json.getString(name);
+        if (xid == null)
+            throw new LocalizableJsonException("emport.error.eventType.missing.reference", name);
+        DataSourceVO<?> ds = new DataSourceDao().getDataSource(xid);
+        if (ds == null)
+            throw new LocalizableJsonException("emport.error.eventType.invalid.reference", name, xid);
+        return ds;
+    }
+
+    protected PublisherVO<?> getPublisher(JsonObject json, String name) throws JsonException {
+        String xid = json.getString(name);
+        if (xid == null)
+            throw new LocalizableJsonException("emport.error.eventType.missing.reference", name);
+        PublisherVO<?> pb = new PublisherDao().getPublisher(xid);
+        if (pb == null)
+            throw new LocalizableJsonException("emport.error.eventType.invalid.reference", name, xid);
+        return pb;
+    }
+
+    protected int getMaintenanceEventId(JsonObject json, String name) throws JsonException {
+        String xid = json.getString(name);
+        if (xid == null)
+            throw new LocalizableJsonException("emport.error.eventType.missing.reference", name);
+        MaintenanceEventVO me = new MaintenanceEventDao().getMaintenanceEvent(xid);
+        if (me == null)
+            throw new LocalizableJsonException("emport.error.eventType.invalid.reference", name, xid);
+        return me.getId();
+    }
+}

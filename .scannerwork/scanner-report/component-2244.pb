@@ -1,1 +1,1 @@
-Ä 2javaX¸hr9src/com/serotonin/mango/view/component/ViewComponent.java
+Ä 2webX4hr8build/resources/dojo/tests/debug/test_debug_console.html

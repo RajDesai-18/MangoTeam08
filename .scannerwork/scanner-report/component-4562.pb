@@ -1,0 +1,1 @@
+Ò# 2javaXËhr8src/com/serotonin/mango/view/stats/AnalogStatistics.java

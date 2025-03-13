@@ -95,15 +95,15 @@ kubernetesS6873(ØÁìæÖ20ØÁìæÖ2:$a03e7cd4-d7d5-4f46-9826-1a1e65cc7bfbBB
 pythonS5857(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208Bx
 pythonS2068"1
 credentialWordspassword,passwd,pwd,passphrase(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208¡
-pythonS6418"
-randomnessSensibility3.0"<
-credentialWords)api[_.-]?key,auth,credential,secret,token(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208Q
+pythonS6418"<
+credentialWords)api[_.-]?key,auth,credential,secret,token"
+randomnessSensibility3.0(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208Q
 pythonS6894(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BBQ
 pythonS6741(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BBK
 pythonS5918(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208Bi
 pythonS1542"
 format^[a-z_][a-z0-9_]*$(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BW
-pythonS6900(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BBBK
+pythonS6900(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BBBK
 pythonS1940(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BK
 pythonS5644(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BK
 pythonS1143(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BE
@@ -114,7 +114,7 @@ kubernetesS6873(ØÁìæÖ20ØÁìæÖ2:$a03e7cd4-d7d5-4f46-9826-1a1e65cc7bfbBB
 pythonS6792(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BK
 pythonS5756(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BK
 pythonS2159(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BW
-pythonS6727(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BBBK
+pythonS6727(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BBBK
 pythonS1751(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BK
 pythonS6969(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BK
 pythonS5899(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BK
@@ -153,7 +153,7 @@ kubernetesS6873(ØÁìæÖ20ØÁìæÖ2:$a03e7cd4-d7d5-4f46-9826-1a1e65cc7bfbBB
 pythonS5549(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BK
 pythonS1716(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BJ
 pythonS108(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BW
-pythonS6882(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BBBE
+pythonS6882(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BBBE
 pythonS6270(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208E
 pythonS6275(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208K
 pythonS1845(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BK
@@ -228,9 +228,9 @@ kubernetesS6873(ØÁìæÖ20ØÁìæÖ2:$a03e7cd4-d7d5-4f46-9826-1a1e65cc7bfbBB
 pythonS5713(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BK
 pythonS1172(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BK
 pythonS6559(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208Bo
-pythonS1192"
-exclusionRegex "
-	threshold3(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BQ
+pythonS1192"
+	threshold3"
+exclusionRegex (ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BQ
 pythonS6903(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BBK
 pythonS5747(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BK
 pythonS2836(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BY
@@ -268,11 +268,11 @@ kubernetesS6873(ØÁìæÖ20ØÁìæÖ2:$a03e7cd4-d7d5-4f46-9826-1a1e65cc7bfbBB
 pythonS2757(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BE
 pythonS6252(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208K
 pythonS2823(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BW
-pythonS6890(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BBBE
+pythonS6890(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BBBE
 pythonS4507(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208
-pythonS905"
-ignoredOperators<<,>>,|"
-reportOnStringsfalse(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BE
+pythonS905"
+reportOnStringsfalse"
+ignoredOperators<<,>>,|(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BE
 pythonS6333(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208K
 pythonS2755(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BK
 pythonS5905(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BK
@@ -313,16 +313,16 @@ kubernetesS6873(ØÁìæÖ20ØÁìæÖ2:$a03e7cd4-d7d5-4f46-9826-1a1e65cc7bfbBB
 pythonS5642(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BQ
 pythonS6714(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BBE
 pythonS4502(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208W
-pythonS6709(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BBBG
+pythonS6709(ØÁìæÖ20ØÁìæÖ2:$847921c4-4623-4b3c-a5bb-e6f93e20c208BBBG
 cssS125(ØÁìæÖ20ØÁìæÖ2:$708aadef-a908-45d6-885d-e6e134dcb977Bƒ
-cssS4670"
-ignorecustom-elements"
-ignoreTypes/^(mat|md|fa)-/(ØÁìæÖ20ØÁìæÖ2:$708aadef-a908-45d6-885d-e6e134dcb977BH
+cssS4670"
+ignoreTypes/^(mat|md|fa)-/"
+ignorecustom-elements(ØÁìæÖ20ØÁìæÖ2:$708aadef-a908-45d6-885d-e6e134dcb977BH
 cssS4647(ØÁìæÖ20ØÁìæÖ2:$708aadef-a908-45d6-885d-e6e134dcb977BH
 cssS4655(ØÁìæÖ20ØÁìæÖ2:$708aadef-a908-45d6-885d-e6e134dcb977B™
-cssS4654"-
-ignoreSelectors/^:export.*/, /^:import.*/" 
-ignoreTypescomposes, /^mso-/(ØÁìæÖ20ØÁìæÖ2:$708aadef-a908-45d6-885d-e6e134dcb977BH
+cssS4654" 
+ignoreTypescomposes, /^mso-/"-
+ignoreSelectors/^:export.*/, /^:import.*/(ØÁìæÖ20ØÁìæÖ2:$708aadef-a908-45d6-885d-e6e134dcb977BH
 cssS4663(ØÁìæÖ20ØÁìæÖ2:$708aadef-a908-45d6-885d-e6e134dcb977BH
 cssS4657(ØÁìæÖ20ØÁìæÖ2:$708aadef-a908-45d6-885d-e6e134dcb977Bu
 cssS4660"+
@@ -572,20 +572,20 @@ kubernetesS6873(ØÁìæÖ20ØÁìæÖ2:$a03e7cd4-d7d5-4f46-9826-1a1e65cc7bfbBB
 ipythonS5756(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BL
 ipythonS5890(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BL
 ipythonS1515(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2B¢
-ipythonS6418"
-randomnessSensibility3.0"<
-credentialWords)api[_.-]?key,auth,credential,secret,token(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2F
+ipythonS6418"<
+credentialWords)api[_.-]?key,auth,credential,secret,token"
+randomnessSensibility3.0(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2F
 ipythonS5332(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2L
 ipythonS2159(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BL
 ipythonS2711(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BL
 ipythonS5547(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BL
 ipythonS4144(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BL
 ipythonS5868(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2Bp
-ipythonS1192"
-exclusionRegex "
-	threshold3(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BF
+ipythonS1192"
+	threshold3"
+exclusionRegex (ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BF
 ipythonS6329(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2X
-ipythonS6890(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BBBF
+ipythonS6890(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BBBF
 ipythonS6302(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2t
 ipythonS2710"&
 classParameterNamescls,mcs,metacls(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BL
@@ -665,7 +665,7 @@ kubernetesS6873(ØÁìæÖ20ØÁìæÖ2:$a03e7cd4-d7d5-4f46-9826-1a1e65cc7bfbBB
 ipythonS6894(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BBF
 ipythonS6308(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2L
 ipythonS6796(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BX
-ipythonS6900(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BBBL
+ipythonS6900(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BBBL
 ipythonS4830(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BL
 ipythonS6799(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BF
 ipythonS6332(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2L
@@ -703,7 +703,7 @@ kubernetesS6873(ØÁìæÖ20ØÁìæÖ2:$a03e7cd4-d7d5-4f46-9826-1a1e65cc7bfbBB
 ipythonS4423(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BF
 ipythonS6265(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2L
 ipythonS5714(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BX
-ipythonS6727(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BBBa
+ipythonS6727(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BBBa
 ipythonS5843"
 maxComplexity20(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BR
 ipythonS6929(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BBL
@@ -772,7 +772,7 @@ kubernetesS6873(ØÁìæÖ20ØÁìæÖ2:$a03e7cd4-d7d5-4f46-9826-1a1e65cc7bfbBB
 ipythonInequalityUsage(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BL
 ipythonS6552(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BL
 ipythonS6560(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BX
-ipythonS6709(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BBBL
+ipythonS6709(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BBBL
 ipythonS6918(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BZ
 ipythonPrintStatementUsage(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BF
 ipythonS5042(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2L
@@ -802,7 +802,7 @@ kubernetesS6873(ØÁìæÖ20ØÁìæÖ2:$a03e7cd4-d7d5-4f46-9826-1a1e65cc7bfbBB
 ipythonS2190(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BL
 ipythonS5914(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BL
 ipythonS6794(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BX
-ipythonS6882(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BBBL
+ipythonS6882(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BBBL
 ipythonS5549(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2Bs
 ipythonS4487"%
 enableSingleUnderscoreIssuesfalse(ÀÉìæÖ20ÀÉìæÖ2:$dd2f287f-c495-4ba4-b65f-c9298f3cafe2BF
@@ -1007,9 +1007,9 @@ javascriptS6438(ØÁìæÖ20ØÁìæÖ2:$b2f2fc3e-0676-4706-908c-5a94665af0d7BI
 
 javascriptS2092(ØÁìæÖ20ØÁìæÖ2:$b2f2fc3e-0676-4706-908c-5a94665af0d7¡
 
-javascriptS6418"8
-secretWords)api[_.-]?key,auth,credential,secret,token"
-randomnessSensibility5.0(ØÁìæÖ20ØÁìæÖ2:$b2f2fc3e-0676-4706-908c-5a94665af0d7I
+javascriptS6418"
+randomnessSensibility5.0"8
+secretWords)api[_.-]?key,auth,credential,secret,token(ØÁìæÖ20ØÁìæÖ2:$b2f2fc3e-0676-4706-908c-5a94665af0d7I
 
 javascriptS5042(ØÁìæÖ20ØÁìæÖ2:$b2f2fc3e-0676-4706-908c-5a94665af0d7O
 
@@ -1280,9 +1280,9 @@ javascriptS6637(ØÁìæÖ20ØÁìæÖ2:$b2f2fc3e-0676-4706-908c-5a94665af0d7BO
 
 javascriptS5863(ØÁìæÖ20ØÁìæÖ2:$b2f2fc3e-0676-4706-908c-5a94665af0d7B‡
 
-javascriptS5693"
-standardSizeLimit2000000"
-fileUploadSizeLimit8000000(ØÁìæÖ20ØÁìæÖ2:$b2f2fc3e-0676-4706-908c-5a94665af0d7O
+javascriptS5693"
+fileUploadSizeLimit8000000"
+standardSizeLimit2000000(ØÁìæÖ20ØÁìæÖ2:$b2f2fc3e-0676-4706-908c-5a94665af0d7O
 
 javascriptS1607(ØÁìæÖ20ØÁìæÖ2:$b2f2fc3e-0676-4706-908c-5a94665af0d7BO
 
@@ -1564,7 +1564,7 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 dockerS6437(ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dB]
 dockerS7020"
 	maxLength120(ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dBW
-dockerS7029(ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dBBBE
+dockerS7029(ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dBBBE
 dockerS4790(ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dK
 dockerS6586(ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dBI
 javaS2273(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
@@ -1652,14 +1652,14 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 format^[a-z_]+(\.[a-z_][a-z0-9_]*)*$(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBC
 javaS5689(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eI
 javaS1319(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eB›
-javaS6418"8
-secretWords)api[_.-]?key,auth,credential,secret,token"
-randomnessSensibility5.0(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eI
+javaS6418"
+randomnessSensibility5.0"8
+secretWords)api[_.-]?key,auth,credential,secret,token(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eI
 javaS4032(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS1481(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS5664(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS6242(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBO
-javaS7183(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBBI
+javaS7183(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBBI
 javaS6833(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBC
 javaS2245(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eI
 javaS3551(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
@@ -1706,9 +1706,9 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 javaS2062(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS2133(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBO
 javaS6829(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBBg
-javaS110"
-max5"
-filteredClasses (ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
+javaS110"
+filteredClasses "
+max5(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS3631(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS6353(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBC
 javaS6362(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eI
@@ -1772,9 +1772,9 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 javaS6068(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS6355(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBC
 javaS5320(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eg
-javaS107"
-max7"
-constructorMax7(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
+javaS107"
+constructorMax7"
+max7(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS4488(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS2677(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS2134(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
@@ -1803,7 +1803,7 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 javaS5996(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS2204(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS6437(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBU
-javaS7178(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBBBI
+javaS7178(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBBBI
 javaS6548(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS2925(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBg
 javaS5961"
@@ -1916,7 +1916,7 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 javaS3008"
 format^[a-z][a-zA-Z0-9]*$(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS5917(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBU
-javaS7184(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBBBI
+javaS7184(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBBBI
 javaS1700(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS6832(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBC
 javaS5852(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eI
@@ -1975,7 +1975,7 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 javaS6905(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBH
 javaS127(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS2201(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBU
-javaS7186(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBBBI
+javaS7186(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBBBI
 javaS2168(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS1104(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS6301(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
@@ -1998,13 +1998,13 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 javaS5853(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS2637(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS5663(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eB£
-javaS6541"
-cyclomaticThreshold15"
-nestingThreshold3"
-locThreshold65"
-noavThreshold7(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
+javaS6541"
+noavThreshold7"
+locThreshold65"
+nestingThreshold3"
+cyclomaticThreshold15(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS4423(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBU
-javaS7180(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBBBI
+javaS7180(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBBBI
 javaS1123(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS1116(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBd
 javaS6203"
@@ -2080,7 +2080,7 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 javaS6856(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBb
 javaS6539"
 couplingThreshold20(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBU
-javaS7190(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBBBI
+javaS7190(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBBBI
 javaS4838(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS5838(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
 javaS2160(ØÁìæÖ20ØÁìæÖ2:$fb3776a4-c945-4377-807b-8dee5e6e9c8eBI
@@ -2270,9 +2270,9 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 csharpsquidS4144(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS1696(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS2328(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8Bj
-csharpsquidS2436"
-max2"
-	maxMethod3(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8Bj
+csharpsquidS2436"
+	maxMethod3"
+max2(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8Bj
 csharpsquidS5693"
 fileUploadSizeLimit8388608(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8P
 csharpsquidS2445(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
@@ -2308,7 +2308,7 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 csharpsquidS3256(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS2486(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS1117(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8B\
-csharpsquidS6967(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BBBP
+csharpsquidS6967(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BBBP
 csharpsquidS2681(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS2925(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS3169(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
@@ -2332,14 +2332,14 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 csharpsquidS1643(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS3597(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS4277(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8Bn
-csharpsquidS110"
-max5"
-filteredClasses (ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
+csharpsquidS110"
+filteredClasses "
+max5(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS2479(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS2857(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8By
-csharpsquidS3776"
-propertyThreshold3"
-	threshold15(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
+csharpsquidS3776"
+	threshold15"
+propertyThreshold3(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS6670(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS5445(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS5856(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
@@ -2357,9 +2357,9 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 csharpsquidS6609(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BJ
 csharpsquidS6640(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8P
 csharpsquidS3981(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8B½
-csharpsquidS2342"<
-flagsAttributeFormat$^([A-Z]{1,3}[a-z0-9]+)*([A-Z]{2})?s$"-
-format#^([A-Z]{1,3}[a-z0-9]+)*([A-Z]{2})?$(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
+csharpsquidS2342"-
+format#^([A-Z]{1,3}[a-z0-9]+)*([A-Z]{2})?$"<
+flagsAttributeFormat$^([A-Z]{1,3}[a-z0-9]+)*([A-Z]{2})?s$(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS2225(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS4663(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS1135(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
@@ -2397,9 +2397,9 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 csharpsquidS2699(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS2996(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS1944(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8B¤
-csharpsquidS6418"<
-secretWords-api[_\-]?key, auth, credential, secret, token"
-randomnessSensibility3(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8P
+csharpsquidS6418"
+randomnessSensibility3"<
+secretWords-api[_\-]?key, auth, credential, secret, token(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8P
 csharpsquidS4635(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS3443(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS2325(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
@@ -2549,11 +2549,11 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 csharpsquidS2223(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS3877(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BO
 csharpsquidS907(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8B¬
-csharpsquidS6664"
-debugThreshold4"
+csharpsquidS6664"
+warningThreshold1"
+errorThreshold1"
 informationThreshold2"
-errorThreshold1"
-warningThreshold1(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
+debugThreshold4(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS6668(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS3871(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS3598(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
@@ -2575,7 +2575,7 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 csharpsquidS2761(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS3172(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BP
 csharpsquidS6962(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8B\
-csharpsquidS6932(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BBBP
+csharpsquidS6932(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BBBP
 csharpsquidS6588(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BJ
 csharpsquidS4502(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8P
 csharpsquidS6930(ÀÉìæÖ20ÀÉìæÖ2:$451301f7-c32a-4a2b-b03a-ae6cd47ac0f8BJ
@@ -2649,9 +2649,9 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 phpS3626(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBG
 phpS128(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBH
 phpS1793(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBf
-phpS110"
-max5"
-filteredClasses (ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBB
+phpS110"
+filteredClasses "
+max5(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBB
 phpS2245(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fG
 phpS905(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBH
 phpS5842(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBH
@@ -2670,15 +2670,15 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 phpS1697(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBB
 phpS6343(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fH
 phpS1186(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBu
-phpS1192"
-minimal_literal_length5"
-	threshold3(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBH
+phpS1192"
+	threshold3"
+minimal_literal_length5(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBH
 phpS2187(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBH
 phpS1784(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBH
 phpS1124(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fB…
-phpS1448"
-maximumMethodThreshold20"
-countNonpublicMethodstrue(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBG
+phpS1448"
+countNonpublicMethodstrue"
+maximumMethodThreshold20(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBG
 phpS105(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBH
 phpS1763(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBH
 phpS5708(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBH
@@ -2724,9 +2724,9 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 
 max150(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBH
 phpS5850(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBš
-phpS6418"8
-secretWords)api[_.-]?key,auth,credential,secret,token"
-randomnessSensibility5.0(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fB
+phpS6418"
+randomnessSensibility5.0"8
+secretWords)api[_.-]?key,auth,credential,secret,token(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fB
 phpS5122(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fj
 phpS2068"&
 credentialWordspassword,passwd,pwd(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fH
@@ -2737,9 +2737,9 @@ safeImages (ØÁìæÖ20ØÁìæÖ2:$b3c4fd0f-189f-4247-8d69-ef660b16217dQ
 phpS1155(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBB
 phpS4502(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fH
 phpS6328(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBf
-phpS107"
-max7"
-constructorMax7(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBH
+phpS107"
+constructorMax7"
+max7(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBH
 phpS6393(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBH
 phpS1600(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBH
 phpS6347(ÀÉìæÖ20ÀÉìæÖ2:$a3980b67-4f77-4bc2-9694-ce8e4f1a1d7fBG
@@ -2864,9 +2864,9 @@ typescriptS4275"
 
 typescriptS6789(ÀÉìæÖ20ÀÉìæÖ2:$c83a1620-6178-43ca-8456-7677ced366dbBB‡
 
-typescriptS5693"
-standardSizeLimit2000000"
-fileUploadSizeLimit8000000(ÀÉìæÖ20ÀÉìæÖ2:$c83a1620-6178-43ca-8456-7677ced366dbO
+typescriptS5693"
+fileUploadSizeLimit8000000"
+standardSizeLimit2000000(ÀÉìæÖ20ÀÉìæÖ2:$c83a1620-6178-43ca-8456-7677ced366dbO
 
 typescriptS6590(ÀÉìæÖ20ÀÉìæÖ2:$c83a1620-6178-43ca-8456-7677ced366dbBO
 
@@ -3224,9 +3224,9 @@ typescriptS6598(ÀÉìæÖ20ÀÉìæÖ2:$c83a1620-6178-43ca-8456-7677ced366dbBO
 
 typescriptS6435(ÀÉìæÖ20ÀÉìæÖ2:$c83a1620-6178-43ca-8456-7677ced366dbB¡
 
-typescriptS6418"8
-secretWords)api[_.-]?key,auth,credential,secret,token"
-randomnessSensibility5.0(ÀÉìæÖ20ÀÉìæÖ2:$c83a1620-6178-43ca-8456-7677ced366dbO
+typescriptS6418"
+randomnessSensibility5.0"8
+secretWords)api[_.-]?key,auth,credential,secret,token(ÀÉìæÖ20ÀÉìæÖ2:$c83a1620-6178-43ca-8456-7677ced366dbO
 
 typescriptS1533(ÀÉìæÖ20ÀÉìæÖ2:$c83a1620-6178-43ca-8456-7677ced366dbBO
 
@@ -3518,9 +3518,9 @@ typescriptS7060(ÀÉìæÖ20ÀÉìæÖ2:$c83a1620-6178-43ca-8456-7677ced366dbBB
 azureresourcemanagerS6364"
 backup_retention_duration30(ÀÉìæÖ20ÀÉìæÖ2:$b9a5c972-328e-4aa6-b91a-d509f585b069S
 azureresourcemanagerS6378(ÀÉìæÖ20ÀÉìæÖ2:$b9a5c972-328e-4aa6-b91a-d509f585b069†
-azureresourcemanagerS1192"
-minimal_literal_length5"
-	threshold5(ÀÉìæÖ20ÀÉìæÖ2:$b9a5c972-328e-4aa6-b91a-d509f585b069BY
+azureresourcemanagerS1192"
+	threshold5"
+minimal_literal_length5(ÀÉìæÖ20ÀÉìæÖ2:$b9a5c972-328e-4aa6-b91a-d509f585b069BY
 azureresourcemanagerS6953(ÀÉìæÖ20ÀÉìæÖ2:$b9a5c972-328e-4aa6-b91a-d509f585b069BS
 azureresourcemanagerS6388(ÀÉìæÖ20ÀÉìæÖ2:$b9a5c972-328e-4aa6-b91a-d509f585b069S
 azureresourcemanagerS6380(ÀÉìæÖ20ÀÉìæÖ2:$b9a5c972-328e-4aa6-b91a-d509f585b069Y
@@ -3532,7 +3532,7 @@ typescriptS7060(ÀÉìæÖ20ÀÉìæÖ2:$c83a1620-6178-43ca-8456-7677ced366dbBB
 azureresourcemanagerS6874(ÀÉìæÖ20ÀÉìæÖ2:$b9a5c972-328e-4aa6-b91a-d509f585b069BBq
 azureresourcemanagerS6413"
 log_retention_duration14(ÀÉìæÖ20ÀÉìæÖ2:$b9a5c972-328e-4aa6-b91a-d509f585b069e
-azureresourcemanagerS6952(ÀÉìæÖ20ÀÉìæÖ2:$b9a5c972-328e-4aa6-b91a-d509f585b069BBBY
+azureresourcemanagerS6952(ÀÉìæÖ20ÀÉìæÖ2:$b9a5c972-328e-4aa6-b91a-d509f585b069BBBY
 azureresourcemanagerS6955(ÀÉìæÖ20ÀÉìæÖ2:$b9a5c972-328e-4aa6-b91a-d509f585b069BS
 azureresourcemanagerS6387(ÀÉìæÖ20ÀÉìæÖ2:$b9a5c972-328e-4aa6-b91a-d509f585b069C
 textS6389(ÀÉìæÖ20ÀÉìæÖ2:$17621904-094c-49a3-bc6e-5f11ea8d03edJ
@@ -3619,9 +3619,9 @@ typescriptS7060(ÀÉìæÖ20ÀÉìæÖ2:$c83a1620-6178-43ca-8456-7677ced366dbBB
 vbnetS5445(ÀÉìæÖ20ÀÉìæÖ2:$48da6346-78b6-420b-8e93-079533de1c72BJ
 vbnetS6608(ÀÉìæÖ20ÀÉìæÖ2:$48da6346-78b6-420b-8e93-079533de1c72BJ
 vbnetS4830(ÀÉìæÖ20ÀÉìæÖ2:$48da6346-78b6-420b-8e93-079533de1c72B·
-vbnetS2342"<
-flagsAttributeFormat$^([A-Z]{1,3}[a-z0-9]+)*([A-Z]{2})?s$"-
-format#^([A-Z]{1,3}[a-z0-9]+)*([A-Z]{2})?$(ÀÉìæÖ20ÀÉìæÖ2:$48da6346-78b6-420b-8e93-079533de1c72BJ
+vbnetS2342"-
+format#^([A-Z]{1,3}[a-z0-9]+)*([A-Z]{2})?$"<
+flagsAttributeFormat$^([A-Z]{1,3}[a-z0-9]+)*([A-Z]{2})?s$(ÀÉìæÖ20ÀÉìæÖ2:$48da6346-78b6-420b-8e93-079533de1c72BJ
 vbnetS3923(ÀÉìæÖ20ÀÉìæÖ2:$48da6346-78b6-420b-8e93-079533de1c72BJ
 vbnetS1186(ÀÉìæÖ20ÀÉìæÖ2:$48da6346-78b6-420b-8e93-079533de1c72BJ
 vbnetS1764(ÀÉìæÖ20ÀÉìæÖ2:$48da6346-78b6-420b-8e93-079533de1c72BJ
@@ -3655,9 +3655,9 @@ typescriptS7060(ÀÉìæÖ20ÀÉìæÖ2:$c83a1620-6178-43ca-8456-7677ced366dbBB
 vbnetS6617(ÀÉìæÖ20ÀÉìæÖ2:$48da6346-78b6-420b-8e93-079533de1c72BD
 vbnetS4036(ÀÉìæÖ20ÀÉìæÖ2:$48da6346-78b6-420b-8e93-079533de1c72J
 vbnetS2344(ÀÉìæÖ20ÀÉìæÖ2:$48da6346-78b6-420b-8e93-079533de1c72Bs
-vbnetS3776"
-propertyThreshold3"
-	threshold15(ÀÉìæÖ20ÀÉìæÖ2:$48da6346-78b6-420b-8e93-079533de1c72By
+vbnetS3776"
+	threshold15"
+propertyThreshold3(ÀÉìæÖ20ÀÉìæÖ2:$48da6346-78b6-420b-8e93-079533de1c72By
 vbnetS114".
 format$^I([A-Z]{1,3}[a-z0-9]+)*([A-Z]{2})?$(ÀÉìæÖ20ÀÉìæÖ2:$48da6346-78b6-420b-8e93-079533de1c72BJ
 vbnetS2757(ÀÉìæÖ20ÀÉìæÖ2:$48da6346-78b6-420b-8e93-079533de1c72BJ

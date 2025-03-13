@@ -1,0 +1,1 @@
+ÿ0 2webX2hr3war/resources/dojo/tests/io/test_IframeIO.text.html

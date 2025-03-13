@@ -1,1 +1,1 @@
-à 2javaXËhr8src/com/serotonin/mango/view/stats/AnalogStatistics.java
+à 2xmlXÌhr3build/resources/dojo/tests/flash/resources/test.xml

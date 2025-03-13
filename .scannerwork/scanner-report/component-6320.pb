@@ -1,0 +1,1 @@
+°1 2jsXòhr.war/resources/dojo/tests/MockXMLHttpRequest.js

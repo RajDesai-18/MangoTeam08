@@ -1,1 +1,1 @@
-¤ 2webXVhr,war/resources/dojo/tests/lfx/test_fades.html
+¤ 2jspX±hr#build/WEB-INF/snippet/eventList.jsp

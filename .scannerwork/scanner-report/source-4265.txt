@@ -1,279 +1,52 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-<title>Dialog Widget Dojo Tests</title>
-<script type="text/javascript"> djConfig = { isDebug: true }; </script>
-<script type="text/javascript" src="../../dojo.js"></script>
-<script type="text/javascript">
-	dojo.require("dojo.widget.FloatingPane");
-</script>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<script type="text/javascript">
-var dlg;
-function init(e) {
-	dlg = dojo.widget.byId("ModalFloatingPane");
-	var btn = document.getElementById("hider");
-	dojo.event.connect(btn, "onclick", dlg, "hide");
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.db.upgrade;
+
+import java.io.OutputStream;
+
+/**
+ * @author Matthew Lohbihler
+ */
+public class Upgrade1_11_1 extends DBUpgrade {
+    @Override
+    public void upgrade() throws Exception {
+        OutputStream out = createUpdateLogOutputStream("1_11_1");
+
+        // Run the script.
+        runScript(script1, out);
+
+        out.flush();
+        out.close();
+    }
+
+    @Override
+    protected String getNewSchemaVersion() {
+        return "1.12.0";
+    }
+
+    private static String[] script1 = { //
+            "alter table reportInstanceEvents add column alternateAckSource int;", //
+
+            "alter table mangoViewUsers drop foreign key mangoViewUsersFk1;", //
+            "alter table mangoViewUsers add constraint mangoViewUsersFk1 foreign key (mangoViewId) references mangoViews(id);", //
+
+            "alter table watchListUsers drop foreign key watchListUsersFk1;", //
+            "alter table watchListUsers add constraint watchListUsersFk1 foreign key (watchListId) references watchLists(id);", //
+    };
 }
-dojo.addOnLoad(init);
-
-</script>
-<style type="text/css">
-body { font-family : sans-serif; }
-.dojoDialog {
-	background : #eee;
-	border : 1px solid #999;
-	-moz-border-radius : 5px;
-	padding : 4px;
-}
-
-form {
-	margin-bottom : 0;
-}
-</style>
-</head>
-<body>
-<a href="javascript:dlg.show()">Show</a>
-
-<div dojoType="ModalFloatingPane" id="ModalFloatingPane" title="My Modal Floating Pane"
-	style="width: 400px; height: 200px;"
-	bgColor="white" bgOpacity="0.5" toggle="fade" toggleDuration="250">
-	<form onsubmit="return false;">
-		<table>
-			<tr>
-				<td>Name:</td>
-				<td><input type="text"></td>
-			</tr>
-			<tr>
-				<td>Location:</td>
-				<td><input type="text"></td>
-			</tr>
-			<tr>
-				<td>Description:</td>
-				<td><input type="text"></td>
-			</tr>
-			<tr>
-				<td>Location:</td>
-				<td><input type="file"></td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center">
-					<input type="button" id="hider" value="OK"></td>
-			</tr>
-		</table>
-	</form>
-</div>
-
-<select>
-	<option>Lorem</option>
-	<option>ipsum</option>
-	<option>dolor</option>
-	<option>sit</option>
-	<option>amet</option>
-</select>
-
-<p>
-Press the link above to show the modalfloatingpane. Click ok button in it to 
-hide it. If you close it by clicking the close button in the titlebar, you can not 
-show it again before reloading this page.
-</p>
-<p>Aliquam vitae enim. Duis scelerisque metus auctor est venenatis
-imperdiet. Fusce dignissim porta augue. Nulla vestibulum. Integer lorem
-nunc, ullamcorper a, commodo ac, malesuada sed, dolor. Aenean id mi in
-massa bibendum suscipit. Integer eros. Nullam suscipit mauris. In
-pellentesque. Mauris ipsum est, pharetra semper, pharetra in, viverra
-quis, tellus. Etiam purus. Quisque egestas, tortor ac cursus lacinia,
-felis leo adipiscing nisi, et rhoncus elit dolor eget eros. Fusce ut
-quam. Suspendisse eleifend leo vitae ligula. Nulla facilisi. Nulla
-rutrum, erat vitae lacinia dictum, pede purus imperdiet lacus, ut
-semper velit ante id metus. Praesent massa dolor, porttitor sed,
-pulvinar in, consequat ut, leo. Nullam nec est. Aenean id risus blandit
-tortor pharetra congue. Suspendisse pulvinar.
-</p>
-<p>Vestibulum convallis eros ac justo. Proin dolor. Etiam aliquam. Nam
-ornare elit vel augue. Suspendisse potenti. Etiam sed mauris eu neque
-nonummy mollis. Vestibulum vel purus ac pede semper accumsan. Vivamus
-lobortis, sem vitae nonummy lacinia, nisl est gravida magna, non cursus
-est quam sed urna. Phasellus adipiscing justo in ipsum. Duis sagittis
-dolor sit amet magna. Suspendisse suscipit, neque eu dictum auctor,
-nisi augue tincidunt arcu, non lacinia magna purus nec magna. Praesent
-pretium sollicitudin sapien. Suspendisse imperdiet. Class aptent taciti
-sociosqu ad litora torquent per conubia nostra, per inceptos
-hymenaeos.
-</p>
-<form>
-	<center>
-		<select>
-			<option>1</option>
-			<option>2</option>
-		</select>
-	</center>
-</form>
-<p>Mauris pharetra lorem sit amet sapien. Nulla libero metus, tristique
-et, dignissim a, tempus et, metus. Ut libero. Vivamus tempus purus vel
-ipsum. Quisque mauris urna, vestibulum commodo, rutrum vitae, ultrices
-vitae, nisl. Class aptent taciti sociosqu ad litora torquent per
-conubia nostra, per inceptos hymenaeos. Nulla id erat sit amet odio
-luctus eleifend. Proin massa libero, ultricies non, tincidunt a,
-vestibulum non, tellus. Nunc nunc purus, lobortis a, pulvinar at,
-egestas a, mi. Cras adipiscing velit a mauris. Morbi felis. Etiam at
-felis. Cras eget eros et justo mattis pulvinar. Nullam at justo id
-risus porttitor dignissim. Vestibulum sed velit vel metus tincidunt
-tempus. Nunc euismod nisl id dolor tristique tincidunt. Nullam placerat
-turpis sed odio. Curabitur in est id nibh tempus ultrices. Aliquam
-consectetuer dapibus eros. Aliquam nisl.
-</p>
-
-<p>
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
-semper sagittis velit. Cras in mi. Duis porta mauris ut ligula. Proin
-porta rutrum lacus. Etiam consequat scelerisque quam. Nulla facilisi.
-Maecenas luctus venenatis nulla. In sit amet dui non mi semper iaculis.
-Sed molestie tortor at ipsum. Morbi dictum rutrum magna. Sed vitae
-risus.
-</p>
-<p>Aliquam vitae enim. Duis scelerisque metus auctor est venenatis
-imperdiet. Fusce dignissim porta augue. Nulla vestibulum. Integer lorem
-nunc, ullamcorper a, commodo ac, malesuada sed, dolor. Aenean id mi in
-massa bibendum suscipit. Integer eros. Nullam suscipit mauris. In
-pellentesque. Mauris ipsum est, pharetra semper, pharetra in, viverra
-quis, tellus. Etiam purus. Quisque egestas, tortor ac cursus lacinia,
-felis leo adipiscing nisi, et rhoncus elit dolor eget eros. Fusce ut
-quam. Suspendisse eleifend leo vitae ligula. Nulla facilisi. Nulla
-rutrum, erat vitae lacinia dictum, pede purus imperdiet lacus, ut
-semper velit ante id metus. Praesent massa dolor, porttitor sed,
-pulvinar in, consequat ut, leo. Nullam nec est. Aenean id risus blandit
-tortor pharetra congue. Suspendisse pulvinar.
-</p>
-<p>Vestibulum convallis eros ac justo. Proin dolor. Etiam aliquam. Nam
-ornare elit vel augue. Suspendisse potenti. Etiam sed mauris eu neque
-nonummy mollis. Vestibulum vel purus ac pede semper accumsan. Vivamus
-lobortis, sem vitae nonummy lacinia, nisl est gravida magna, non cursus
-est quam sed urna. Phasellus adipiscing justo in ipsum. Duis sagittis
-dolor sit amet magna. Suspendisse suscipit, neque eu dictum auctor,
-nisi augue tincidunt arcu, non lacinia magna purus nec magna. Praesent
-pretium sollicitudin sapien. Suspendisse imperdiet. Class aptent taciti
-sociosqu ad litora torquent per conubia nostra, per inceptos
-hymenaeos.
-</p>
-<form>
-	<center>
-		<select>
-			<option>1</option>
-			<option>2</option>
-		</select>
-	</center>
-</form>
-<p>Mauris pharetra lorem sit amet sapien. Nulla libero metus, tristique
-et, dignissim a, tempus et, metus. Ut libero. Vivamus tempus purus vel
-ipsum. Quisque mauris urna, vestibulum commodo, rutrum vitae, ultrices
-vitae, nisl. Class aptent taciti sociosqu ad litora torquent per
-conubia nostra, per inceptos hymenaeos. Nulla id erat sit amet odio
-luctus eleifend. Proin massa libero, ultricies non, tincidunt a,
-vestibulum non, tellus. Nunc nunc purus, lobortis a, pulvinar at,
-egestas a, mi. Cras adipiscing velit a mauris. Morbi felis. Etiam at
-felis. Cras eget eros et justo mattis pulvinar. Nullam at justo id
-risus porttitor dignissim. Vestibulum sed velit vel metus tincidunt
-tempus. Nunc euismod nisl id dolor tristique tincidunt. Nullam placerat
-turpis sed odio. Curabitur in est id nibh tempus ultrices. Aliquam
-consectetuer dapibus eros. Aliquam nisl.
-</p>
-
-<a href="javascript:dlg.show()">Show</a>
-<p>
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
-semper sagittis velit. Cras in mi. Duis porta mauris ut ligula. Proin
-porta rutrum lacus. Etiam consequat scelerisque quam. Nulla facilisi.
-Maecenas luctus venenatis nulla. In sit amet dui non mi semper iaculis.
-Sed molestie tortor at ipsum. Morbi dictum rutrum magna. Sed vitae
-risus.
-</p>
-<p>Aliquam vitae enim. Duis scelerisque metus auctor est venenatis
-imperdiet. Fusce dignissim porta augue. Nulla vestibulum. Integer lorem
-nunc, ullamcorper a, commodo ac, malesuada sed, dolor. Aenean id mi in
-massa bibendum suscipit. Integer eros. Nullam suscipit mauris. In
-pellentesque. Mauris ipsum est, pharetra semper, pharetra in, viverra
-quis, tellus. Etiam purus. Quisque egestas, tortor ac cursus lacinia,
-felis leo adipiscing nisi, et rhoncus elit dolor eget eros. Fusce ut
-quam. Suspendisse eleifend leo vitae ligula. Nulla facilisi. Nulla
-rutrum, erat vitae lacinia dictum, pede purus imperdiet lacus, ut
-semper velit ante id metus. Praesent massa dolor, porttitor sed,
-pulvinar in, consequat ut, leo. Nullam nec est. Aenean id risus blandit
-tortor pharetra congue. Suspendisse pulvinar.
-</p>
-<p>Vestibulum convallis eros ac justo. Proin dolor. Etiam aliquam. Nam
-ornare elit vel augue. Suspendisse potenti. Etiam sed mauris eu neque
-nonummy mollis. Vestibulum vel purus ac pede semper accumsan. Vivamus
-lobortis, sem vitae nonummy lacinia, nisl est gravida magna, non cursus
-est quam sed urna. Phasellus adipiscing justo in ipsum. Duis sagittis
-dolor sit amet magna. Suspendisse suscipit, neque eu dictum auctor,
-nisi augue tincidunt arcu, non lacinia magna purus nec magna. Praesent
-pretium sollicitudin sapien. Suspendisse imperdiet. Class aptent taciti
-sociosqu ad litora torquent per conubia nostra, per inceptos
-hymenaeos.
-</p>
-<p>Mauris pharetra lorem sit amet sapien. Nulla libero metus, tristique
-et, dignissim a, tempus et, metus. Ut libero. Vivamus tempus purus vel
-ipsum. Quisque mauris urna, vestibulum commodo, rutrum vitae, ultrices
-vitae, nisl. Class aptent taciti sociosqu ad litora torquent per
-conubia nostra, per inceptos hymenaeos. Nulla id erat sit amet odio
-luctus eleifend. Proin massa libero, ultricies non, tincidunt a,
-vestibulum non, tellus. Nunc nunc purus, lobortis a, pulvinar at,
-egestas a, mi. Cras adipiscing velit a mauris. Morbi felis. Etiam at
-felis. Cras eget eros et justo mattis pulvinar. Nullam at justo id
-risus porttitor dignissim. Vestibulum sed velit vel metus tincidunt
-tempus. Nunc euismod nisl id dolor tristique tincidunt. Nullam placerat
-turpis sed odio. Curabitur in est id nibh tempus ultrices. Aliquam
-consectetuer dapibus eros. Aliquam nisl.
-</p>
-
-<p>
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
-semper sagittis velit. Cras in mi. Duis porta mauris ut ligula. Proin
-porta rutrum lacus. Etiam consequat scelerisque quam. Nulla facilisi.
-Maecenas luctus venenatis nulla. In sit amet dui non mi semper iaculis.
-Sed molestie tortor at ipsum. Morbi dictum rutrum magna. Sed vitae
-risus.
-</p>
-<p>Aliquam vitae enim. Duis scelerisque metus auctor est venenatis
-imperdiet. Fusce dignissim porta augue. Nulla vestibulum. Integer lorem
-nunc, ullamcorper a, commodo ac, malesuada sed, dolor. Aenean id mi in
-massa bibendum suscipit. Integer eros. Nullam suscipit mauris. In
-pellentesque. Mauris ipsum est, pharetra semper, pharetra in, viverra
-quis, tellus. Etiam purus. Quisque egestas, tortor ac cursus lacinia,
-felis leo adipiscing nisi, et rhoncus elit dolor eget eros. Fusce ut
-quam. Suspendisse eleifend leo vitae ligula. Nulla facilisi. Nulla
-rutrum, erat vitae lacinia dictum, pede purus imperdiet lacus, ut
-semper velit ante id metus. Praesent massa dolor, porttitor sed,
-pulvinar in, consequat ut, leo. Nullam nec est. Aenean id risus blandit
-tortor pharetra congue. Suspendisse pulvinar.
-</p>
-<p>Vestibulum convallis eros ac justo. Proin dolor. Etiam aliquam. Nam
-ornare elit vel augue. Suspendisse potenti. Etiam sed mauris eu neque
-nonummy mollis. Vestibulum vel purus ac pede semper accumsan. Vivamus
-lobortis, sem vitae nonummy lacinia, nisl est gravida magna, non cursus
-est quam sed urna. Phasellus adipiscing justo in ipsum. Duis sagittis
-dolor sit amet magna. Suspendisse suscipit, neque eu dictum auctor,
-nisi augue tincidunt arcu, non lacinia magna purus nec magna. Praesent
-pretium sollicitudin sapien. Suspendisse imperdiet. Class aptent taciti
-sociosqu ad litora torquent per conubia nostra, per inceptos
-hymenaeos.
-</p>
-<p>Mauris pharetra lorem sit amet sapien. Nulla libero metus, tristique
-et, dignissim a, tempus et, metus. Ut libero. Vivamus tempus purus vel
-ipsum. Quisque mauris urna, vestibulum commodo, rutrum vitae, ultrices
-vitae, nisl. Class aptent taciti sociosqu ad litora torquent per
-conubia nostra, per inceptos hymenaeos. Nulla id erat sit amet odio
-luctus eleifend. Proin massa libero, ultricies non, tincidunt a,
-vestibulum non, tellus. Nunc nunc purus, lobortis a, pulvinar at,
-egestas a, mi. Cras adipiscing velit a mauris. Morbi felis. Etiam at
-felis. Cras eget eros et justo mattis pulvinar. Nullam at justo id
-risus porttitor dignissim. Vestibulum sed velit vel metus tincidunt
-tempus. Nunc euismod nisl id dolor tristique tincidunt. Nullam placerat
-turpis sed odio. Curabitur in est id nibh tempus ultrices. Aliquam
-consectetuer dapibus eros. Aliquam nisl.
-</p>
-</body>
-</html>
-

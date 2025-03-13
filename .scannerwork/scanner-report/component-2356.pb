@@ -1,1 +1,1 @@
-´ 2javaX}hrLsrc/com/serotonin/mango/vo/dataSource/spinwave/SpinwaveV2PointLocatorVO.java
+´ 2webXHhr=build/resources/dojo/tests/io/test_BrowserIO.loadProblem.html

@@ -1,1 +1,1 @@
-½ 2javaX=hr8src/com/serotonin/mango/rt/dataSource/snmp/Version1.java
+½ 2webXhr<build/resources/dojo/src/widget/templates/richtextframe.html

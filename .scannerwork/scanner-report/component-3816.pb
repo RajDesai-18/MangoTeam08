@@ -1,1 +1,0 @@
-è 2jsX>hr2war/resources/dojo/tests/collections/test_Stack.js

@@ -1,1 +1,1 @@
-‚ 2javaXhr=src/com/serotonin/mango/web/dwr/beans/DataPointDefaulter.java
+‚ 2webXwhrAbuild/resources/dojo/tests/style/test_absolutePositionStrict.html

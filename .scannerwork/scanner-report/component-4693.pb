@@ -1,1 +1,1 @@
-Õ$ 2jspXÒhr0war/WEB-INF/jsp/publisherEdit/editPersistent.jsp
+Õ$ 2javaXãhr3src/com/serotonin/mango/vo/publish/PublisherVO.java

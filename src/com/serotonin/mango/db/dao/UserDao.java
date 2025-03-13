@@ -211,7 +211,7 @@ public class UserDao extends BaseDao {
                 ejt.update("update userComments set userId=null where userId=?", args);
                 ejt.update("delete from mailingListMembers where userId=?", args);
                 ejt.update("update pointValueAnnotations set sourceId=null where sourceId=? and sourceType="
-                        + SetPointSource.Types.USER, args);
+                        + SetPointSource.Type.USER, args);
                 ejt.update("delete from userEvents where userId=?", args);
                 ejt.update("update events set ackUserId=null, alternateAckSource="
                         + EventInstance.AlternateAcknowledgementSources.DELETED_USER + " where ackUserId=?", args);

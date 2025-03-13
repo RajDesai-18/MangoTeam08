@@ -1,1 +1,1 @@
-­% 2jspX&hr#war/WEB-INF/snippet/infoContent.jsp
+­% 2javaXRhr=src/com/serotonin/mango/web/email/MessageFormatDirective.java

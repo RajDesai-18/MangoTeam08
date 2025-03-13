@@ -1,1 +1,1 @@
-Ä 2javaXžhrHsrc/com/serotonin/mango/rt/dataSource/viconics/ViconicsDataSourceRT.java
+Ä 2webXhr?build/resources/dojo/src/widget/templates/SliderHorizontal.html

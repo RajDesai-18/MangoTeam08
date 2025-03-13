@@ -1,8 +1,4 @@
-[
-javaS1066/Merge this if statement with the enclosing one.2== :
-À<< 
-@i
-javaS116QRename this field "LOGGER" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.2(( `
-javaS1124EReorder the modifiers to comply with the Java Language Specification.2''	 @T
-javaS125<This block of commented-out lines of code should be removed.2FF R`
-javaS1124EReorder the modifiers to comply with the Java Language Specification.2RR @
+_
+WebDoctypePresenceCheck:Insert a <!DOCTYPE> declaration to before this <html> tag.2 V
+WebS5254@Add "lang" and/or "xml:lang" attributes to this "<html>" element2 A
+WebS1827)Remove this deprecated "width" attribute.2 y

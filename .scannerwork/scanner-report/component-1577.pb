@@ -1,0 +1,1 @@
+© 2flexXØhr>build/resources/dojo/src/flash/flash6/DojoExternalInterface.as

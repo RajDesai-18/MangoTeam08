@@ -1,1 +1,1 @@
-Ù 2javaX]hr:src/com/serotonin/mango/vo/permission/DataPointAccess.java
+Ù 2webX†hr,build/resources/dojo/tests/lfx/test_lfx.html

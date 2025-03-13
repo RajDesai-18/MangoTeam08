@@ -1,90 +1,524 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
+/*
+    Mango - Open Source M2M - http://mango.serotoninsoftware.com
+    Copyright (C) 2006-2011 Serotonin Software Technologies Inc.
+    @author Matthew Lohbihler
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-<title>FloatingPane Launcher Demo</title>
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-<script type="text/javascript">
-	var djConfig = {isDebug: true};
-</script>
-<script type="text/javascript" src="../../dojo.js"></script>
-<script language="JavaScript" type="text/javascript">
-	dojo.require("dojo.widget.Toggler");
-	dojo.require("dojo.widget.FloatingPane");
-</script>
-</head>
-<body>
-<h1> Toggler Test </h1>
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.serotonin.mango.rt.dataImage;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-<div style="border: solid gray;">
-Click each of these targets (repeatedly) to test toggling:
-	<div dojoType="Toggler" targetId="explode" style="float: left; text-decoration: underline;">
-		explode
-	</div>
-	<img dojoType="Toggler" targetId="wipe" style="float: right" src="images/fisheye_3.png" width=20 height=20>
-	<div align=center>
-		<button dojoType="Toggler" targetId="fade">fade</button>
-		<span dojoType="Toggler" targetId="plain">plain</span>
-	</div>
-</div>
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import com.serotonin.ShouldNeverHappenException;
+import com.serotonin.mango.Common;
+import com.serotonin.mango.DataTypes;
+import com.serotonin.mango.db.dao.PointValueDao;
+import com.serotonin.mango.db.dao.SystemSettingsDao;
+import com.serotonin.mango.rt.RuntimeManager;
+import com.serotonin.mango.rt.dataImage.types.MangoValue;
+import com.serotonin.mango.rt.dataImage.types.NumericValue;
+import com.serotonin.mango.rt.dataSource.PointLocatorRT;
+import com.serotonin.mango.rt.event.detectors.PointEventDetectorRT;
+import com.serotonin.mango.rt.maint.work.WorkItem;
+import com.serotonin.mango.util.timeout.TimeoutClient;
+import com.serotonin.mango.util.timeout.TimeoutTask;
+import com.serotonin.mango.view.stats.AnalogStatistics;
+import com.serotonin.mango.view.stats.IValueTime;
+import com.serotonin.mango.vo.DataPointVO;
+import com.serotonin.mango.vo.event.PointEventDetectorVO;
+import com.serotonin.timer.FixedRateTrigger;
+import com.serotonin.timer.TimerTask;
+import com.serotonin.util.ILifecycle;
+import com.serotonin.util.ObjectUtils;
 
-<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nam facilisis enim. Pellentesque in elit et lacus euismod dignissim. Aliquam dolor pede, convallis eget, dictum a, blandit ac, urna. Pellentesque sed nunc ut justo volutpat egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. In erat. Suspendisse potenti. Fusce faucibus nibh sed nisi. Phasellus faucibus, dui a cursus dapibus, mauris nulla euismod velit, a lobortis turpis arcu vel dui. Pellentesque fermentum ultrices pede. Donec auctor lectus eu arcu. Curabitur non orci eget est porta gravida. Aliquam pretium orci id nisi. Duis faucibus, mi non adipiscing venenatis, erat urna aliquet elit, eu fringilla lacus tellus quis erat. Nam tempus ornare lorem. Nullam feugiat.</p>
+public class DataPointRT implements IDataPoint, ILifecycle, TimeoutClient {
+    private static final Log LOG = LogFactory.getLog(DataPointRT.class);
+    private static final PvtTimeComparator pvtTimeComparator = new PvtTimeComparator();
 
-<p>Sed congue. Aenean blandit sollicitudin mi. Maecenas pellentesque. Vivamus ac urna. Nunc consequat nisi vitae quam. Suspendisse sed nunc. Proin suscipit porta magna. Duis accumsan nunc in velit. Nam et nibh. Nulla facilisi. Cras venenatis urna et magna. Aenean magna mauris, bibendum sit amet, semper quis, aliquet nec, sapien. Aliquam aliquam odio quis erat. Etiam est nisi, condimentum non, lacinia ac, vehicula laoreet, elit. Sed interdum augue sit amet quam dapibus semper. Nulla facilisi. Pellentesque lobortis erat nec quam.</p>
+    // Configuration data.
+    private final DataPointVO vo;
+    private final PointLocatorRT pointLocator;
 
-<div dojoType="FloatingPane"
-	id="explode"
-	title="window #1"
-	constrainToContainer="true"
-	style="width: 300px; height: 200px; left: 200px; display:none;"
-	toggle="explode"
->
-		main panel with <a href="http://www.dojotoolkit.org/">a link</a>.<br />
-		(to check we're copying children around properly).<br />
-</div>
+    // Runtime data.
+    private volatile PointValueTime pointValue;
+    private final PointValueCache valueCache;
+    private RuntimeManager rm;
+    private List<PointEventDetectorRT> detectors;
+    private final Map<String, Object> attributes = new HashMap<String, Object>();
 
+    // Interval logging data.
+    private PointValueTime intervalValue;
+    private long intervalStartTime = -1;
+    private List<IValueTime> averagingValues;
+    private final Object intervalLoggingLock = new Object();
+    private TimerTask intervalLoggingTask;
 
-<div dojoType="FloatingPane"
-	id="fade"
-	title="window #2 w/shadow"
-	constrainToContainer="true"
-	hasShadow="true"
-	style="width: 300px; height: 200px; left: 0px; display:none"
-	toggle="fade"
->
-		main panel with <a href="http://www.dojotoolkit.org/">a link</a>.<br />
-		(to check we're copying children around properly).<br />
-</div>
+    /**
+     * This is the value around which tolerance decisions will be made when
+     * determining whether to log numeric values.
+     */
+    private double toleranceOrigin;
 
-<div dojoType="FloatingPane"
-	id="wipe"
-	title="window #3 w/shadow"
-	constrainToContainer="true"
-	hasShadow="true"
-	style="width: 300px; height: 200px; left: 600px; display:none"
-	toggle="wipe"
->
-		main panel with <a href="http://www.dojotoolkit.org/">a link</a>.<br />
-		(to check we're copying children around properly).<br />
-</div>
+    public DataPointRT(DataPointVO vo, PointLocatorRT pointLocator) {
+        this.vo = vo;
+        this.pointLocator = pointLocator;
+        valueCache = new PointValueCache(vo.getId(), vo.getDefaultCacheSize());
+    }
 
-<div dojoType="FloatingPane"
-	id="plain"
-	title="plain"
-	constrainToContainer="true"
-	style="width: 100px; height: 100px; left: 400px; display:none"
->
-		main panel with <a href="http://www.dojotoolkit.org/">a link</a>.<br />
-		(to check we're copying children around properly).<br />
-</div>
+    public List<PointValueTime> getLatestPointValues(int limit) {
+        return valueCache.getLatestPointValues(limit);
+    }
 
-<p>Sed arcu magna, molestie at, fringilla in, sodales eu, elit. Curabitur mattis lorem et est. Quisque et tortor. Integer bibendum vulputate odio. Nam nec ipsum. Vestibulum mollis eros feugiat augue. Integer fermentum odio lobortis odio. Nullam mollis nisl non metus. Maecenas nec nunc eget pede ultrices blandit. Ut non purus ut elit convallis eleifend. Fusce tincidunt, justo quis tempus euismod, magna nulla viverra libero, sit amet lacinia odio diam id risus. Ut varius viverra turpis. Morbi urna elit, imperdiet eu, porta ac, pharetra sed, nisi. Etiam ante libero, ultrices ac, faucibus ac, cursus sodales, nisl. Praesent nisl sem, fermentum eu, consequat quis, varius interdum, nulla. Donec neque tortor, sollicitudin sed, consequat nec, facilisis sit amet, orci. Aenean ut eros sit amet ante pharetra interdum.</p>
+    public PointValueTime getPointValueBefore(long time) {
+        for (PointValueTime pvt : valueCache.getCacheContents()) {
+            if (pvt.getTime() < time)
+                return pvt;
+        }
 
-<p>Fusce rutrum pede eget quam. Praesent purus. Aenean at elit in sem volutpat facilisis. Nunc est augue, commodo at, pretium a, fermentum at, quam. Nam sit amet enim. Suspendisse potenti. Cras hendrerit rhoncus justo. Integer libero. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Sed adipiscing mi vel ipsum.</p>
+        return new PointValueDao().getPointValueBefore(vo.getId(), time);
+    }
 
-<p>Sed aliquam, quam consectetuer condimentum bibendum, neque libero commodo metus, non consectetuer magna risus vitae eros. Pellentesque mollis augue id libero. Morbi nonummy hendrerit dui. Morbi nisi felis, fringilla ac, euismod vitae, dictum mollis, pede. Integer suscipit, est sed posuere ullamcorper, ipsum lectus interdum nunc, quis blandit erat eros hendrerit pede. Vestibulum varius, elit id mattis mattis, nulla est feugiat ante, eget vestibulum augue eros ut odio. Maecenas euismod purus quis felis. Ut hendrerit tincidunt est. Fusce euismod, nunc eu tempus tempor, purus ligula volutpat tellus, nec lacinia sapien enim id risus. Aliquam orci turpis, condimentum sed, sollicitudin vel, placerat in, purus. Proin tortor nisl, blandit quis, imperdiet quis, scelerisque at, nisl. Maecenas suscipit fringilla erat. Curabitur consequat, dui blandit suscipit dictum, felis lectus imperdiet tellus, sit amet ornare risus mauris non ipsum. Fusce a purus. Vestibulum sodales. Sed porta ultrices nibh. Vestibulum metus.</p>
+    public PointValueTime getPointValueAt(long time) {
+        for (PointValueTime pvt : valueCache.getCacheContents()) {
+            if (pvt.getTime() == time)
+                return pvt;
+        }
 
-</body>
-</html>
+        return new PointValueDao().getPointValueAt(vo.getId(), time);
+    }
+
+    public List<PointValueTime> getPointValues(long since) {
+        List<PointValueTime> result = new PointValueDao().getPointValues(vo.getId(), since);
+
+        for (PointValueTime pvt : valueCache.getCacheContents()) {
+            if (pvt.getTime() >= since) {
+                int index = Collections.binarySearch(result, pvt, pvtTimeComparator);
+                if (index < 0)
+                    result.add(-index - 1, pvt);
+            }
+        }
+
+        return result;
+    }
+
+    public List<PointValueTime> getPointValuesBetween(long from, long to) {
+        List<PointValueTime> result = new PointValueDao().getPointValuesBetween(vo.getId(), from, to);
+
+        for (PointValueTime pvt : valueCache.getCacheContents()) {
+            if (pvt.getTime() >= from && pvt.getTime() < to) {
+                int index = Collections.binarySearch(result, pvt, pvtTimeComparator);
+                if (index < 0)
+                    result.add(-index - 1, pvt);
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * This method should only be called by the data source. Other types of point
+     * setting should include a set point
+     * source object so that the annotation can be logged.
+     * 
+     * @param newValue
+     */
+    public void updatePointValue(PointValueTime newValue) {
+        savePointValue(newValue, null, true);
+    }
+
+    public void updatePointValue(PointValueTime newValue, boolean async) {
+        savePointValue(newValue, null, async);
+    }
+
+    /**
+     * Use this method to update a data point for reasons other than just data
+     * source update.
+     * 
+     * @param newValue
+     *                 the value to set
+     * @param source
+     *                 the source of the set. This can be a user object if the point
+     *                 was set from the UI, or could be a
+     *                 program run by schedule or on event.
+     */
+    public void setPointValue(PointValueTime newValue, SetPointSource source) {
+        if (source == null)
+            savePointValue(newValue, source, true);
+        else
+            savePointValue(newValue, source, false);
+    }
+
+    private void savePointValue(PointValueTime newValue, SetPointSource source, boolean async) {
+        // Null values are not very nice, and since they don't have a specific meaning
+        // they are hereby ignored.
+        if (newValue == null)
+            return;
+
+        // Check the data type of the value against that of the locator, just for fun.
+        int valueDataType = DataTypes.getDataType(newValue.getValue());
+        if (valueDataType != DataTypes.UNKNOWN && valueDataType != vo.getPointLocator().getDataTypeId())
+            // This should never happen, but if it does it can have serious downstream
+            // consequences. Also, we need
+            // to know how it happened, and the stack trace here provides the best
+            // information.
+            throw new ShouldNeverHappenException("Data type mismatch between new value and point locator: newValue="
+                    + DataTypes.getDataType(newValue.getValue()) + ", locator=" + vo.getPointLocator().getDataTypeId());
+
+        // Check if this value qualifies for discardation.
+        if (vo.isDiscardExtremeValues() && DataTypes.getDataType(newValue.getValue()) == DataTypes.NUMERIC) {
+            double newd = newValue.getDoubleValue();
+            if (newd < vo.getDiscardLowLimit() || newd > vo.getDiscardHighLimit())
+                // Discard the value
+                return;
+        }
+
+        if (newValue.getTime() > System.currentTimeMillis() + SystemSettingsDao.getFutureDateLimit()) {
+            // Too far future dated. Toss it. But log a message first.
+            LOG.warn("Future dated value detected: pointId=" + vo.getId() + ", value=" + newValue.getStringValue()
+                    + ", type=" + vo.getPointLocator().getDataTypeId() + ", ts=" + newValue.getTime(), new Exception());
+            return;
+        }
+
+        boolean backdated = pointValue != null && newValue.getTime() < pointValue.getTime();
+
+        // Determine whether the new value qualifies for logging.
+        boolean logValue;
+        // ... or even saving in the cache.
+        boolean saveValue = true;
+        switch (vo.getLoggingType()) {
+            case DataPointVO.LoggingTypes.ON_CHANGE:
+                if (pointValue == null)
+                    logValue = true;
+                else if (backdated)
+                    // Backdated. Ignore it
+                    logValue = false;
+                else {
+                    if (newValue.getValue() instanceof NumericValue) {
+                        // Get the new double
+
+                        double newd = newValue.getDoubleValue();
+
+                        // See if the new value is outside of the tolerance.
+                        double diff = toleranceOrigin - newd;
+                        if (diff < 0)
+                            diff = -diff;
+
+                        if (diff > vo.getTolerance()) {
+                            toleranceOrigin = newd;
+                            logValue = true;
+                        } else
+                            logValue = false;
+                    } else
+                        logValue = !ObjectUtils.isEqual(newValue.getValue(), pointValue.getValue());
+                }
+
+                saveValue = logValue;
+                break;
+            case DataPointVO.LoggingTypes.ALL:
+                logValue = true;
+                break;
+            case DataPointVO.LoggingTypes.ON_TS_CHANGE:
+                if (pointValue == null)
+                    logValue = true;
+                else if (backdated)
+                    // Backdated. Ignore it
+                    logValue = false;
+                else
+                    logValue = newValue.getTime() != pointValue.getTime();
+
+                saveValue = logValue;
+                break;
+            case DataPointVO.LoggingTypes.INTERVAL:
+                if (!backdated)
+                    intervalSave(newValue);
+            default:
+                logValue = false;
+        }
+
+        if (saveValue)
+            valueCache.savePointValue(newValue, source, logValue, async);
+
+        // Ignore historical values.
+        if (pointValue == null || newValue.getTime() >= pointValue.getTime()) {
+            PointValueTime oldValue = pointValue;
+            pointValue = newValue;
+            fireEvents(oldValue, newValue, source != null, false);
+        } else
+            fireEvents(null, newValue, false, true);
+    }
+
+    //
+    // / Interval logging
+    //
+    private void initializeIntervalLogging() {
+        synchronized (intervalLoggingLock) {
+            if (vo.getLoggingType() != DataPointVO.LoggingTypes.INTERVAL)
+                return;
+
+            intervalLoggingTask = new TimeoutTask(new FixedRateTrigger(0, Common.getMillis(
+                    vo.getIntervalLoggingPeriodType(), vo.getIntervalLoggingPeriod())), this);
+
+            intervalValue = pointValue;
+            if (vo.getIntervalLoggingType() == DataPointVO.IntervalLoggingTypes.AVERAGE) {
+                intervalStartTime = System.currentTimeMillis();
+                averagingValues = new ArrayList<IValueTime>();
+            }
+        }
+    }
+
+    private void terminateIntervalLogging() {
+        synchronized (intervalLoggingLock) {
+            if (vo.getLoggingType() != DataPointVO.LoggingTypes.INTERVAL)
+                return;
+
+            intervalLoggingTask.cancel();
+        }
+    }
+
+    private void intervalSave(PointValueTime pvt) {
+        synchronized (intervalLoggingLock) {
+            if (vo.getIntervalLoggingType() == DataPointVO.IntervalLoggingTypes.MAXIMUM) {
+                if (intervalValue == null)
+                    intervalValue = pvt;
+                else if (pvt != null) {
+                    if (intervalValue.getDoubleValue() < pvt.getDoubleValue())
+                        intervalValue = pvt;
+                }
+            } else if (vo.getIntervalLoggingType() == DataPointVO.IntervalLoggingTypes.MINIMUM) {
+                if (intervalValue == null)
+                    intervalValue = pvt;
+                else if (pvt != null) {
+                    if (intervalValue.getDoubleValue() > pvt.getDoubleValue())
+                        intervalValue = pvt;
+                }
+            } else if (vo.getIntervalLoggingType() == DataPointVO.IntervalLoggingTypes.AVERAGE)
+                averagingValues.add(pvt);
+        }
+    }
+
+    public void scheduleTimeout(long fireTime) {
+        synchronized (intervalLoggingLock) {
+            MangoValue value;
+            if (vo.getIntervalLoggingType() == DataPointVO.IntervalLoggingTypes.INSTANT)
+                value = PointValueTime.getValue(pointValue);
+            else if (vo.getIntervalLoggingType() == DataPointVO.IntervalLoggingTypes.MAXIMUM
+                    || vo.getIntervalLoggingType() == DataPointVO.IntervalLoggingTypes.MINIMUM) {
+                value = PointValueTime.getValue(intervalValue);
+                intervalValue = pointValue;
+            } else if (vo.getIntervalLoggingType() == DataPointVO.IntervalLoggingTypes.AVERAGE) {
+                AnalogStatistics stats = new AnalogStatistics(intervalValue, averagingValues, intervalStartTime,
+                        fireTime);
+                value = new NumericValue(stats.getAverage());
+
+                intervalValue = pointValue;
+                averagingValues.clear();
+                intervalStartTime = fireTime;
+            } else
+                throw new ShouldNeverHappenException("Unknown interval logging type: " + vo.getIntervalLoggingType());
+
+            if (value != null)
+                valueCache.logPointValueAsync(new PointValueTime(value, fireTime), null);
+        }
+    }
+
+    //
+    // / Purging
+    //
+    public void resetValues() {
+        valueCache.reset();
+        if (vo.getLoggingType() != DataPointVO.LoggingTypes.NONE)
+            pointValue = valueCache.getLatestPointValue();
+    }
+
+    //
+    // /
+    // / Properties
+    // /
+    //
+    public int getId() {
+        return vo.getId();
+    }
+
+    public PointValueTime getPointValue() {
+        return pointValue;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends PointLocatorRT> T getPointLocator() {
+        return (T) pointLocator;
+    }
+
+    public int getDataSourceId() {
+        return vo.getDataSourceId();
+    }
+
+    public DataPointVO getVO() {
+        return vo;
+    }
+
+    public int getDataTypeId() {
+        return vo.getPointLocator().getDataTypeId();
+    }
+
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttribute(String key, Object value) {
+        attributes.put(key, value);
+    }
+
+    public Object getAttribute(String key) {
+        return attributes.get(key);
+    }
+
+    @Override
+    public int hashCode() {
+        final int PRIME = 31;
+        int result = 1;
+        result = PRIME * result + getId();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final DataPointRT other = (DataPointRT) obj;
+        if (getId() != other.getId())
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "DataPointRT(id=" + getId() + ", name=" + vo.getName() + ")";
+    }
+
+    //
+    // /
+    // / Listeners
+    // /
+    //
+    private void fireEvents(PointValueTime oldValue, PointValueTime newValue, boolean set, boolean backdate) {
+        DataPointListener l = rm.getDataPointListeners(vo.getId());
+        if (l != null)
+            Common.ctx.getBackgroundProcessing().addWorkItem(
+                    new EventNotifyWorkItem(l, oldValue, newValue, set, backdate));
+    }
+
+    class EventNotifyWorkItem implements WorkItem {
+        private final DataPointListener listener;
+        private final PointValueTime oldValue;
+        private final PointValueTime newValue;
+        private final boolean set;
+        private final boolean backdate;
+
+        EventNotifyWorkItem(DataPointListener listener, PointValueTime oldValue, PointValueTime newValue, boolean set,
+                boolean backdate) {
+            this.listener = listener;
+            this.oldValue = oldValue;
+            this.newValue = newValue;
+            this.set = set;
+            this.backdate = backdate;
+        }
+
+        @Override
+        public void execute() {
+            if (backdate)
+                listener.pointBackdated(newValue);
+            else {
+                // Always fire this.
+                listener.pointUpdated(newValue);
+
+                // Fire if the point has changed.
+                if (!PointValueTime.equalValues(oldValue, newValue))
+                    listener.pointChanged(oldValue, newValue);
+
+                // Fire if the point was set.
+                if (set)
+                    listener.pointSet(oldValue, newValue);
+            }
+        }
+
+        @Override
+        public int getPriority() {
+            return WorkItem.PRIORITY_MEDIUM;
+        }
+    }
+
+    //
+    //
+    // Lifecycle
+    //
+    public void initialize() {
+        rm = Common.ctx.getRuntimeManager();
+
+        // Get the latest value for the point from the database.
+        pointValue = valueCache.getLatestPointValue();
+
+        // Set the tolerance origin if this is a numeric
+        if (pointValue != null && pointValue.getValue() instanceof NumericValue)
+            toleranceOrigin = pointValue.getDoubleValue();
+
+        // Add point event listeners
+        for (PointEventDetectorVO ped : vo.getEventDetectors()) {
+            if (detectors == null)
+                detectors = new ArrayList<PointEventDetectorRT>();
+
+            PointEventDetectorRT pedRT = ped.createRuntime();
+            detectors.add(pedRT);
+            rm.addPointEventDetector(pedRT);
+            rm.addDataPointListener(vo.getId(), pedRT);
+        }
+
+        initializeIntervalLogging();
+    }
+
+    public void terminate() {
+        terminateIntervalLogging();
+
+        if (detectors != null) {
+            for (PointEventDetectorRT pedRT : detectors) {
+                rm.removeDataPointListener(vo.getId(), pedRT);
+                rm.removePointEventDetector(pedRT.getEventDetectorKey());
+            }
+        }
+        Common.ctx.getEventManager().cancelEventsForDataPoint(vo.getId());
+    }
+
+    public void joinTermination() {
+        // no op
+    }
+
+    public void initializeHistorical() {
+        rm = Common.ctx.getRuntimeManager();
+        initializeIntervalLogging();
+    }
+
+    public void terminateHistorical() {
+        terminateIntervalLogging();
+    }
+}

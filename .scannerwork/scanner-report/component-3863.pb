@@ -1,1 +1,1 @@
-— 2webXJhr3war/resources/dojo/tests/dnd/test_draghandle_2.html
+— 2jspXÃhr1build/WEB-INF/jsp/dataSourceEdit/editBacnetIp.jsp

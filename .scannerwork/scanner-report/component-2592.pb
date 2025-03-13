@@ -1,0 +1,1 @@
+  2phpXhr.build/resources/dojo/tests/widget/showPost.php

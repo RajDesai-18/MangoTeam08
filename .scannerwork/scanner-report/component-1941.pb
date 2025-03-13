@@ -1,1 +1,1 @@
-• 2javaXhr<src/com/serotonin/mango/db/dao/CompoundEventDetectorDao.java
+• 2webXrhrIbuild/resources/dojo/src/widget/templates/Editor2/Dialog/insertimage.html

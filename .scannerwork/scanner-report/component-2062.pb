@@ -1,1 +1,0 @@
-Ž 2javaX;hrBsrc/com/serotonin/mango/rt/dataSource/meta/BinaryPointWrapper.java

@@ -1,13 +1,16 @@
-_
-javaS1066/Merge this if statement with the enclosing one.2
-òò :
-Ò
-óó 
-@´
-javaS2293çReplace the type specification in this constructor call with the diamond operator ("<>"). (sonar.java.source not set. Assuming 7 or greater.)2
-∏∏3 C@`
-javaS1124EReorder the modifiers to comply with the Java Language Specification.2tt @b
-javaS1124EReorder the modifiers to comply with the Java Language Specification.2
-ÉÉ @[
-javaS1155>Use isEmpty() to check whether the collection is empty or not.2
-àà* G@
+H
+
+javascriptS3504)Unexpected var, use let or const instead.211 H
+
+javascriptS3504)Unexpected var, use let or const instead.222 H
+
+javascriptS3504)Unexpected var, use let or const instead.244 ;
+
+javascriptS2814'source' is already defined.244 †
+
+javascriptS2392\Consider moving declaration of 'source' as it is referenced outside current binding context.244 :#
+!Ò11 Outside reference.H
+
+javascriptS3504)Unexpected var, use let or const instead.277 ;
+
+javascriptS2814'target' is already defined.277 

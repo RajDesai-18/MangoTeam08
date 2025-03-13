@@ -1,0 +1,1 @@
+• 2webX/hr/build/resources/dojo/tests/widget/loading1.html

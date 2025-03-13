@@ -37,7 +37,7 @@ public class AnnotatedPointValueTime extends PointValueTime {
 
     /**
      * The type of source that created the annotation.
-     * 
+     * s
      * @see SetPointSource
      */
     private final int sourceType;
@@ -68,24 +68,25 @@ public class AnnotatedPointValueTime extends PointValueTime {
         return true;
     }
 
+    // Code Smell 2: Speculative Generality - (Dispensables)
     public int getSourceId() {
         return sourceId;
     }
 
-    public int getSourceType() {
-        return sourceType;
+    public SetPointSource.Type getSourceType() {
+        return SetPointSource.Type.values()[sourceType];
     }
 
     public String getSourceDescriptionKey() {
-        switch (sourceType) {
-        case SetPointSource.Types.ANONYMOUS:
-            return "annotation.anonymous";
-        case SetPointSource.Types.EVENT_HANDLER:
-            return "annotation.eventHandler";
-        case SetPointSource.Types.USER:
-            return "annotation.user";
-        case SetPointSource.Types.POINT_LINK:
-            return "annotation.pointLink";
+        switch (getSourceType()) {  
+            case ANONYMOUS:
+                return "annotation.anonymous";
+            case EVENT_HANDLER:
+                return "annotation.eventHandler";
+            case USER:
+                return "annotation.user";
+            case POINT_LINK:
+                return "annotation.pointLink";
         }
         return null;
     }

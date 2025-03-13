@@ -1,0 +1,1 @@
+Ô2 2jsXhr;war/resources/dojo/tests/widget/namespaces/myns/manifest.js

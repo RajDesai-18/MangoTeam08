@@ -1,1 +1,1 @@
-£% 2jspXhrwar/WEB-INF/snippet/common.jsp
+£% 2javaX´hr/src/com/serotonin/mango/web/dwr/ReportsDwr.java

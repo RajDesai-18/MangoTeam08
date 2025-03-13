@@ -1,1 +1,1 @@
-Ì 2jsXhr3war/resources/dojo/tests/i18n/nls/el/salutations.js
+Ì 2jspXºhr,build/WEB-INF/jsp/pointEdit/textRenderer.jsp

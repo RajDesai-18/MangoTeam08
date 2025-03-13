@@ -1,1 +1,1 @@
-¨ 2webXUhr,war/resources/dojo/tests/lfx/test_scale.html
+¨ 2jspXhr&build/WEB-INF/snippet/imageContent.jsp

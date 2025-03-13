@@ -1,1 +1,1 @@
-” 2webX;hr/war/resources/dojo/tests/dnd/test_dragcopy.html
+” 2jspXhr2build/WEB-INF/jsp/dataSourceEdit/dsEventsFoot.jspf
